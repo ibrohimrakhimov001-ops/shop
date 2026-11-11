@@ -255,10 +255,10 @@ function haptic(t) { try { tg.HapticFeedback.notificationOccurred(t); } catch (e
 
 /* ---------- данные ---------- */
 async function getData() {
-  try {   // сначала прямо с телефона: без лимитов и сразу
-    const c = new AbortController(), t = setTimeout(() => c.abort(), 5000);
-    const r = await fetch(await apiUrl() + '/api/products', {cache: 'no-store', signal: c.signal}); clearTimeout(t);
-    if (r.ok) return await r.json();
+  try {   // сначала прямо с телефона (адрес из памяти; если устарел — берём свежий с Pages)
+    const old = await apiUrl();
+    const j = await phoneProducts(old) || await phoneProducts(await apiUrl(true));
+    if (j) return j;
   } catch (e) {}
   return await (await fetch('products.json?t=' + Date.now(), {cache: 'no-store'})).json();
 }
@@ -309,9 +309,18 @@ function banners() {
 
 /* ---------- API на телефоне (через туннель) ---------- */
 async function apiUrl(force) {
+  if (!APIURL && !force) { try { APIURL = localStorage.getItem('api') || ''; } catch (e) {} }
   if (APIURL && !force) return APIURL;
   const r = await fetch(PAGES + 'api.json?t=' + Date.now(), {cache: 'no-store'});
-  APIURL = (await r.json()).api; return APIURL;
+  APIURL = (await r.json()).api;
+  try { localStorage.setItem('api', APIURL); } catch (e) {}
+  return APIURL;
+}
+async function phoneProducts(base) {
+  const c = new AbortController(), t = setTimeout(() => c.abort(), 5000);
+  try { const r = await fetch(base + '/api/products', {cache: 'no-store', signal: c.signal}); if (r.ok) return await r.json(); }
+  catch (e) {} finally { clearTimeout(t); }
+  return null;
 }
 async function call(path, body, retry = true) {
   try {
@@ -843,11 +852,11 @@ function skeleton() {
   skeleton();
   try { D = await getData(); } catch (e) {}
   norm();
-  if (INIT) { try { ADMIN = (await call('/api/me')).admin; } catch (e) {} }
   const sp = tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param;
   if (sp && /^p_\d+$/.test(sp)) location.hash = 'p=' + sp.slice(2);
   window.onhashchange = route;
   route();
+  if (INIT) call('/api/me').then(j => { if (j.admin) { ADMIN = true; route(); } }).catch(() => {});
   setInterval(() => { if ($('#slides') && !document.body.classList.contains('kb')) slide((bi + 1) % banners().length, true); }, 4000);
 })();
 </script>
