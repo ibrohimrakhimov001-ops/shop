@@ -1,34 +1,9 @@
 {
- "updated": "2026-11-11 16:54:27",
+ "updated": "2026-11-11 16:58:41",
  "kurs": 12100,
  "phone": "",
  "tg": "",
  "products": [
-  {
-   "name": "Samsung A57",
-   "desc": "📱Samsung A57\n💽Xotira 8/128 GB\n☑️Holati ideal\n☑️Kafolat 1 yil\n📦Karopkasi bor\n🔋Batareka 5000mAh\n💰Narxi 350$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
-   "memory": "8/128 GB",
-   "price": 350,
-   "state": "Ideal",
-   "warranty": "1 oy",
-   "channel_msgs": [
-    7632
-   ],
-   "imported": true,
-   "id": 1794378352,
-   "photos": [
-    "photos/1794378352_0.jpg"
-   ],
-   "sold": false,
-   "created": "2026-11-11 11:25",
-   "battery": "",
-   "box": "Yo‘q",
-   "old": null,
-   "sale": "",
-   "branch": "1794386923402",
-   "brand": "Samsung",
-   "sale_until": ""
-  },
   {
    "id": 1794380702,
    "sold": false,
