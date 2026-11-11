@@ -112,7 +112,7 @@ function home() {
   const list = D.products.filter(p => p.id)
     .filter(p => cat === 'all' || (cat === 'sale' ? p.sale : brandOf(p.name) === cat))
     .filter(p => !q || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(q))
-    .sort((a, b) => (a.sold - b.sold) || (b.id - a.id));
+    .sort((a, b) => (!!a.sold - !!b.sold) || (b.id - a.id));
   const brands = [...new Set(D.products.filter(p => p.id).map(p => brandOf(p.name)))];
   const b = BANNERS[bi];
   $('#app').innerHTML = `
