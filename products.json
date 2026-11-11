@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 17:19:56",
+ "updated": "2026-11-11 17:20:05",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -82,6 +82,26 @@
    "created": "2026-11-11 17:19",
    "channel_msgs": [
     178
+   ]
+  },
+  {
+   "name": "IPhone 16 Pro Max",
+   "desc": "📱IPhone 16 Pro Max\n💽Xotira 256 GB \n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi bor\n🔋Batareka 89-91%\n💰Naqtga 900$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "256 GB",
+   "battery": "89%",
+   "price": 900,
+   "state": "Ideal",
+   "box": "Bor",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 1794399602,
+   "photos": [
+    "photos/1794399602_0.jpg"
+   ],
+   "sold": false,
+   "created": "2026-11-11 17:20",
+   "channel_msgs": [
+    179
    ]
   }
  ],
