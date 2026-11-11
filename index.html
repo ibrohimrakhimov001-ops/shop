@@ -95,6 +95,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 .gal .track::-webkit-scrollbar{display:none}
 .gal .track > *{flex:none;width:100%;height:100%;display:flex;align-items:center;justify-content:center;scroll-snap-align:center}
 .gal img{width:100%;height:100%;object-fit:contain}
+.gal .pv{position:relative}.gal .pv img{position:absolute;inset:0}.gal .lo{filter:blur(4px)}.gal .hi{opacity:0;transition:opacity .3s}.gal .hi.ok{opacity:1}
 .gal .back{position:absolute;top:16px;left:16px;width:44px;height:44px;border-radius:14px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;z-index:2}
 .gal .gd{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:6px}
 .gal .gd span{width:6px;height:6px;border-radius:3px;background:#CBD5CF;transition:all .3s}
@@ -229,9 +230,13 @@ const up = n => Math.ceil(n / 1000) * 1000;
 const LOCAL = {};   // только что загруженные фото: путь → dataURL (пока GitHub не отдаёт файл)
 const src = path => LOCAL[path] || PAGES + path;
 const img = (p, i = 0) => p.photos && p.photos[i] ? src(p.photos[i]) : '';
+const th = (p, i = 0) => { const x = p.photos && p.photos[i]; return !x ? '' : LOCAL[x] || PAGES + x.replace(/\.jpg$/, '_s.jpg'); };   // превью 400px
 const PAGES = 'https://ibrohimrakhimov001-ops.github.io/shop/';
 function imgRetry(el) {   // Pages ещё не собрался → берём фото с телефона, потом снова пробуем Pages
-  const n = +(el.dataset.n || 0); if (n >= 12) return;
+  if (el.classList.contains('lo')) return el.remove();   // размытое превью в галерее — не обязательно
+  let n = +(el.dataset.n || 0);
+  if (n >= 2 && el.dataset.full) { el.src = el.dataset.full; delete el.dataset.full; el.dataset.n = 0; return; }
+  if (n >= 12) return;
   el.dataset.n = n + 1;
   const path = el.src.split('?')[0].replace(RAW, '').replace(PAGES, '').replace(APIURL + '/', '');
   setTimeout(() => { el.src = (n % 2 === 0 && APIURL ? APIURL + '/' : PAGES) + path + (n ? '?r=' + Date.now() : ''); }, n ? 8000 : 0);
@@ -357,7 +362,7 @@ function page(html) { $('#app').innerHTML = html; bindGo(); tg && tg.BackButton.
 function card(p) {
   const e = eff(p), spec = [p.memory, p.state, p.battery].filter(Boolean).join(' · ');
   return `<button class="card ${p.sold ? 'sold' : ''}" data-p="${p.id}">
-    <div class="ph">${img(p) ? `<img loading="lazy" src="${img(p)}" alt="${esc(p.name)}">` : phoneSvg}
+    <div class="ph">${img(p) ? `<img loading="lazy" src="${th(p)}" data-full="${img(p)}" alt="${esc(p.name)}">` : phoneSvg}
       ${e.sale && !p.sold ? `<span class="badge">${esc(e.sale)}</span>` : ''}${p.sold ? '<span class="soldtag">SOTILDI</span>' : ''}</div>
     <span class="n">${esc(p.name)}</span><span class="s">${esc(spec)}</span>${brName(p.branch) ? `<span class="br">${esc(brName(p.branch))}</span>` : ''}
     <span class="pr"><span class="p" style="color:${e.sale ? '#DC2626' : '#1B2326'}">${e.price ? e.price + '$' : 'Narx so‘rang'}</span>${e.old ? `<span class="old">${e.old}$</span>` : ''}</span>
@@ -438,7 +443,7 @@ function product(id) {
   if (lastP !== p.id) { lastP = p.id; down = 0; warn = 0; }
   const e = eff(p), br = brOf(p.branch) || (BR().length === 1 ? BR()[0] : null);
   const tgU = (br && br.tg) || D.tg || '';
-  const photos = (p.photos || []).map((_, i) => `<div><img src="${img(p, i)}" alt="${esc(p.name)}"></div>`).join('') || `<div>${phoneSvg}</div>`;
+  const photos = (p.photos || []).map((_, i) => `<div class="pv"><img class="lo" src="${th(p, i)}" alt=""><img class="hi" src="${img(p, i)}" alt="${esc(p.name)}" onload="this.classList.add('ok')"></div>`).join('') || `<div>${phoneSvg}</div>`;
   const R = RATES();
   page(`
   <div class="gal"><button class="back" aria-label="Orqaga" data-go="">${svg(P.back, '#1B2326')}</button>
@@ -528,7 +533,7 @@ let aq = '';
 function adminRows() {
   const list = [...D.products].filter(p => !aq || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(aq)).sort((a, b) => (!!a.sold - !!b.sold) || b.id - a.id);
   return list.map(p => { const e = eff(p); return `<div class="arow">
-    <div class="th">${img(p) ? `<img src="${img(p)}" alt="">` : `<span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center">${svg(P.dev, '#15803D', 26, 1.6)}</span>`}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
+    <div class="th">${img(p) ? `<img src="${th(p)}" data-full="${img(p)}" alt="">` : `<span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center">${svg(P.dev, '#15803D', 26, 1.6)}</span>`}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
     <div class="inf"><b>${esc([p.name, p.memory].filter(Boolean).join(' '))}</b><span>${e.price || '?'}$</span>
       <button class="soldb ${p.sold ? 'on' : ''}" data-sold="${p.id}" aria-pressed="${!!p.sold}">${p.sold ? '↩ Sotuvga qaytarish' : '✓ Sotildi'}</button></div>
     <button class="sq e" aria-label="Tahrirlash" data-go="edit=${p.id}">${svg(P.edit, '#15803D', 17)}</button>
