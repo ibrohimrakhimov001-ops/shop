@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 12:06:54",
+ "updated": "2026-11-11 12:09:06",
  "kurs": 12800,
  "phone": "",
  "tg": "",
@@ -43,10 +43,10 @@
    "battery": "90%",
    "box": "Yo‘q",
    "warranty": "1 oy",
-   "price": 330,
-   "old": null,
-   "sale": "",
-   "sale_until": "",
+   "price": 297,
+   "old": 330,
+   "sale": "−10%",
+   "sale_until": "2026-11-12",
    "branch": "1794379620332"
   }
  ],
