@@ -24,9 +24,18 @@ h1{font-size:22px;margin:0 0 4px}
 <div class="grid" id="list"></div>
 <script>
 const tg = window.Telegram && Telegram.WebApp; if (tg) { tg.ready(); tg.expand(); }
-async function load(){
+const API = 'https://api.github.com/repos/ibrohimrakhimov001-ops/shop/contents/products.json';
+async function getData(){
+  try {  // сразу после push (~1-2 с), лимит 60 запросов/час с IP
+    const r = await fetch(API, {headers:{Accept:'application/vnd.github.raw'}, cache:'no-store'});
+    if (r.ok) return await r.json();
+  } catch(e) {}
+  // запасной вариант: файл на Pages (может отставать ~30 с)
   const r = await fetch('products.json?t=' + Date.now(), {cache:'no-store'});
-  const d = await r.json();
+  return await r.json();
+}
+async function load(){
+  const d = await getData();
   document.getElementById('upd').textContent = 'Yangilandi: ' + d.updated + ' (telefondan)';
   document.getElementById('list').innerHTML = d.products.map(p => `
     <div class="card ${p.sold ? 'sold' : ''}">
