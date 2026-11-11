@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 12:39:04",
+ "updated": "2026-11-11 13:48:44",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -76,6 +76,14 @@
    "addr": "Qo'qon shahar, Furqat 100 uy",
    "phone": "+998912046465",
    "tg": "@raximov_ibrohim",
+   "hours": "9:30 dan 19:00 gacha"
+  },
+  {
+   "id": 1794386923402,
+   "name": "Gorod",
+   "addr": "Qo'qon shahar, Istiqlol 31 uy",
+   "phone": "+998910010404",
+   "tg": "@zz777777zz",
    "hours": "9:30 dan 19:00 gacha"
   }
  ],
