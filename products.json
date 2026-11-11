@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 14:12:39",
+ "updated": "2026-11-11 14:13:02",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -108,7 +108,12 @@
    "created": "2026-11-11 14:12",
    "channel_msgs": [
     164
-   ]
+   ],
+   "brand": "iPhone",
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
   }
  ],
  "branches": [
