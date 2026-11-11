@@ -307,7 +307,7 @@ async function refresh() { try { D = await getData(); norm(); } catch (e) {} }
 
 /* ---------- звонок: сразу на номер филиала ---------- */
 // номер: филиал товара → единственный филиал → общий номер магазина
-const phoneOf = br => ((br && br.phone) || (BR().length === 1 && BR()[0].phone) || BR().map(b => b.phone).find(Boolean) || D.phone || '').replace(/[^\d+]/g, '');
+const phoneOf = br => ((br && br.phone) || (BR().length === 1 && BR()[0].phone) || BR().map(b => b.phone).find(Boolean) || D.phone || '').split(/[,;]/)[0].replace(/[^\d+]/g, '');
 const callLink = (ph, cls, w = 20) => ph
   ? `<a class="${cls}" href="tel:${ph}" aria-label="Qo‘ng‘iroq: ${ph}">${svg(P.phone, '#fff', w)}&nbsp;Qo‘ng‘iroq</a>`
   : `<button class="${cls}" onclick="toast('Telefon raqam kiritilmagan')">${svg(P.phone, '#fff', w)}&nbsp;Qo‘ng‘iroq</button>`;
