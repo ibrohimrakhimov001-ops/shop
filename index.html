@@ -446,7 +446,6 @@ function product(id) {
       <div class="res"><div><div style="font-size:12px;font-weight:600;opacity:.9">Oyiga</div><div style="font-size:20px;font-weight:800" id="mon"></div></div>
         <span style="font-size:12px;font-weight:600;opacity:.9;text-align:right" id="jami"></span></div>
     </section>` : ''}
-    ${p.desc && p.imported ? `<div class="desc">${esc(p.desc.split('\n').filter(l => /[\p{L}\p{N}]/u.test(l)).join('\n').trim())}</div>` : ''}
   </div>
   <div class="bar">${callLink(phoneOf(br), 'call')}<button class="tgb" id="tgb">${svg(P.tg, '#15803D')}Telegram</button></div>`);
   if (tg) { tg.BackButton.offClick(goBack); tg.BackButton.onClick(goBack); tg.BackButton.show(); }
