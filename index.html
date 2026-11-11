@@ -26,6 +26,12 @@ input,select{font-size:16px}   /* <16px → телефон приближает 
 .sq.e{background:var(--mint)}.sq.o{background:#FFF4E5}.sq.d{background:#FDECEC}
 .btn{height:56px;border-radius:16px;border:none;background:var(--grad);color:#fff;font-weight:800;font-size:15px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
 .btn:disabled{opacity:.6}
+.cwrap{padding:4px 20px 120px;display:flex;flex-direction:column;gap:14px}
+.ccard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:0 4px 14px rgba(21,128,61,.07)}
+.ch{font-weight:800;font-size:15px;margin-bottom:4px}
+.crow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+.ch + .crow{border-top:none}.crow span{color:var(--mut);font-weight:600}.crow b{font-weight:800;color:var(--ink)}
+#cres{display:flex;flex-direction:column;gap:12px}
 .fl{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--mut);min-width:0}
 .fl input,.fl select{height:48px;border-radius:14px;border:1px solid #DDE3DF;background:#fff;padding:0 14px;font-size:16px;font-weight:600;color:var(--ink);width:100%;min-width:0;outline:none}
 .fl select{padding:0 10px}
@@ -355,7 +361,7 @@ document.addEventListener('focusout',() => setTimeout(() => { if (!document.acti
 /* ================= КЛИЕНТ ================= */
 const TABS = [['', 'Bosh sahifa', '<path d="M3 11l9-7 9 7v9H3z"></path>'],
   ['catalog', 'Katalog', '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect>'],
-  ['sale', 'Aksiyalar', P.pct], ['contact', 'Aloqa', P.phone]];
+  ['calc', 'Kalkulyator', '<rect x="4" y="2" width="16" height="20" rx="2"></rect><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 18h8"></path>'], ['contact', 'Aloqa', P.phone]];
 const tabbar = on => `<nav class="tabbar" aria-label="Menyu">${TABS.map(([k, l, ic]) => `<button data-go="${k}" class="${k === on ? 'on' : ''}" ${k === on ? 'aria-current="page"' : ''}>${svg(ic, 'currentColor', 22)}${l}</button>`).join('')}</nav>`;
 function page(html) { $('#app').innerHTML = html; bindGo(); tg && tg.BackButton.hide(); }
 
@@ -510,6 +516,22 @@ function sales() {
   <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha aksiyalar yo‘q</div>'}</div>
   ${tabbar('sale')}`);
   bindCards();
+}
+function calcPage() {   // как в боте @Androidkokandbot: ISHONCH (narx×1.01) и BIRZUM NASIYA (narx×1.02)
+  page(`<div class="hdr"><h2>Muddatli to‘lov kalkulyatori</h2></div>
+  <div class="cwrap"><label class="fl">Telefon narxi, $<input id="cu" inputmode="decimal" placeholder="Masalan: 380" autocomplete="off"></label><div id="cres"></div></div>
+  ${tabbar('calc')}`);
+  const inp = $('#cu'), out = $('#cres');
+  const tbl = (base, rows) => rows.map(([oy, pct]) => `<div class="crow"><span>${oy} oy</span><b>${fmt(base * (1 + pct / 100) / oy)} so‘m</b></div>`).join('');
+  const draw = () => {
+    const usd = parseFloat(inp.value.replace(/\s/g, '').replace(',', '.').replace('$', ''));
+    if (!(usd > 0)) { out.innerHTML = '<div class="empty">Narxni dollarda kiriting — oylik to‘lovlar shu yerda chiqadi</div>'; return; }
+    const narx = usd * D.kurs, R = RATES();
+    out.innerHTML = `<div class="ccard"><div class="ch">🏦 ISHONCH · Rasmiy</div>${tbl(narx * 1.01, [[3, R.r3], [6, R.r6], [12, R.r12]])}</div>
+      <div class="ccard"><div class="ch">🏦 ISHONCH · No rasmiy</div>${tbl(narx * 1.01, [[12, R.n12]])}</div>
+      <div class="ccard"><div class="ch">🛒 BIRZUM NASIYA</div>${tbl(narx * 1.02, [[3, 15], [6, 20], [12, 38]])}</div>`;
+  };
+  inp.oninput = draw; draw();
 }
 function contact() {
   const list = BR().length ? BR() : [{name: 'Android Kokand', phone: D.phone, tg: D.tg}];
@@ -842,7 +864,7 @@ function settings() {
 function route() {
   document.body.classList.remove('kb');
   const h = location.hash.replace(/^#/, '');
-  const S = {catalog, sale: sales, contact, admin, promos, banners: bannersAdmin, branches: branchesAdmin, settings, new: () => edit(null)};
+  const S = {catalog, calc: calcPage, sale: sales, contact, admin, promos, banners: bannersAdmin, branches: branchesAdmin, settings, new: () => edit(null)};
   if (S[h]) return S[h]();
   let m = h.match(/^edit=(\d+)(&d)?/); if (m) return edit(m[1], !!m[2]);
   m = h.match(/p=(\d+)/); m ? product(m[1]) : home();
