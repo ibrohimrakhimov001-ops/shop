@@ -1,7 +1,27 @@
 {
- "updated": "",
+ "updated": "2026-11-11 10:55:43",
  "kurs": 12800,
  "phone": "",
  "tg": "",
- "products": []
+ "products": [
+  {
+   "name": "",
+   "desc": "🍏👍👍👍👍👍👍\n📱IPhone 12 Pro\n💽Xotira 128 GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yuq\n🔋Batareka 90%\n💰Narxi 290$\n\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n\n🛒Nasiya savdo✅\n\n📞+998910010404\n📞+998912046465",
+   "memory": "128 GB",
+   "battery": "90%",
+   "price": 290,
+   "state": "Ideal",
+   "warranty": "1 oy",
+   "channel_msgs": [
+    7634
+   ],
+   "imported": true,
+   "id": 1794376542,
+   "photos": [
+    "photos/1794376542_0.jpg"
+   ],
+   "sold": false,
+   "created": "2026-11-11 10:55"
+  }
+ ]
 }
