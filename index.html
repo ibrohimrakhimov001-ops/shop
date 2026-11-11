@@ -314,8 +314,12 @@ const callLink = (ph, cls, w = 20) => ph
 function openTg(u) { u = (u || '').replace(/^@/, ''); if (!u) return toast('Telegram ko‘rsatilmagan'); tg && tg.openTelegramLink ? tg.openTelegramLink('https://t.me/' + u) : (location.href = 'https://t.me/' + u); }
 
 /* ---------- клавиатура: прячем нижние панели, поле в центр ---------- */
-document.addEventListener('focusin', e => { if (e.target.matches('input:not([type=checkbox]):not([type=file]),select')) { document.body.classList.add('kb'); setTimeout(() => e.target.scrollIntoView({block: 'center', behavior: 'smooth'}), 300); } });
-document.addEventListener('focusout', () => setTimeout(() => { if (!document.activeElement.matches('input,select')) document.body.classList.remove('kb'); }, 100));
+document.addEventListener('focusin', e => { if (e.target.matches('input:not([type=checkbox]):not([type=file]),select')) { if (!e.target.hasAttribute('enterkeyhint')) e.target.setAttribute('enterkeyhint', 'done'); document.body.classList.add('kb'); setTimeout(() => e.target.scrollIntoView({block: 'center', behavior: 'smooth'}), 300); } });
+// клавиатура прячется: нажатие вне поля или Enter/«Готово»
+function hideKb() { const a = document.activeElement; if (a && a.matches('input,select,textarea')) a.blur(); try { tg && tg.hideKeyboard && tg.hideKeyboard(); } catch (e) {} }
+document.addEventListener('pointerdown', e => { if (!e.target.closest('input,select,textarea,label')) hideKb(); }, true);
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('input:not([type=checkbox])')) { e.preventDefault(); hideKb(); } });
+document.addEventListener('focusout',() => setTimeout(() => { if (!document.activeElement.matches('input,select')) document.body.classList.remove('kb'); }, 100));
 
 /* ================= КЛИЕНТ ================= */
 const TABS = [['', 'Bosh sahifa', '<path d="M3 11l9-7 9 7v9H3z"></path>'],
