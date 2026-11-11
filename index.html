@@ -68,6 +68,39 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .bar .call{background:var(--grad);color:#fff}
 .bar .tg{background:#fff;border:2px solid var(--acc);color:var(--acc)}
 .soldbig{background:#1B2326;color:#fff;font-weight:800;text-align:center;padding:12px;border-radius:14px;font-size:16px}
+/* admin */
+.adm{width:44px;height:44px;border-radius:14px;background:#1B2326;border:none;display:flex;align-items:center;justify-content:center;flex:none}
+.top{display:flex;align-items:center;gap:12px;padding:20px 20px 12px}
+.top h2{margin:0;font-size:22px;font-weight:800;flex:1}
+.iconbtn{width:44px;height:44px;border-radius:14px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none}
+.addbtn{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 20px 12px;height:52px;border-radius:16px;border:none;background:var(--grad);color:#fff;font-weight:800;font-size:15px;width:calc(100% - 40px)}
+.alist{display:flex;flex-direction:column;gap:10px;padding:0 20px 30px}
+.aitem{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px}
+.aitem .th{width:56px;height:56px;border-radius:12px;background:linear-gradient(160deg,#F2F8F4,#DCEFE2);overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center}
+.aitem .th img{width:100%;height:100%;object-fit:cover}
+.aitem .info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.aitem .info b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aitem .info span{font-size:12px;color:var(--mut);font-weight:600}
+.acts{display:flex;gap:6px}
+.acts button{width:40px;height:40px;border-radius:12px;border:none;background:var(--soft);display:flex;align-items:center;justify-content:center}
+.acts .s.on{background:#1B2326}
+.form{display:flex;flex-direction:column;gap:12px;padding:0 20px 120px}
+.fl{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:var(--mut)}
+.fl input{height:48px;border-radius:12px;border:1px solid var(--line);background:#fff;padding:0 14px;font-size:15px;font-weight:600;color:var(--ink);outline:none}
+.fl input:focus{border-color:var(--acc)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{height:38px;padding:0 14px;border-radius:10px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:13px;color:var(--ink)}
+.chips button.on{border-color:var(--acc);color:var(--acc2);background:#E3F1E8}
+.phs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.phs .ph2{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--soft)}
+.phs .ph2 img{width:100%;height:100%;object-fit:cover}
+.phs .x{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:8px;border:none;background:rgba(27,35,38,.8);color:#fff;font-weight:800}
+.phs label{aspect-ratio:1;border-radius:12px;border:2px dashed #BFD9C8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--acc);font-size:12px;font-weight:700;cursor:pointer}
+.save{position:fixed;left:0;right:0;bottom:0;padding:14px 20px calc(18px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);max-width:560px;margin:0 auto}
+.save button{width:100%;height:54px;border-radius:16px;border:none;background:var(--grad);color:#fff;font-weight:800;font-size:16px}
+.save button:disabled{opacity:.6}
+.toast{position:fixed;left:20px;right:20px;bottom:96px;background:#1B2326;color:#fff;padding:12px 14px;border-radius:12px;font-weight:700;font-size:14px;z-index:20;text-align:center}
 </style>
 </head><body>
 <div class="wrap" id="app"></div>
@@ -116,7 +149,8 @@ function home() {
   const brands = [...new Set(D.products.filter(p => p.id).map(p => brandOf(p.name)))];
   const b = BANNERS[bi];
   $('#app').innerHTML = `
-  <header><div><div class="sub">Qo‘qon · telefonlar do‘koni</div><div class="brand">Android Kokand</div></div></header>
+  <header><div><div class="sub">Qo‘qon · telefonlar do‘koni</div><div class="brand">Android Kokand</div></div>
+  ${ADMIN ? `<button class="adm" aria-label="Admin panel" onclick="location.hash='admin'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path></svg></button>` : ''}</header>
   <div class="search"><label><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
     <input id="q" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label></div>
   <section aria-label="Bannerlar">
@@ -181,14 +215,144 @@ function product(id) {
   window.scrollTo(0, 0);
 }
 
+/* ================= ADMIN ================= */
+let ADMIN = false, APIURL = '', form = null;
+const INIT = tg ? tg.initData : '';
+const back = h => `<button class="iconbtn" aria-label="Orqaga" onclick="location.hash='${h}'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>`;
+function toast(t, ms = 2200) { const el = document.createElement('div'); el.className = 'toast'; el.textContent = t; document.body.appendChild(el); setTimeout(() => el.remove(), ms); }
+
+async function apiUrl(force) {
+  if (APIURL && !force) return APIURL;
+  const r = await fetch(API.replace('products.json', 'api.json'), {headers: {Accept: 'application/vnd.github.raw'}, cache: 'no-store'});
+  APIURL = (await r.json()).api; return APIURL;
+}
+async function call(path, body, retry = true) {
+  try {
+    const r = await fetch(await apiUrl() + path, {method: body ? 'POST' : 'GET', headers: {'X-Init-Data': INIT, 'Content-Type': 'application/json'}, body: body ? JSON.stringify(body) : undefined});
+    const j = await r.json(); if (!r.ok) throw new Error(j.error || r.status); return j;
+  } catch (e) {
+    if (retry) { await apiUrl(true); return call(path, body, false); }   // туннель мог смениться
+    throw e;
+  }
+}
+async function refresh() { try { D = await getData(); D.products = (D.products || []).filter(p => p.id); } catch (e) {} }
+
+function adminList() {
+  if (!ADMIN) { location.hash = ''; return; }
+  const list = [...D.products].sort((a, b) => b.id - a.id);
+  $('#app').innerHTML = `
+  <div class="top">${back('')}<h2>Mahsulotlar (${list.length})</h2>
+    <button class="iconbtn" aria-label="Sozlamalar" onclick="location.hash='settings'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-2.9 1.2V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-2.9-1.2l-.1.1a2 2 0 11-2.8-2.8l.1-.1A1.7 1.7 0 003 14.1H3a2 2 0 110-4h.1a1.7 1.7 0 001.2-2.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 002.9-1.2V3a2 2 0 114 0v.1a1.7 1.7 0 002.9 1.2l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 001.2 2.9H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"></path></svg></button></div>
+  <button class="addbtn" onclick="location.hash='new'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Mahsulot qo‘shish</button>
+  <div class="alist">${list.map(p => `<div class="aitem">
+    <div class="th">${img(p) ? `<img src="${img(p)}" alt="">` : phoneSvg}</div>
+    <div class="info"><b>${esc(p.name)}</b><span>${esc([p.memory, p.state].filter(Boolean).join(' · '))}</span>
+      <span style="color:${p.sold ? '#DC2626' : '#15803D'};font-weight:800">${p.sold ? 'SOTILDI' : (p.price || '?') + '$'}</span></div>
+    <div class="acts">
+      <button aria-label="Tahrirlash" onclick="location.hash='edit=${p.id}'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></button>
+      <button class="s ${p.sold ? 'on' : ''}" aria-label="${p.sold ? 'Sotuvga qaytarish' : 'Sotildi'}" onclick="toggleSold(${p.id})"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${p.sold ? '#fff' : '#DC2626'}" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></button>
+      <button aria-label="O‘chirish" onclick="delProduct(${p.id})"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg></button>
+    </div></div>`).join('') || '<div class="empty">Hali mahsulot yo‘q</div>'}</div>`;
+  tg && tg.BackButton.hide();
+}
+
+async function toggleSold(id) {
+  const p = D.products.find(x => x.id === id); if (!p) return;
+  try { const j = await call('/api/sold', {id, sold: !p.sold}); p.sold = !p.sold; adminList(); toast(p.sold ? '❌ Sotildi — kanal yangilandi' : '↩️ Sotuvga qaytarildi'); j.warn && toast(j.warn, 4000); }
+  catch (e) { toast('Xato: ' + e.message, 4000); }
+}
+function delProduct(id) {
+  const go = async ok => { if (!ok) return;
+    try { const j = await call('/api/delete', {id}); D.products = D.products.filter(x => x.id !== id); adminList(); toast('🗑 O‘chirildi — kanal posti ham'); j.warn && toast(j.warn, 4000); }
+    catch (e) { toast('Xato: ' + e.message, 4000); } };
+  tg && tg.showConfirm ? tg.showConfirm('Mahsulot va kanaldagi post o‘chirilsinmi?', go) : go(confirm('O‘chirilsinmi?'));
+}
+
+const STATES = ['Yangi', 'Ideal', 'Zo‘r', 'Yaxshi', 'O‘rtacha'], BOXES = ['Bor', 'Yo‘q'];
+function edit(id) {
+  if (!ADMIN) { location.hash = ''; return; }
+  const p = id ? D.products.find(x => String(x.id) === String(id)) : {};
+  if (id && !p) { location.hash = 'admin'; return; }
+  if (!form || form.id !== (p.id || null)) form = {id: p.id || null, f: {...p}, keep: [...(p.photos || [])], neu: []};
+  const f = form.f, inp = (k, l, ph = '', type = 'text') => `<label class="fl">${l}<input data-k="${k}" type="${type}" ${type === 'number' ? 'inputmode="numeric"' : ''} placeholder="${ph}" value="${esc(f[k] ?? '')}"></label>`;
+  const chips = (k, arr) => `<div class="chips">${arr.map(v => `<button type="button" data-ck="${k}" data-v="${v}" class="${f[k] === v ? 'on' : ''}">${v}</button>`).join('')}</div>`;
+  $('#app').innerHTML = `
+  <div class="top">${back('admin')}<h2>${id ? 'Tahrirlash' : 'Yangi mahsulot'}</h2></div>
+  <div class="form">
+    <div class="fl">Rasmlar (6 tagacha)<div class="phs">
+      ${form.keep.map((r, i) => `<div class="ph2"><img src="${RAW + r}" alt=""><button class="x" aria-label="Rasmni olib tashlash" data-rk="${i}">×</button></div>`).join('')}
+      ${form.neu.map((d, i) => `<div class="ph2"><img src="${d}" alt=""><button class="x" aria-label="Rasmni olib tashlash" data-rn="${i}">×</button></div>`).join('')}
+      ${form.keep.length + form.neu.length < 6 ? `<label><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Rasm<input id="file" type="file" accept="image/*" multiple hidden></label>` : ''}
+    </div></div>
+    ${inp('name', 'Model', 'iPhone 12 Pro')}
+    <div class="two">${inp('memory', 'Xotira', '128 GB')}${inp('battery', 'Batareya', '90%')}</div>
+    <div class="fl">Holati${chips('state', STATES)}</div>
+    <div class="two"><div class="fl">Karobka${chips('box', BOXES)}</div>${inp('warranty', 'Kafolat', '1 oy')}</div>
+    <div class="two">${inp('price', 'Narx, $', '290', 'number')}${inp('old', 'Eski narx, $', 'ixtiyoriy', 'number')}</div>
+    ${inp('sale', 'Chegirma belgisi', '−10% (ixtiyoriy)')}
+  </div>
+  <div class="save"><button id="sv">${id ? 'Saqlash' : 'Saqlash va kanalga joylash'}</button></div>`;
+  document.querySelectorAll('[data-k]').forEach(el => el.oninput = () => { f[el.dataset.k] = el.value; });
+  document.querySelectorAll('[data-ck]').forEach(el => el.onclick = () => { f[el.dataset.ck] = f[el.dataset.ck] === el.dataset.v ? '' : el.dataset.v; edit(id); });
+  document.querySelectorAll('[data-rk]').forEach(el => el.onclick = () => { form.keep.splice(+el.dataset.rk, 1); edit(id); });
+  document.querySelectorAll('[data-rn]').forEach(el => el.onclick = () => { form.neu.splice(+el.dataset.rn, 1); edit(id); });
+  const fi = $('#file'); if (fi) fi.onchange = async () => { for (const file of [...fi.files].slice(0, 6 - form.keep.length - form.neu.length)) form.neu.push(await shrink(file)); edit(id); };
+  $('#sv').onclick = () => saveForm(id);
+  tg && tg.BackButton.hide();
+}
+
+function shrink(file, max = 1280) {   // сжатие фото в браузере: ≤1280 px, JPEG 0.82
+  return new Promise((ok, bad) => { const im = new Image(); im.onload = () => {
+    const k = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement('canvas');
+    c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(im.src); ok(c.toDataURL('image/jpeg', 0.82)); };
+    im.onerror = bad; im.src = URL.createObjectURL(file); });
+}
+
+async function saveForm(id) {
+  const f = form.f;
+  if (!f.name || !String(f.name).trim()) return toast('Model nomini yozing');
+  if (!id && !form.neu.length) return toast('Kamida 1 ta rasm qo‘shing');
+  const b = $('#sv'); b.disabled = true; b.textContent = 'Saqlanmoqda…';
+  try {
+    const fields = {}; ['name', 'memory', 'state', 'battery', 'box', 'warranty', 'price', 'old', 'sale'].forEach(k => fields[k] = f[k] ?? '');
+    const j = await call('/api/save', {id: id ? +id : null, fields, keep: form.keep, new_photos: form.neu});
+    toast(id ? '✅ Saqlandi' : '✅ Saqlandi va kanalga joylandi'); j.warn && toast(j.warn, 4000);
+    form = null; setTimeout(async () => { await refresh(); location.hash = 'admin'; adminList(); }, 1500);
+  } catch (e) { b.disabled = false; b.textContent = 'Qayta urinish'; toast('Xato: ' + e.message, 4000); }
+}
+
+function settings() {
+  if (!ADMIN) { location.hash = ''; return; }
+  $('#app').innerHTML = `
+  <div class="top">${back('admin')}<h2>Sozlamalar</h2></div>
+  <div class="form">
+    <label class="fl">Dollar kursi, so‘m<input id="s_kurs" type="number" inputmode="numeric" value="${D.kurs || ''}"></label>
+    <label class="fl">Telefon raqam<input id="s_phone" type="tel" placeholder="+998 90 123 45 67" value="${esc(D.phone || '')}"></label>
+    <label class="fl">Telegram username<input id="s_tg" placeholder="android_kokand" value="${esc(D.tg || '')}"></label>
+  </div>
+  <div class="save"><button id="sv">Saqlash</button></div>`;
+  $('#sv').onclick = async () => {
+    const body = {kurs: $('#s_kurs').value, phone: $('#s_phone').value, tg: $('#s_tg').value};
+    try { await call('/api/settings', body); Object.assign(D, body, {kurs: +body.kurs}); toast('✅ Saqlandi'); }
+    catch (e) { toast('Xato: ' + e.message, 4000); }
+  };
+}
+
 function route() {
-  const m = location.hash.match(/p=(\d+)/);
+  const h = location.hash;
+  if (h === '#admin') return adminList();
+  if (h === '#settings') return settings();
+  if (h === '#new') return edit(null);
+  let m = h.match(/edit=(\d+)/); if (m) return edit(m[1]);
+  m = h.match(/p=(\d+)/);
   m ? product(m[1]) : home();
 }
 
 (async () => {
   try { D = await getData(); } catch (e) {}
   D.products = (D.products || []).filter(p => p.id);
+  if (INIT) { try { ADMIN = (await call('/api/me')).admin; } catch (e) {} }
   const sp = tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param;
   if (sp && /^p_\d+$/.test(sp)) location.hash = 'p=' + sp.slice(2);
   window.onhashchange = route;
