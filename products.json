@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 12:02:38",
+ "updated": "2026-11-11 12:03:09",
  "kurs": 12800,
  "phone": "",
  "tg": "",
@@ -38,14 +38,5 @@
    "hours": "9:30 dan 19:00 gacha"
   }
  ],
- "banners": [
-  {
-   "id": 1794380558373,
-   "img": "photos/banner_1794380558373_80558.jpg",
-   "text": true,
-   "title": "Yangi 18 Pro maxlar keldi",
-   "tag": "New",
-   "link": "p:1794378352"
-  }
- ]
+ "banners": []
 }
