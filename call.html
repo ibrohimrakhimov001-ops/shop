@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Qo‘ng‘iroq</title>
+<style>
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-family:system-ui,sans-serif;background:#F2F8F4;color:#1B2326}
+a{display:inline-flex;align-items:center;gap:8px;padding:16px 28px;border-radius:16px;background:#15803D;color:#fff;font-size:18px;font-weight:600;text-decoration:none}
+p{margin:0;color:#5B6B66;font-size:15px}
+</style></head><body>
+<p id="n"></p>
+<a id="c" href="#">📞 Qo‘ng‘iroq qilish</a>
+<script>
+// Telegram открывает эту страницу через openLink, а она сразу переходит на tel: — открывается звонилка
+var n = (new URLSearchParams(location.search).get('n') || '').replace(/[^\d+]/g, '');
+document.getElementById('n').textContent = n;
+document.getElementById('c').href = 'tel:' + n;
+if (n) location.replace('tel:' + n);
+</script>
+</body></html>
