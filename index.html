@@ -218,7 +218,17 @@ const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 const up = n => Math.ceil(n / 1000) * 1000;
-const img = (p, i = 0) => p.photos && p.photos[i] ? RAW + p.photos[i] : '';
+const LOCAL = {};   // только что загруженные фото: путь → dataURL (пока GitHub не отдаёт файл)
+const src = path => LOCAL[path] || RAW + path;
+const img = (p, i = 0) => p.photos && p.photos[i] ? src(p.photos[i]) : '';
+const PAGES = 'https://ibrohimrakhimov001-ops.github.io/shop/';
+function imgRetry(el) {   // raw.githubusercontent мог закэшировать 404 → пробуем GitHub Pages, потом снова raw
+  const n = +(el.dataset.n || 0); if (n >= 12) return;
+  el.dataset.n = n + 1;
+  const path = el.src.split('?')[0].replace(RAW, '').replace(PAGES, '');
+  setTimeout(() => { el.src = (n % 2 ? RAW : PAGES) + path + '?r=' + Date.now(); }, n ? 8000 : 0);
+}
+document.addEventListener('error', e => { const t = e.target; if (t.tagName === 'IMG' && (t.src.startsWith(RAW) || t.src.startsWith(PAGES))) imgRetry(t); }, true);
 const svg = (d, c = 'currentColor', w = 20, sw = 2) => `<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 const P = {
   back: '<path d="M15 5l-7 7 7 7"></path>', shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path>',
@@ -352,7 +362,7 @@ function home() {
   ${showSort ? `<div class="sortrow">${[['new', 'Yangilari'], ['cheap', 'Arzonroq'], ['exp', 'Qimmatroq']].map(([k, l]) => `<button data-s="${k}" class="${sort === k ? 'on' : ''}">${l}</button>`).join('')}</div>` : ''}
   <section aria-label="Bannerlar">
     <div class="vp" id="vp"><div class="slides" id="slides">${B.map((b, k) => `<button class="banner" data-bl="${esc(b.link || '')}" style="background:${BG[k % 3]}">
-      ${b.img ? `<img src="${RAW + b.img}" alt="" class="${b.text === false ? 'full' : ''}">` : svg(P.dev, '#fff', 150, 1.2).replace('<svg', '<svg class="deco"')}
+      ${b.img ? `<img src="${src(b.img)}" alt="" class="${b.text === false ? 'full' : ''}">` : svg(P.dev, '#fff', 150, 1.2).replace('<svg', '<svg class="deco"')}
       ${b.text === false ? '' : `<div class="tx">${b.tag ? `<span class="tag">${esc(b.tag)}</span>` : ''}<span class="t">${esc(b.title || '')}</span></div><span class="more">Batafsil →</span>`}</button>`).join('')}</div></div>
     <div class="dots">${B.map((_, k) => `<button aria-label="Slayd ${k + 1}" data-b="${k}"></button>`).join('')}</div>
   </section>
@@ -539,7 +549,7 @@ function edit(id, focusDisc) {
   <div class="hdr">${backBtn('admin', 1)}<h2>Mahsulot</h2></div>
   <div style="display:flex;flex-direction:column;gap:18px;padding:4px 20px 16px">
     <section style="display:flex;flex-direction:column;gap:8px"><span style="font-size:13px;font-weight:800">Rasmlar · 6 tagacha</span>
-      <div class="phs">${[...F.keep.map((r, i) => ({src: RAW + r, k: 'k' + i})), ...F.neu.map((d, i) => ({src: d, k: 'n' + i}))].map((x, i) =>
+      <div class="phs">${[...F.keep.map((r, i) => ({src: src(r), k: 'k' + i})), ...F.neu.map((d, i) => ({src: d, k: 'n' + i}))].map((x, i) =>
         `<div class="pi"><img src="${x.src}" alt="">${i ? '' : '<span class="main">Asosiy</span>'}<button class="x" aria-label="Rasmni olib tashlash" data-rm="${x.k}">×</button></div>`).join('')}
         ${nph < 6 ? `<label aria-label="Rasm qo‘shish">+<input id="file" type="file" accept="image/*" multiple hidden></label>` : ''}</div></section>
     <section style="display:flex;flex-direction:column;gap:10px">
@@ -603,6 +613,7 @@ async function saveForm() {
   try {
     const j = await call('/api/save', {id: F.id, fields, keep: F.keep, new_photos: F.neu});
     const pid = j.id, was = F.id ? D.products.find(x => x.id === F.id) : null;
+    (j.photos || []).filter(x => !F.keep.includes(x)).forEach((x, i) => { if (F.neu[i]) LOCAL[x] = F.neu[i]; });
     if ((was ? !was.sold : true) !== F.instock) await call('/api/sold', {id: pid, sold: !F.instock});
     toast(F.id ? '✅ Saqlandi' : '✅ Saqlandi va kanalga joylandi'); j.warn && toast(j.warn, 4000);
     F = null; setTimeout(async () => { await refresh(); location.hash = 'admin'; route(); }, 1200);
@@ -675,7 +686,7 @@ function bannersAdmin() {
   ${anav('banners')}
   <div class="list">${list.map((b, i) => `<div class="brow">
     <button class="h" aria-label="Yuqoriga" data-bu="${i}"><svg width="16" height="16" viewBox="0 0 24 24" fill="#9AA5A0" aria-hidden="true"><circle cx="9" cy="6" r="1.6"></circle><circle cx="15" cy="6" r="1.6"></circle><circle cx="9" cy="12" r="1.6"></circle><circle cx="15" cy="12" r="1.6"></circle><circle cx="9" cy="18" r="1.6"></circle><circle cx="15" cy="18" r="1.6"></circle></svg></button>
-    ${b.img ? `<img class="bi" src="${RAW + b.img}" alt="">` : `<span class="bi" style="background:${BG[i % 3]}"></span>`}
+    ${b.img ? `<img class="bi" src="${src(b.img)}" alt="">` : `<span class="bi" style="background:${BG[i % 3]}"></span>`}
     <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.title || b.tag || 'Banner')}</span><span style="font-size:11px;font-weight:600;color:var(--mut)">${esc(linkText(b.link))}</span></div>
     <button class="sq d" aria-label="O‘chirish" data-bd="${i}">${svg(P.del, '#B91C1C', 17)}</button></div>`).join('') || '<div class="empty" style="padding:16px 0">Hozir standart bannerlar ko‘rsatilmoqda</div>'}</div>
   <section class="newbox solid" style="box-shadow:0 4px 14px rgba(21,128,61,.06)"><h3>Yangi banner</h3>
@@ -702,7 +713,12 @@ function bannersAdmin() {
 }
 async function saveBanners(list) {
   const b = $('#bsv'); if (b) { b.disabled = true; b.textContent = 'Saqlanmoqda…'; }
-  try { const j = await call('/api/banners', {banners: list}); D.banners = j.banners; BN = null; bi = 0; toast('✅ Saqlandi'); bannersAdmin(); }
+  try {
+    const j = await call('/api/banners', {banners: list});
+    const had = new Set((D.banners || []).map(b => b.img));
+    const fresh = list.filter(b => b.new_img), added = j.banners.filter(b => b.img && !had.has(b.img));
+    added.forEach((b, i) => { if (fresh[i]) LOCAL[b.img] = fresh[i].new_img; });
+    D.banners = j.banners; BN = null; bi = 0; toast('✅ Saqlandi'); bannersAdmin(); }
   catch (e) { toast('Xato: ' + e.message, 4000); if (b) { b.disabled = false; b.textContent = 'Bannerni saqlash'; } }
 }
 
