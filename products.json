@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 12:03:09",
+ "updated": "2026-11-11 12:03:35",
  "kurs": 12800,
  "phone": "",
  "tg": "",
@@ -38,5 +38,14 @@
    "hours": "9:30 dan 19:00 gacha"
   }
  ],
- "banners": []
+ "banners": [
+  {
+   "id": 1794380615411,
+   "img": "photos/banner_1794380615411_80615.jpg",
+   "text": true,
+   "title": "Aksiyada 12 Pro",
+   "tag": "Aksiya",
+   "link": "sale"
+  }
+ ]
 }
