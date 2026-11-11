@@ -70,6 +70,9 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 .cats button.on{background:var(--acc);color:#fff;font-weight:700}
 .cats button.sale{background:#FDECEC;color:#B91C1C;font-weight:700}
 .cats button.sale.on{background:var(--red);color:#fff}
+.sk{background:linear-gradient(90deg,#E8F0EB 25%,#F6FAF7 45%,#E8F0EB 65%);background-size:300% 100%;animation:sk 1.2s ease-in-out infinite;border-radius:8px}
+@keyframes sk{0%{background-position:100% 0}100%{background-position:0 0}}
+.skw{padding:18px 20px 0}.skc{gap:8px;box-shadow:none}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:10px 20px 14px}
 .card{background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(21,128,61,.07);border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:6px;color:var(--ink);text-align:left;font:inherit}
 .ph{position:relative;height:128px;border-radius:12px;background:linear-gradient(160deg,#F2F8F4,#DCEFE2);overflow:hidden;display:flex;align-items:center;justify-content:center}
@@ -224,7 +227,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&
 const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 const up = n => Math.ceil(n / 1000) * 1000;
 const LOCAL = {};   // только что загруженные фото: путь → dataURL (пока GitHub не отдаёт файл)
-const src = path => LOCAL[path] || RAW + path;
+const src = path => LOCAL[path] || PAGES + path;
 const img = (p, i = 0) => p.photos && p.photos[i] ? src(p.photos[i]) : '';
 const PAGES = 'https://ibrohimrakhimov001-ops.github.io/shop/';
 function imgRetry(el) {   // raw.githubusercontent мог закэшировать 404 → пробуем GitHub Pages, потом снова raw
@@ -252,7 +255,11 @@ function haptic(t) { try { tg.HapticFeedback.notificationOccurred(t); } catch (e
 
 /* ---------- данные ---------- */
 async function getData() {
-  try { const r = await fetch(API, {headers: {Accept: 'application/vnd.github.raw'}, cache: 'no-store'}); if (r.ok) return await r.json(); } catch (e) {}
+  try {   // сначала прямо с телефона: без лимитов и сразу
+    const c = new AbortController(), t = setTimeout(() => c.abort(), 5000);
+    const r = await fetch(await apiUrl() + '/api/products', {cache: 'no-store', signal: c.signal}); clearTimeout(t);
+    if (r.ok) return await r.json();
+  } catch (e) {}
   return await (await fetch('products.json?t=' + Date.now(), {cache: 'no-store'})).json();
 }
 function norm() { D.products = (D.products || []).filter(p => p.id); }
@@ -303,7 +310,7 @@ function banners() {
 /* ---------- API на телефоне (через туннель) ---------- */
 async function apiUrl(force) {
   if (APIURL && !force) return APIURL;
-  const r = await fetch(API.replace('products.json', 'api.json'), {headers: {Accept: 'application/vnd.github.raw'}, cache: 'no-store'});
+  const r = await fetch(PAGES + 'api.json?t=' + Date.now(), {cache: 'no-store'});
   APIURL = (await r.json()).api; return APIURL;
 }
 async function call(path, body, retry = true) {
@@ -825,7 +832,19 @@ function route() {
   let m = h.match(/^edit=(\d+)(&d)?/); if (m) return edit(m[1], !!m[2]);
   m = h.match(/p=(\d+)/); m ? product(m[1]) : home();
 }
+document.addEventListener('error', e => {
+  const t = e.target;
+  if (t.tagName === 'IMG' && APIURL && !t.dataset.f && t.src.startsWith(PAGES)) { t.dataset.f = 1; t.src = APIURL + '/' + t.src.slice(PAGES.length); }
+}, true);
+function skeleton() {
+  const c = '<div class="card skc"><div class="sk" style="height:128px"></div><div class="sk" style="height:14px;width:80%"></div><div class="sk" style="height:11px;width:60%"></div><div class="sk" style="height:16px;width:40%"></div></div>';
+  $('#app').innerHTML = `<div class="skw"><div class="sk" style="height:12px;width:90px"></div><div class="sk" style="height:24px;width:170px;margin-top:8px"></div>
+    <div class="sk" style="height:46px;margin-top:16px;border-radius:16px"></div><div class="sk" style="height:150px;margin-top:16px;border-radius:20px"></div>
+    <div style="display:flex;gap:8px;margin-top:16px">${'<div class="sk" style="height:38px;width:84px;border-radius:19px"></div>'.repeat(3)}</div></div>
+    <div class="grid">${c.repeat(6)}</div>`;
+}
 (async () => {
+  skeleton();
   try { D = await getData(); } catch (e) {}
   norm();
   if (INIT) { try { ADMIN = (await call('/api/me')).admin; } catch (e) {} }
