@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="uz"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Android Kokand</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:var(--tg-theme-bg-color,#fff);--tx:var(--tg-theme-text-color,#111);--hint:var(--tg-theme-hint-color,#888);--card:var(--tg-theme-secondary-bg-color,#f2f2f7);--acc:#16a34a}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;font-family:-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--tx)}
+h1{font-size:22px;margin:0 0 4px}
+.hint{color:var(--hint);font-size:13px;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{background:var(--card);border-radius:14px;padding:12px;position:relative}
+.card .ph{height:110px;border-radius:10px;background:#d1fae5;display:flex;align-items:center;justify-content:center;font-size:44px}
+.card b{display:block;margin-top:8px}
+.price{color:var(--acc);font-weight:700;margin-top:4px}
+.sold .ph{filter:grayscale(1);opacity:.5}
+.sold .price{color:#dc2626}
+</style>
+</head><body>
+<h1>📱 Android Kokand</h1>
+<p class="hint" id="upd">Yuklanmoqda…</p>
+<div class="grid" id="list"></div>
+<script>
+const tg = window.Telegram && Telegram.WebApp; if (tg) { tg.ready(); tg.expand(); }
+async function load(){
+  const r = await fetch('products.json?t=' + Date.now(), {cache:'no-store'});
+  const d = await r.json();
+  document.getElementById('upd').textContent = 'Yangilandi: ' + d.updated + ' (telefondan)';
+  document.getElementById('list').innerHTML = d.products.map(p => `
+    <div class="card ${p.sold ? 'sold' : ''}">
+      <div class="ph">📱</div>
+      <b>${p.name}</b>
+      <div class="hint" style="margin:2px 0 0">${p.memory}</div>
+      <div class="price">${p.sold ? '❌ SOTILDI' : p.price + ' $'}</div>
+    </div>`).join('');
+}
+load();
+</script>
+</body></html>
