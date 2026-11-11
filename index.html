@@ -71,6 +71,44 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .bar .call{background:var(--grad);color:#fff}
 .bar .tg{background:#fff;border:2px solid var(--acc);color:var(--acc)}
 .soldbig{background:#1B2326;color:#fff;font-weight:800;text-align:center;padding:12px;border-radius:14px;font-size:16px}
+/* tabbar, filiallar, kalkulyator */
+#app{min-height:100vh;display:flex;flex-direction:column}
+.tabbar{position:sticky;bottom:0;z-index:10;margin-top:auto;display:flex;justify-content:space-around;padding:10px 12px calc(14px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;font-size:11px;font-weight:600;color:var(--mut);min-width:64px;padding:2px 0}
+.tabbar button.on{color:var(--acc);font-weight:700}
+.brsel{position:relative;align-self:flex-start;display:flex;align-items:center;gap:4px;height:28px;font-size:12px;font-weight:700;color:var(--acc2)}
+.brsel select{position:absolute;inset:0;opacity:0;font-size:16px}
+.fbtn{width:52px;height:52px;border-radius:16px;border:none;background:var(--grad);display:flex;align-items:center;justify-content:center;flex:none}
+.sortrow{display:flex;gap:6px;margin:-4px 20px 12px;flex-wrap:wrap}
+.sortrow button{height:36px;padding:0 12px;border-radius:10px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:13px;color:var(--ink)}
+.sortrow button.on{border-color:var(--acc);color:var(--acc2);background:#E3F1E8}
+.card .br{font-size:11px;color:var(--acc2);font-weight:700}
+.fromm{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 12px;border-radius:14px;background:#E3F1E8;color:var(--acc2);text-decoration:none;border:none;text-align:left;width:100%}
+.fromm .go{display:flex;align-items:center;gap:4px;height:40px;padding:0 12px;border-radius:10px;background:var(--grad);color:#fff;font-size:13px;font-weight:800;flex:none}
+.loc{display:flex;align-items:flex-start;gap:12px;padding:4px 2px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;background:#fff;border-radius:12px}
+.seg button{height:38px;border-radius:9px;border:none;background:transparent;font-weight:600;font-size:13px;color:var(--mut)}
+.seg button.on{background:var(--grad);color:#fff;font-weight:800}
+.terms button.dis{color:#A3ADA9}
+.down{display:flex;align-items:center;gap:8px;height:44px;border-radius:12px;background:#fff;padding:0 12px;font-size:13px;font-weight:600;color:var(--mut)}
+.down input{flex:1;min-width:0;border:none;outline:none;background:transparent;text-align:right;font-size:15px;font-weight:700;color:var(--ink)}
+.warn{display:flex;gap:8px;align-items:flex-start;background:#FFF4E5;color:#92400E;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;line-height:1.35}
+.warn button{border:none;background:#92400E;color:#fff;border-radius:8px;height:32px;padding:0 10px;font-weight:800;font-size:12px;flex:none}
+.bcard{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px rgba(21,128,61,.06)}
+.bhead{display:flex;align-items:center;gap:10px}
+.bnum{width:40px;height:40px;border-radius:12px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex:none}
+.binfo{display:grid;grid-template-columns:74px minmax(0,1fr);gap:6px 8px;font-size:13px;font-weight:700;background:var(--soft);border-radius:12px;padding:10px 12px}
+.binfo span:nth-child(odd){color:var(--mut);font-weight:600}
+.bacts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bacts a{height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:800;font-size:14px;text-decoration:none}
+.bacts .c{background:var(--grad);color:#fff}.bacts .t{border:2px solid var(--acc);color:var(--acc)}
+.list{display:flex;flex-direction:column;gap:10px;padding:4px 20px 24px}
+.newbox{display:flex;flex-direction:column;gap:12px;margin:8px 20px 24px;padding:16px;border-radius:18px;background:#fff;border:2px dashed #CBD5CF}
+.newbox h3{margin:0;font-size:17px;font-weight:800}
+.newbox button.go{height:54px;border-radius:14px;border:none;background:var(--grad);color:#fff;font-weight:800;font-size:15px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 20px 24px}
+.tiles button{height:110px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(160deg,#F2F8F4,#DCEFE2);display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:14px;gap:2px;text-align:left;color:var(--ink)}
+.tiles b{font-size:17px;font-weight:800}.tiles span{font-size:12px;font-weight:600;color:var(--mut)}
 /* admin */
 .adm{width:44px;height:44px;border-radius:14px;background:#1B2326;border:none;display:flex;align-items:center;justify-content:center;flex:none}
 .top{display:flex;align-items:center;gap:12px;padding:20px 20px 12px}
@@ -118,12 +156,23 @@ const BANNERS = [
   {tag:'Kafolat', t:'Har bir telefonga kafolat beramiz', bg:'linear-gradient(135deg,#178A45,#0B3D24)'},
   {tag:'Muddatli to‘lov', t:'3, 6 va 12 oyga bo‘lib to‘lang', bg:'linear-gradient(135deg,#15803D,#052E16)'}
 ];
-let D = {products: [], kurs: 12800}, cat = 'all', q = '', bi = 0, term = 12;
+let D = {products: [], kurs: 12800}, cat = 'all', q = '', bi = 0, term = 12, rasmiy = false, down = 0, warn = false, brf = '', sort = 'new', showSort = false;
+const BR = () => D.branches || [];
+const brName = id => (BR().find(b => String(b.id) === String(id)) || {}).name || '';
+// ISHONCH: narx × kurs × 1.01, bosh to‘lov ayiriladi, qoldiq × koeffitsient / oy
+const ISH = {rasmiy: {3: 1.27, 6: 1.36, 12: 1.42}, norasmiy: {12: 1.5}};
+const TABS = [['home', 'Bosh sahifa', '<path d="M3 11l9-7 9 7v9H3z"></path>'],
+  ['catalog', 'Katalog', '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect>'],
+  ['sale', 'Aksiyalar', '<path d="M19 5L5 19"></path><circle cx="7" cy="7" r="2.5"></circle><circle cx="17" cy="17" r="2.5"></circle>'],
+  ['contact', 'Aloqa', '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"></path>']];
+const tabbar = on => `<nav class="tabbar" aria-label="Menyu">${TABS.map(([k, l, ic]) => `<button data-tab="${k}" class="${k === on ? 'on' : ''}" ${k === on ? 'aria-current="page"' : ''}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ic}</svg>${l}</button>`).join('')}</nav>`;
+function tabEvents() { document.querySelectorAll('[data-tab]').forEach(el => el.onclick = () => { location.hash = el.dataset.tab === 'home' ? '' : el.dataset.tab; }); tg && tg.BackButton.hide(); window.scrollTo(0, 0); }
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 const up = n => Math.ceil(n / 1000) * 1000;
-const monthly = (p, m) => up(p.price * D.kurs * 1.02 * (1 + RATES[m] / 100) / m);
+const priceSum = p => p.price * D.kurs * 1.01;
+const monthly = (p, m, r = rasmiy, d = down) => up(Math.max(0, priceSum(p) - d) * ISH[r ? 'rasmiy' : 'norasmiy'][m] / m);
 const img = (p, i = 0) => p.photos && p.photos[i] ? RAW + p.photos[i] : '';
 const phoneSvg = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="1.6" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M11 18h2"></path></svg>';
 
@@ -148,16 +197,21 @@ function home() {
   const list = D.products.filter(p => p.id)
     .filter(p => cat === 'all' || (cat === 'sale' ? p.sale : brandOf(p.name) === cat))
     .filter(p => !q || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(q))
-    .sort((a, b) => (!!a.sold - !!b.sold) || (b.id - a.id));
+    .filter(p => !brf || String(p.branch) === String(brf))
+    .sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (a.price || 1e9) - (b.price || 1e9) : sort === 'exp' ? (b.price || 0) - (a.price || 0) : b.id - a.id));
   const brands = [...new Set(D.products.filter(p => p.id).map(p => brandOf(p.name)))];
-  const b = BANNERS[bi];
   $('#app').innerHTML = `
-  <header><div><div class="sub">Qo‘qon · telefonlar do‘koni</div><div class="brand">Android Kokand</div></div>
+  <header><div style="display:flex;flex-direction:column">
+    ${BR().length ? `<label class="brsel">${esc(brf ? brName(brf) : 'Barcha filiallar')}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+      <select id="brf" aria-label="Filialni tanlash"><option value="">Barcha filiallar</option>${BR().map(b => `<option value="${b.id}" ${String(b.id) === String(brf) ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></label>` : '<div class="sub">Qo‘qon · telefonlar do‘koni</div>'}
+    <div class="brand">Android Kokand</div></div>
   ${ADMIN ? `<button class="adm" aria-label="Admin panel" onclick="location.hash='admin'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path></svg></button>` : ''}</header>
   <div class="search"><label><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
-    <input id="q" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label></div>
+    <input id="q" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label>
+    <button class="fbtn" id="fb" aria-label="Saralash" aria-expanded="${showSort}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path></svg></button></div>
+  ${showSort ? `<div class="sortrow">${[['new', 'Yangilari'], ['cheap', 'Arzonroq'], ['exp', 'Qimmatroq']].map(([k, l]) => `<button data-s="${k}" class="${sort === k ? 'on' : ''}">${l}</button>`).join('')}</div>` : ''}
   <section aria-label="Bannerlar">
-    <div class="viewport" id="vp"><div class="slides" id="slides">${BANNERS.map(b => `<div class="banner" style="background:${b.bg}"><div><span class="tag">${b.tag}</span><div class="t">${b.t}</div></div><span class="more">Android Kokand</span>
+    <div class="viewport" id="vp"><div class="slides" id="slides">${BANNERS.map(b => `<div class="banner" style="background:${b.bg}"><div><span class="tag">${b.tag}</span><div class="t">${b.t}</div></div><span class="more">Batafsil →</span>
     <svg class="deco" width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M11 18h2"></path></svg></div>`).join('')}</div></div>
     <div class="dots">${BANNERS.map((_, k) => `<button aria-label="Slayd ${k + 1}" data-b="${k}"></button>`).join('')}</div>
   </section>
@@ -166,7 +220,12 @@ function home() {
     ${D.products.some(p => p.sale) ? `<button data-c="sale" class="sale ${cat === 'sale' ? 'on' : ''}">% Aksiya</button>` : ''}
     ${brands.map(x => `<button data-c="${x}" class="${cat === x ? 'on' : ''}">${x}</button>`).join('')}
   </nav>
-  <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>`;
+  <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>
+  ${tabbar('home')}`;
+  tabEvents();
+  $('#fb').onclick = () => { showSort = !showSort; home(); };
+  document.querySelectorAll('[data-s]').forEach(el => el.onclick = () => { sort = el.dataset.s; home(); });
+  if ($('#brf')) $('#brf').onchange = e => { brf = e.target.value; home(); };
   const qi = $('#q');
   qi.oninput = e => { q = e.target.value.toLowerCase(); const pos = qi.selectionStart; home(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
   document.querySelectorAll('[data-c]').forEach(el => el.onclick = () => { cat = el.dataset.c; home(); });
@@ -197,7 +256,7 @@ function card(p) {
   return `<button class="card ${p.sold ? 'sold' : ''}" data-p="${p.id}">
     <div class="ph">${img(p) ? `<img loading="lazy" src="${img(p)}" alt="${esc(p.name)}">` : phoneSvg}
       ${p.sale && !p.sold ? `<span class="badge">${esc(p.sale)}</span>` : ''}${p.sold ? '<span class="soldtag">SOTILDI</span>' : ''}</div>
-    <span class="n">${esc(p.name)}</span><span class="s">${esc(spec)}</span>
+    <span class="n">${esc(p.name)}</span><span class="s">${esc(spec)}</span>${brName(p.branch) ? `<span class="br">${esc(brName(p.branch))}</span>` : ''}
     <span class="p" style="color:${p.sale ? '#DC2626' : '#1B2326'}">${p.price ? p.price + '$' : 'Narx so‘rang'}${p.old ? `<span class="old">${p.old}$</span>` : ''}</span>
   </button>`;
 }
@@ -210,17 +269,27 @@ function product(id) {
   if (!p) { location.hash = ''; return; }
   const specs = LABELS.filter(([k]) => p[k]).map(([k, l]) => `<div class="row"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${ICONS[k]}"></path></svg></span><span class="k">${l}</span><span class="v">${esc(p[k])}</span></div>`).join('');
   const photos = (p.photos || []).map((_, i) => `<img src="${img(p, i)}" alt="${esc(p.name)}">`).join('') || `<div style="margin:auto">${phoneSvg}</div>`;
-  const phone = (D.phone || '').replace(/[^\d+]/g, '');
+  const br = BR().find(b => String(b.id) === String(p.branch)) || (BR().length === 1 ? BR()[0] : null);
+  const phone = ((br && br.phone) || D.phone || '').replace(/[^\d+]/g, '');
+  const tgU = ((br && br.tg) || D.tg || '').replace(/^@/, '');
   $('#app').innerHTML = `
   ${tg && tg.BackButton ? '' : '<button class="back" aria-label="Orqaga" onclick="location.hash=\'\'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>'}
   <div class="gal">${photos}</div>
   <div class="pbody">
     <h1>${esc(p.name)}</h1>
     ${p.sold ? '<div class="soldbig">❌ SOTILDI</div>' : `<span class="big">${p.price ? p.price + '$' : 'Narx so‘rang'}${p.old ? `<span class="old" style="font-size:16px">${p.old}$</span>` : ''}</span>`}
+    ${!p.sold && p.price ? `<button class="fromm" id="tocalc"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"></path></svg>
+      <span style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:12px;font-weight:600">Muddatli to‘lov</span><span style="font-size:14px;font-weight:800">oyiga ${fmt(monthly(p, 12, true, 0))} so‘m dan</span></span>
+      <span class="go">Hisoblash<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></span></button>` : ''}
     ${specs ? `<section class="specs">${specs}</section>` : ''}
-    ${!p.sold && p.price ? `<section class="calc" aria-label="Muddatli to‘lov">
-      <span style="font-size:15px;font-weight:800">Muddatli to‘lov</span>
+    ${br ? `<div class="loc"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+      <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:700;color:var(--mut)">Filial · ${esc(br.name)}</span><span style="font-size:15px;font-weight:700">${esc(br.addr || '')}</span>${br.hours ? `<span style="font-size:12px;font-weight:600;color:var(--mut)">${esc(br.hours)}</span>` : ''}</div></div>` : ''}
+    ${!p.sold && p.price ? `<section class="calc" id="calc" aria-label="Muddatli to‘lov kalkulyatori">
+      <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:15px;font-weight:800">Muddatli to‘lov</span><span style="font-size:12px;font-weight:600;color:var(--mut)">≈ ${fmt(up(priceSum(p)))} so‘m</span></div>
+      <div class="seg" role="group" aria-label="Ish joyi"><button data-r="0">Norasmiy</button><button data-r="1">Rasmiy ish joyi</button></div>
       <div class="terms">${[3, 6, 12].map(m => `<button data-m="${m}">${m} oy</button>`).join('')}</div>
+      <div id="warn"></div>
+      <label class="down">Bosh to‘lov <span style="font-size:11px">(ixtiyoriy)</span><input id="down" inputmode="numeric" placeholder="0" aria-label="Boshlang‘ich to‘lov, so‘m" value="${down ? fmt(down) : ''}"><span style="font-weight:700">so‘m</span></label>
       <div class="res"><div><div style="font-size:12px;font-weight:600;opacity:.9">Oyiga</div><div style="font-size:20px;font-weight:800" id="mon"></div></div>
       <span style="font-size:12px;font-weight:600;opacity:.9;text-align:right" id="mterm"></span></div>
     </section>` : ''}
@@ -228,14 +297,33 @@ function product(id) {
   </div>
   <div class="bar">
     <a class="call" href="${phone ? 'tel:' + phone : '#'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"></path></svg>Qo‘ng‘iroq</a>
-    <a class="tg" href="https://t.me/${esc(D.tg || '')}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4L3 11l6 2 2 6 3-4 5 4z"></path><path d="M9 13l12-9"></path></svg>Telegram</a>
+    <a class="tg" href="https://t.me/${esc(tgU)}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4L3 11l6 2 2 6 3-4 5 4z"></path><path d="M9 13l12-9"></path></svg>Telegram</a>
   </div>`;
   const setTerm = () => {   // меняем только цифры, страница не перерисовывается
-    document.querySelectorAll('[data-m]').forEach(el => { const on = +el.dataset.m === term; el.classList.toggle('on', on); el.setAttribute('aria-pressed', on); });
-    if ($('#mon')) { $('#mon').textContent = fmt(monthly(p, term)) + ' so‘m'; $('#mterm').textContent = term + ' oy davomida'; }
+    if (!rasmiy && term !== 12) term = 12;
+    document.querySelectorAll('[data-m]').forEach(el => { const m = +el.dataset.m, on = m === term; el.classList.toggle('on', on); el.classList.toggle('dis', !rasmiy && m !== 12); el.setAttribute('aria-pressed', on); });
+    document.querySelectorAll('[data-r]').forEach(el => { const on = !!+el.dataset.r === rasmiy; el.classList.toggle('on', on); el.setAttribute('aria-pressed', on); });
+    $('#warn').innerHTML = warn ? `<div class="warn" role="alert"><span style="flex:1">⚠️ 3 va 6 oyga faqat rasmiy ish joyi bo‘lsa beriladi. Norasmiy — faqat 12 oy.</span><button id="torasmiy">Rasmiy</button></div>` : '';
+    if ($('#torasmiy')) $('#torasmiy').onclick = () => { rasmiy = true; term = warn; warn = false; setTerm(); };
+    if ($('#mon')) {
+      const mo = monthly(p, term);
+      $('#mon').textContent = fmt(mo) + ' so‘m';
+      $('#mterm').innerHTML = `${term} oy<br>Jami ${fmt(down + mo * term)} so‘m`;
+    }
   };
-  document.querySelectorAll('[data-m]').forEach(el => el.onclick = () => { term = +el.dataset.m; setTerm(); });
-  setTerm();
+  document.querySelectorAll('[data-m]').forEach(el => el.onclick = () => {
+    const m = +el.dataset.m;
+    if (!rasmiy && m !== 12) { warn = m; tg && tg.HapticFeedback && tg.HapticFeedback.notificationOccurred('warning'); }
+    else { term = m; warn = false; }
+    setTerm();
+  });
+  document.querySelectorAll('[data-r]').forEach(el => el.onclick = () => { rasmiy = !!+el.dataset.r; warn = false; setTerm(); });
+  if ($('#down')) $('#down').oninput = e => {
+    down = Math.min(+e.target.value.replace(/\D/g, '') || 0, up(priceSum(p)));
+    e.target.value = down ? fmt(down) : ''; setTerm();
+  };
+  if ($('#tocalc')) $('#tocalc').onclick = () => $('#calc').scrollIntoView({behavior: 'smooth', block: 'start'});
+  if ($('#calc')) setTerm();
   if (tg && tg.BackButton) { tg.BackButton.show(); tg.BackButton.onClick(() => { location.hash = ''; }); }
   window.scrollTo(0, 0);
 }
@@ -268,6 +356,7 @@ function adminList() {
   $('#app').innerHTML = `
   <div class="top">${back('')}<h2>Mahsulotlar (${list.length})</h2>
     <button class="iconbtn" aria-label="Sozlamalar" onclick="location.hash='settings'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-2.9 1.2V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-2.9-1.2l-.1.1a2 2 0 11-2.8-2.8l.1-.1A1.7 1.7 0 003 14.1H3a2 2 0 110-4h.1a1.7 1.7 0 001.2-2.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 002.9-1.2V3a2 2 0 114 0v.1a1.7 1.7 0 002.9 1.2l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 001.2 2.9H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"></path></svg></button></div>
+  <button class="addbtn" style="background:#fff;color:var(--acc);border:2px solid var(--acc)" onclick="location.hash='branches'">Filiallar (${BR().length})</button>
   <button class="addbtn" onclick="location.hash='new'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Mahsulot qo‘shish</button>
   <div class="alist">${list.map(p => `<div class="aitem">
     <div class="th">${img(p) ? `<img src="${img(p)}" alt="">` : phoneSvg}</div>
@@ -315,10 +404,11 @@ function edit(id) {
     <div class="two"><div class="fl">Karobka${chips('box', BOXES)}</div>${inp('warranty', 'Kafolat', '1 oy')}</div>
     <div class="two">${inp('price', 'Narx, $', '290', 'number')}${inp('old', 'Eski narx, $', 'ixtiyoriy', 'number')}</div>
     ${inp('sale', 'Chegirma belgisi', '−10% (ixtiyoriy)')}
+    ${BR().length ? `<div class="fl">Filial<div class="chips">${BR().map(b => `<button type="button" data-ck="branch" data-v="${b.id}" class="${String(f.branch) === String(b.id) ? 'on' : ''}">${esc(b.name)}</button>`).join('')}</div></div>` : ''}
   </div>
   <div class="save"><button id="sv">${id ? 'Saqlash' : 'Saqlash va kanalga joylash'}</button></div>`;
   document.querySelectorAll('[data-k]').forEach(el => el.oninput = () => { f[el.dataset.k] = el.value; });
-  document.querySelectorAll('[data-ck]').forEach(el => el.onclick = () => { f[el.dataset.ck] = f[el.dataset.ck] === el.dataset.v ? '' : el.dataset.v; edit(id); });
+  document.querySelectorAll('[data-ck]').forEach(el => el.onclick = () => { const k = el.dataset.ck; f[k] = String(f[k]) === el.dataset.v ? '' : el.dataset.v; edit(id); });
   document.querySelectorAll('[data-rk]').forEach(el => el.onclick = () => { form.keep.splice(+el.dataset.rk, 1); edit(id); });
   document.querySelectorAll('[data-rn]').forEach(el => el.onclick = () => { form.neu.splice(+el.dataset.rn, 1); edit(id); });
   const fi = $('#file'); if (fi) fi.onchange = async () => { for (const file of [...fi.files].slice(0, 6 - form.keep.length - form.neu.length)) form.neu.push(await shrink(file)); edit(id); };
@@ -340,7 +430,7 @@ async function saveForm(id) {
   if (!id && !form.neu.length) return toast('Kamida 1 ta rasm qo‘shing');
   const b = $('#sv'); b.disabled = true; b.textContent = 'Saqlanmoqda…';
   try {
-    const fields = {}; ['name', 'memory', 'state', 'battery', 'box', 'warranty', 'price', 'old', 'sale'].forEach(k => fields[k] = f[k] ?? '');
+    const fields = {}; ['name', 'memory', 'state', 'battery', 'box', 'warranty', 'price', 'old', 'sale', 'branch'].forEach(k => fields[k] = f[k] ?? '');
     const j = await call('/api/save', {id: id ? +id : null, fields, keep: form.keep, new_photos: form.neu});
     toast(id ? '✅ Saqlandi' : '✅ Saqlandi va kanalga joylandi'); j.warn && toast(j.warn, 4000);
     form = null; setTimeout(async () => { await refresh(); location.hash = 'admin'; adminList(); }, 1500);
@@ -364,8 +454,78 @@ function settings() {
   };
 }
 
+/* ================= KATALOG / AKSIYALAR / ALOQA ================= */
+const head = t => `<div class="top"><h2>${t}</h2></div>`;
+function catalog() {
+  const live = D.products.filter(p => !p.sold), groups = {};
+  live.forEach(p => { const b = brandOf(p.name); groups[b] = (groups[b] || 0) + 1; });
+  $('#app').innerHTML = `${head('Katalog')}
+  <div class="tiles">${Object.entries(groups).map(([b, n]) => `<button data-cat="${b}"><b>${b}</b><span>${n} ta telefon</span></button>`).join('') || '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>
+  ${tabbar('catalog')}`;
+  document.querySelectorAll('[data-cat]').forEach(el => el.onclick = () => { cat = el.dataset.cat; location.hash = ''; });
+  tabEvents();
+}
+function sales() {
+  const list = D.products.filter(p => p.sale && !p.sold);
+  $('#app').innerHTML = `${head('Aksiya va chegirmalar')}
+  <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha aksiyalar yo‘q</div>'}</div>
+  ${tabbar('sale')}`;
+  document.querySelectorAll('[data-p]').forEach(el => el.onclick = () => { location.hash = 'p=' + el.dataset.p; });
+  tabEvents();
+}
+function contact() {
+  const list = BR().length ? BR() : [{name: 'Android Kokand', phone: D.phone, tg: D.tg}];
+  $('#app').innerHTML = `${head('Filiallar va aloqa')}
+  <div class="list">${list.map((b, i) => {
+    const ph = (b.phone || '').replace(/[^\d+]/g, ''), t = (b.tg || '').replace(/^@/, '');
+    const n = D.products.filter(p => !p.sold && String(p.branch) === String(b.id)).length;
+    return `<div class="bcard"><div class="bhead"><span class="bnum">${i + 1}</span><div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:15px;font-weight:800">${esc(b.name)}</span>${b.id ? `<span style="font-size:12px;font-weight:600;color:var(--mut)">${n} ta telefon</span>` : ''}</div></div>
+    <div class="binfo">${b.addr ? `<span>Manzil</span><span>${esc(b.addr)}</span>` : ''}${b.phone ? `<span>Telefon</span><span>${esc(b.phone)}</span>` : ''}${t ? `<span>Telegram</span><span>@${esc(t)}</span>` : ''}${b.hours ? `<span>Ish vaqti</span><span>${esc(b.hours)}</span>` : ''}</div>
+    <div class="bacts">${ph ? `<a class="c" href="tel:${ph}">Qo‘ng‘iroq</a>` : ''}${t ? `<a class="t" href="https://t.me/${esc(t)}">Telegram</a>` : ''}</div></div>`;
+  }).join('')}</div>
+  ${tabbar('contact')}`;
+  tabEvents();
+}
+
+/* ================= ADMIN: FILIALLAR ================= */
+const BF = [['name', 'Nomi', 'Masalan: Markaz filiali', 'text'], ['addr', 'Manzil', 'Qo‘qon shahar, ...', 'text'], ['phone', 'Telefon raqami', '+998 __ ___ __ __', 'tel'], ['tg', 'Telegram', '@username', 'text'], ['hours', 'Ish vaqti', 'Har kuni 9:00–21:00', 'text']];
+let bEdit = null;
+function branchesAdmin() {
+  if (!ADMIN) { location.hash = ''; return; }
+  const cur = bEdit ? BR().find(b => b.id === bEdit) || {} : {};
+  $('#app').innerHTML = `<div class="top">${back('admin')}<h2>Filiallar</h2></div>
+  <div class="list">${BR().map((b, i) => `<div class="bcard"><div class="bhead"><span class="bnum">${i + 1}</span>
+    <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:15px;font-weight:800">${esc(b.name)}</span><span style="font-size:12px;font-weight:600;color:var(--mut)">${D.products.filter(p => String(p.branch) === String(b.id)).length} ta telefon</span></div>
+    <div class="acts"><button aria-label="Tahrirlash" data-be="${b.id}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></button>
+    <button aria-label="O‘chirish" data-bd="${b.id}" style="background:#FDECEC"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg></button></div></div>
+    <div class="binfo"><span>Manzil</span><span>${esc(b.addr || '—')}</span><span>Telefon</span><span>${esc(b.phone || '—')}</span><span>Telegram</span><span>${esc(b.tg || '—')}</span><span>Ish vaqti</span><span>${esc(b.hours || '—')}</span></div></div>`).join('')}</div>
+  <section class="newbox"><h3>${bEdit ? 'Filialni tahrirlash' : 'Yangi filial'}</h3>
+    ${BF.map(([k, l, ph, t]) => `<label class="fl">${l}<input data-bf="${k}" type="${t}" placeholder="${ph}" value="${esc(cur[k] || '')}"></label>`).join('')}
+    <button class="go" id="bsave">${bEdit ? 'Saqlash' : '+ Filial qo‘shish'}</button></section>`;
+  document.querySelectorAll('[data-be]').forEach(el => el.onclick = () => { bEdit = +el.dataset.be; branchesAdmin(); window.scrollTo(0, document.body.scrollHeight); });
+  document.querySelectorAll('[data-bd]').forEach(el => el.onclick = () => {
+    const go = ok => ok && saveBranches(BR().filter(b => b.id !== +el.dataset.bd));
+    tg && tg.showConfirm ? tg.showConfirm('Filial o‘chirilsinmi?', go) : go(confirm('O‘chirilsinmi?'));
+  });
+  $('#bsave').onclick = () => {
+    const v = {}; document.querySelectorAll('[data-bf]').forEach(el => v[el.dataset.bf] = el.value.trim());
+    if (!v.name) return toast('Filial nomini yozing');
+    const list = bEdit ? BR().map(b => b.id === bEdit ? {...b, ...v} : b) : [...BR(), {id: Date.now(), ...v}];
+    saveBranches(list);
+  };
+  tg && tg.BackButton.hide();
+}
+async function saveBranches(list) {
+  try { await call('/api/branches', {branches: list}); D.branches = list; bEdit = null; toast('✅ Saqlandi'); branchesAdmin(); }
+  catch (e) { toast('Xato: ' + e.message, 4000); }
+}
+
 function route() {
   const h = location.hash;
+  if (h === '#catalog') return catalog();
+  if (h === '#sale') return sales();
+  if (h === '#contact') return contact();
+  if (h === '#branches') return branchesAdmin();
   if (h === '#admin') return adminList();
   if (h === '#settings') return settings();
   if (h === '#new') return edit(null);
