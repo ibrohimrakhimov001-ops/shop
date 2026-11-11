@@ -122,7 +122,8 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .desc{white-space:pre-wrap;font-size:14px;line-height:1.5;color:var(--mut);font-weight:600}
 .soldbig{background:#1B2326;color:#fff;font-weight:800;text-align:center;padding:12px;border-radius:14px;font-size:16px}
 .bar{position:sticky;bottom:0;z-index:10;margin-top:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px 20px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff}
-.bar button{height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15px;white-space:nowrap;border:none}
+.bar a,.bacts a{text-decoration:none}
+.bar a,.bar button{height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15px;white-space:nowrap;border:none}
 .bar .call{background:var(--grad);color:#fff}
 .bar .tgb{background:#fff;border:2px solid var(--acc);color:var(--acc)}
 /* aloqa / filiallar */
@@ -133,7 +134,7 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .binfo{display:grid;grid-template-columns:74px minmax(0,1fr);gap:6px 8px;font-size:13px;font-weight:700;background:var(--soft);border-radius:12px;padding:10px 12px}
 .binfo span:nth-child(odd){color:var(--mut);font-weight:600}
 .bacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.bacts button{height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;border:none}
+.bacts a,.bacts button{height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;border:none}
 .bacts .c{background:var(--grad);color:#fff}.bacts .t{background:#fff;border:2px solid var(--acc);color:var(--acc)}
 .newbox{display:flex;flex-direction:column;gap:12px;margin:8px 20px 24px;padding:16px;border-radius:18px;background:#fff;border:2px dashed #CBD5CF}
 .newbox.solid{border:2px solid var(--line)}
@@ -156,6 +157,9 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .arow .inf{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
 .arow .inf b{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .arow .inf span{font-size:12px;color:var(--mut);font-weight:600}
+.soldb{align-self:flex-start;margin-top:4px;height:30px;padding:0 10px;border-radius:9px;border:1.5px solid #F5C2C2;background:#fff;color:#B91C1C;font-size:12px;font-weight:800}
+.soldb.on{background:#1B2326;border-color:#1B2326;color:#fff}
+.soldb:disabled{opacity:.5}
 .phs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .phs .pi{position:relative;height:96px;border-radius:14px;background:var(--soft);overflow:hidden}
 .phs .pi img{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:contain}
@@ -301,22 +305,12 @@ async function call(path, body, retry = true) {
 }
 async function refresh() { try { D = await getData(); norm(); } catch (e) {} }
 
-/* ---------- звонок: номер клиента → админам ---------- */
-function requestCall(pid) {
-  if (!tg || !tg.requestContact || !INIT) {
-    const ph = ((brOf(pid && (D.products.find(p => p.id === pid) || {}).branch) || {}).phone || D.phone || '').replace(/[^\d+]/g, '');
-    if (ph) location.href = 'tel:' + ph; else toast('Telegram orqali oching');
-    return;
-  }
-  call('/api/lead', {pid}).catch(() => {});
-  tg.requestContact((ok, res) => {
-    if (!ok) return toast('Raqam yuborilmadi');
-    const phone = res && res.responseUnsafe && res.responseUnsafe.contact && res.responseUnsafe.contact.phone_number;
-    if (phone) call('/api/lead', {pid, phone}).catch(() => {});
-    haptic('success');
-    tg.showAlert ? tg.showAlert('✅ Rahmat! Tez orada sizga qo‘ng‘iroq qilamiz.') : toast('✅ Rahmat! Tez orada qo‘ng‘iroq qilamiz.');
-  });
-}
+/* ---------- звонок: сразу на номер филиала ---------- */
+// номер: филиал товара → единственный филиал → общий номер магазина
+const phoneOf = br => ((br && br.phone) || (BR().length === 1 && BR()[0].phone) || BR().map(b => b.phone).find(Boolean) || D.phone || '').replace(/[^\d+]/g, '');
+const callLink = (ph, cls, w = 20) => ph
+  ? `<a class="${cls}" href="tel:${ph}" aria-label="Qo‘ng‘iroq: ${ph}">${svg(P.phone, '#fff', w)}&nbsp;Qo‘ng‘iroq</a>`
+  : `<button class="${cls}" onclick="toast('Telefon raqam kiritilmagan')">${svg(P.phone, '#fff', w)}&nbsp;Qo‘ng‘iroq</button>`;
 function openTg(u) { u = (u || '').replace(/^@/, ''); if (!u) return toast('Telegram ko‘rsatilmagan'); tg && tg.openTelegramLink ? tg.openTelegramLink('https://t.me/' + u) : (location.href = 'https://t.me/' + u); }
 
 /* ---------- клавиатура: прячем нижние панели, поле в центр ---------- */
@@ -441,10 +435,9 @@ function product(id) {
     </section>` : ''}
     ${p.desc && p.imported ? `<div class="desc">${esc(p.desc.split('\n').filter(l => /[\p{L}\p{N}]/u.test(l)).join('\n').trim())}</div>` : ''}
   </div>
-  <div class="bar"><button class="call" id="callb">${svg(P.phone, '#fff')}Qo‘ng‘iroq</button><button class="tgb" id="tgb">${svg(P.tg, '#15803D')}Telegram</button></div>`);
+  <div class="bar">${callLink(phoneOf(br), 'call')}<button class="tgb" id="tgb">${svg(P.tg, '#15803D')}Telegram</button></div>`);
   if (tg) { tg.BackButton.offClick(goBack); tg.BackButton.onClick(goBack); tg.BackButton.show(); }
   window.scrollTo(0, 0);
-  $('#callb').onclick = () => requestCall(p.id);
   $('#tgb').onclick = () => openTg(tgU);
   const gt = $('#gt'); gt.onscroll = () => { const k = Math.round(gt.scrollLeft / gt.clientWidth); $$('.gd span').forEach((s, i) => s.classList.toggle('on', i === k)); };
   if (!$('#calc')) return;
@@ -491,10 +484,9 @@ function contact() {
     const n = D.products.filter(p => !p.sold && String(p.branch) === String(b.id)).length, t = (b.tg || '').replace(/^@/, '');
     return `<div class="bcard"><div class="bhead"><span class="bnum">${i + 1}</span><div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:15px;font-weight:800">${esc(b.name)}</span>${b.id ? `<span style="font-size:12px;font-weight:600;color:var(--mut)">${n} ta telefon</span>` : ''}</div></div>
     <div class="binfo">${b.addr ? `<span>Manzil</span><span>${esc(b.addr)}</span>` : ''}${b.phone ? `<span>Telefon</span><span>${esc(b.phone)}</span>` : ''}${t ? `<span>Telegram</span><span>@${esc(t)}</span>` : ''}${b.hours ? `<span>Ish vaqti</span><span>${esc(b.hours)}</span>` : ''}</div>
-    <div class="bacts"><button class="c" data-call>${svg(P.phone, '#fff', 18)}&nbsp;Qo‘ng‘iroq</button>${t ? `<button class="t" data-tgu="${esc(t)}">Telegram</button>` : ''}</div></div>`;
+    <div class="bacts">${callLink(phoneOf(b), 'c', 18)}${t ? `<button class="t" data-tgu="${esc(t)}">Telegram</button>` : ''}</div></div>`;
   }).join('')}</div>
   ${tabbar('contact')}`);
-  $$('[data-call]').forEach(el => el.onclick = () => requestCall(null));
   $$('[data-tgu]').forEach(el => el.onclick = () => openTg(el.dataset.tgu));
 }
 
@@ -503,23 +495,47 @@ const ANAV = [['admin', 'Mahsulotlar'], ['promos', 'Aksiyalar'], ['banners', 'Ba
 const anav = on => `<nav class="anav" aria-label="Bo‘limlar">${ANAV.map(([k, l]) => `<button data-go="${k}" class="${k === on ? 'on' : ''}">${l}</button>`).join('')}</nav>`;
 const guard = () => { if (!ADMIN) { location.hash = ''; return false; } return true; };
 
+let aq = '';
+function adminRows() {
+  const list = [...D.products].filter(p => !aq || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(aq)).sort((a, b) => (!!a.sold - !!b.sold) || b.id - a.id);
+  return list.map(p => { const e = eff(p); return `<div class="arow">
+    <div class="th">${img(p) ? `<img src="${img(p)}" alt="">` : `<span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center">${svg(P.dev, '#15803D', 26, 1.6)}</span>`}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
+    <div class="inf"><b>${esc([p.name, p.memory].filter(Boolean).join(' '))}</b><span>${e.price || '?'}$</span>
+      <button class="soldb ${p.sold ? 'on' : ''}" data-sold="${p.id}" aria-pressed="${!!p.sold}">${p.sold ? '↩ Sotuvga qaytarish' : '✓ Sotildi'}</button></div>
+    <button class="sq e" aria-label="Tahrirlash" data-go="edit=${p.id}">${svg(P.edit, '#15803D', 17)}</button>
+    <button class="sq o" aria-label="Chegirma" data-go="edit=${p.id}&d">${svg(P.pct, '#B45309', 17)}</button>
+    <button class="sq d" aria-label="O‘chirish" data-del="${p.id}">${svg(P.del, '#B91C1C', 17)}</button></div>`; }).join('')
+    || `<div class="empty">${aq ? 'Hech narsa topilmadi' : 'Hali mahsulot yo‘q'}</div>`;
+}
+function bindRows() {
+  bindGo();
+  $$('[data-del]').forEach(el => el.onclick = () => delProduct(+el.dataset.del));
+  $$('[data-sold]').forEach(el => el.onclick = () => toggleSold(+el.dataset.sold, el));
+}
+async function toggleSold(id, el) {
+  const p = D.products.find(x => x.id === id); if (!p) return;
+  el.disabled = true;
+  try {
+    const j = await call('/api/sold', {id, sold: !p.sold});
+    p.sold = !p.sold; haptic('success');
+    toast(p.sold ? '❌ Sotildi — kanal posti yangilandi' : '↩️ Sotuvga qaytarildi'); j.warn && toast(j.warn, 4000);
+    $('#arows').innerHTML = adminRows(); bindRows();
+  } catch (e) { el.disabled = false; toast('Xato: ' + e.message, 4000); }
+}
 function admin() {
   if (!guard()) return;
-  const list = [...D.products].sort((a, b) => (!!a.sold - !!b.sold) || b.id - a.id);
   page(`
   <div class="hdr">${backBtn('', 1)}<div style="display:flex;flex-direction:column;flex:1"><span class="sub2">Admin rejimi</span><h2>Boshqaruv</h2></div></div>
   <div class="stats"><div style="background:var(--soft)"><b>${D.products.filter(p => !p.sold).length}</b><span style="color:var(--mut)">mahsulot</span></div>
     <div style="background:#FDECEC"><b style="color:#B91C1C">${D.products.filter(p => !p.sold && onSale(p)).length}</b><span style="color:#B91C1C">chegirmada</span></div>
     <div style="background:var(--mint)"><b style="color:#166534">${banners().length}</b><span style="color:#166534">banner</span></div></div>
   ${anav('admin')}
-  <div class="list" style="padding-top:0">${list.map(p => { const e = eff(p); return `<div class="arow">
-    <div class="th">${img(p) ? `<img src="${img(p)}" alt="">` : `<span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center">${svg(P.dev, '#15803D', 26, 1.6)}</span>`}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
-    <div class="inf"><b>${esc([p.name, p.memory].filter(Boolean).join(' '))}</b><span>${e.price || '?'}$ · <span style="color:${p.sold ? '#B91C1C' : '#166534'}">${p.sold ? 'sotilgan' : 'sotuvda'}</span></span></div>
-    <button class="sq e" aria-label="Tahrirlash" data-go="edit=${p.id}">${svg(P.edit, '#15803D', 17)}</button>
-    <button class="sq o" aria-label="Chegirma" data-go="edit=${p.id}&d">${svg(P.pct, '#B45309', 17)}</button>
-    <button class="sq d" aria-label="O‘chirish" data-del="${p.id}">${svg(P.del, '#B91C1C', 17)}</button></div>`; }).join('') || '<div class="empty">Hali mahsulot yo‘q</div>'}</div>
-  <div style="padding:6px 20px calc(24px + env(safe-area-inset-bottom));margin-top:auto"><button class="btn" data-go="new">+ Mahsulot qo‘shish</button></div>`);
-  $$('[data-del]').forEach(el => el.onclick = () => delProduct(+el.dataset.del));
+  <div class="search" style="margin:0 20px 12px"><label style="height:48px;border-width:1px;box-shadow:none;border-color:#DDE3DF">${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#15803D', 20, 2.4)}
+    <input id="aq" type="search" enterkeyhint="search" aria-label="Mahsulot qidirish" placeholder="Qidirish: iPhone 13, A55..." value="${esc(aq)}"></label></div>
+  <div class="list" id="arows" style="padding-top:0">${adminRows()}</div>
+  <div class="savebar" style="border-top:none"><button class="btn" data-go="new">+ Mahsulot qo‘shish</button></div>`);
+  bindRows();
+  $('#aq').oninput = e => { aq = e.target.value.toLowerCase().trim(); $('#arows').innerHTML = adminRows(); bindRows(); };
 }
 function confirmDo(text, fn) { tg && tg.showConfirm ? tg.showConfirm(text, ok => ok && fn()) : confirm(text) && fn(); }
 function delProduct(id, after) {
