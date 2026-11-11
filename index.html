@@ -19,9 +19,9 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 .search{display:flex;gap:8px;margin:2px 20px 14px}
 .search label{display:flex;align-items:center;gap:10px;flex:1;height:52px;padding:0 16px;border-radius:16px;background:#fff;border:2px solid var(--acc);box-shadow:0 6px 18px rgba(21,128,61,.15)}
 .search input{border:none;background:transparent;font-size:15px;font-weight:600;color:var(--ink);flex:1;min-width:0;outline:none}
-.slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 20px;border-radius:22px}
-.slides::-webkit-scrollbar{display:none}
-.slides .banner{flex:none;width:100%;margin:0;scroll-snap-align:center}
+.viewport{overflow:hidden;margin:0 20px;border-radius:22px;touch-action:pan-y}
+.slides{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1);will-change:transform}
+.slides .banner{flex:none;width:100%;margin:0}
 .banner{position:relative;height:156px;margin:0 20px;border-radius:22px;overflow:hidden;color:#fff;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;transition:background .5s}
 .banner .tag{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;background:rgba(255,255,255,.2);padding:4px 8px;border-radius:6px}
 .banner .t{font-size:21px;font-weight:800;line-height:1.15;max-width:230px;margin-top:6px}
@@ -157,8 +157,8 @@ function home() {
   <div class="search"><label><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
     <input id="q" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label></div>
   <section aria-label="Bannerlar">
-    <div class="slides" id="slides">${BANNERS.map(b => `<div class="banner" style="background:${b.bg}"><div><span class="tag">${b.tag}</span><div class="t">${b.t}</div></div><span class="more">Android Kokand</span>
-    <svg class="deco" width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M11 18h2"></path></svg></div>`).join('')}</div>
+    <div class="viewport" id="vp"><div class="slides" id="slides">${BANNERS.map(b => `<div class="banner" style="background:${b.bg}"><div><span class="tag">${b.tag}</span><div class="t">${b.t}</div></div><span class="more">Android Kokand</span>
+    <svg class="deco" width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M11 18h2"></path></svg></div>`).join('')}</div></div>
     <div class="dots">${BANNERS.map((_, k) => `<button aria-label="Slayd ${k + 1}" data-b="${k}"></button>`).join('')}</div>
   </section>
   <nav class="cats" aria-label="Kategoriyalar">
@@ -170,9 +170,13 @@ function home() {
   const qi = $('#q');
   qi.oninput = e => { q = e.target.value.toLowerCase(); const pos = qi.selectionStart; home(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
   document.querySelectorAll('[data-c]').forEach(el => el.onclick = () => { cat = el.dataset.c; home(); });
-  const sl = $('#slides');
-  sl.scrollLeft = bi * sl.clientWidth;
-  sl.onscroll = () => { const k = Math.round(sl.scrollLeft / sl.clientWidth); if (k !== bi) { bi = k; dots(); } };
+  const sl = $('#slides'), vp = $('#vp');
+  sl.style.transition = 'none'; sl.style.transform = `translateX(${-bi * 100}%)`; sl.offsetWidth; sl.style.transition = '';
+  let x0 = null, dx = 0;   // свайп пальцем
+  vp.ontouchstart = e => { x0 = e.touches[0].clientX; dx = 0; sl.style.transition = 'none'; };
+  vp.ontouchmove = e => { if (x0 === null) return; dx = e.touches[0].clientX - x0; sl.style.transform = `translateX(calc(${-bi * 100}% + ${dx}px))`; };
+  vp.ontouchend = () => { sl.style.transition = ''; const n = BANNERS.length;
+    slide(Math.abs(dx) > 40 ? (bi + (dx < 0 ? 1 : -1) + n) % n : bi); x0 = null; };
   document.querySelectorAll('[data-b]').forEach(el => el.onclick = () => slide(+el.dataset.b));
   dots();
   document.querySelectorAll('[data-p]').forEach(el => el.onclick = () => { location.hash = 'p=' + el.dataset.p; });
@@ -180,7 +184,13 @@ function home() {
 }
 
 function dots() { document.querySelectorAll('[data-b]').forEach((el, k) => { el.style.width = (k === bi ? 22 : 8) + 'px'; el.style.background = k === bi ? '#15803D' : '#CBD5CF'; }); }
-function slide(k) { const sl = $('#slides'); if (!sl) return; bi = k; sl.scrollTo({left: k * sl.clientWidth, behavior: 'smooth'}); dots(); }
+let lastTouch = 0;
+function slide(k, auto) {
+  const sl = $('#slides'); if (!sl) return;
+  if (auto && Date.now() - lastTouch < 6000) return;   // не листать сразу после свайпа
+  if (!auto) lastTouch = Date.now();
+  bi = k; sl.style.transform = `translateX(${-k * 100}%)`; dots();
+}
 
 function card(p) {
   const spec = [p.memory, p.state, p.battery].filter(Boolean).join(' · ');
@@ -372,7 +382,7 @@ function route() {
   if (sp && /^p_\d+$/.test(sp)) location.hash = 'p=' + sp.slice(2);
   window.onhashchange = route;
   route();
-  setInterval(() => { if ($('#slides')) slide((bi + 1) % BANNERS.length); }, 4000);   // только сдвиг, без перерисовки
+  setInterval(() => { if ($('#slides')) slide((bi + 1) % BANNERS.length, true); }, 4000);   // только сдвиг, без перерисовки
 })();
 </script>
 </body></html>
