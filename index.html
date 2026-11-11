@@ -343,7 +343,11 @@ const callLink = (ph, cls, w = 20) => ph
   ? `<a class="${cls}" href="tel:+${ph.replace(/^\+/, '')}" onclick="return dial('+${ph.replace(/^\+/, '')}')" aria-label="Qo‘ng‘iroq: ${ph}">${svg(P.phone, '#fff', w)}&nbsp;Qo‘ng‘iroq</a>`
   : `<button class="${cls}" onclick="toast('Telefon raqam kiritilmagan')">${svg(P.phone, '#fff', w)}&nbsp;Qo‘ng‘iroq</button>`;
 function dial(n) {   // в Telegram tel: не открывается → openLink на нашу страницу, она сама переходит на tel:
-  if (tg && tg.openLink && INIT) { tg.openLink(PAGES + 'call.html?n=' + encodeURIComponent(n)); return false; }
+  if (tg && tg.openLink && INIT) {
+    try { tg.openLink('tel:' + n); return false; }   // сначала прямо tel: через openLink
+    catch (e) { console.log('openLink tel:', e && e.message); }
+    tg.openLink(PAGES + 'call.html?n=' + encodeURIComponent(n)); return false;   // Telegram отказал → через страницу
+  }
   return true;   // обычный браузер — работает сама ссылка tel:
 }
 function openTg(u) { u = (u || '').replace(/^@/, ''); if (!u) return toast('Telegram ko‘rsatilmagan'); tg && tg.openTelegramLink ? tg.openTelegramLink('https://t.me/' + u) : (location.href = 'https://t.me/' + u); }
