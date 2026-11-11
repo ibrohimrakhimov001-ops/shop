@@ -1,341 +1,283 @@
 <!doctype html>
 <html lang="uz"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Android Kokand</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
 <style>
-:root{--acc:#15803D;--acc2:#166534;--ink:#1B2326;--mut:#5C676B;--line:#E5EAE7;--soft:#F2F5F3;--grad:linear-gradient(135deg,#178A45,#14532D)}
-*{box-sizing:border-box}
+:root{--acc:#15803D;--acc2:#166534;--ink:#1B2326;--mut:#5C676B;--line:#E5EAE7;--soft:#F2F5F3;--mint:#E3F1E8;--red:#DC2626;--grad:linear-gradient(135deg,#178A45,#14532D)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:#fff}
-body{font-family:Manrope,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#E6F5EA 0,#fff 300px) no-repeat;min-height:100vh}
-button,input{font-family:inherit}
-.wrap{max-width:560px;margin:0 auto}
+body{font-family:Manrope,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#E6F5EA 0,#fff 300px) no-repeat;min-height:100vh;-webkit-text-size-adjust:100%}
+button,input,select{font-family:inherit;color:inherit}
+button{cursor:pointer}
+input,select{font-size:16px}   /* <16px → телефон приближает страницу */
+#app{min-height:100vh;display:flex;flex-direction:column;max-width:560px;margin:0 auto}
+.kb .bar,.kb .tabbar,.kb .savebar{display:none}
+/* общие */
+.hdr{display:flex;align-items:center;gap:12px;padding:20px 20px 12px}
+.hdr h2{margin:0;font-size:22px;font-weight:800}
+.hdr .sub2{font-size:12px;color:var(--mut);font-weight:600}
+.ib{width:44px;height:44px;border-radius:14px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;flex:none}
+.ib.g{background:var(--soft)}
+.sq{width:38px;height:38px;border-radius:11px;border:none;display:flex;align-items:center;justify-content:center;flex:none}
+.sq.e{background:var(--mint)}.sq.o{background:#FFF4E5}.sq.d{background:#FDECEC}
+.btn{height:56px;border-radius:16px;border:none;background:var(--grad);color:#fff;font-weight:800;font-size:15px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
+.btn:disabled{opacity:.6}
+.fl{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--mut);min-width:0}
+.fl input,.fl select{height:48px;border-radius:14px;border:1px solid #DDE3DF;background:#fff;padding:0 14px;font-size:16px;font-weight:600;color:var(--ink);width:100%;min-width:0;outline:none}
+.fl select{padding:0 10px}
+.fl input:focus,.fl select:focus{border-color:var(--acc)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:4px;background:var(--soft);border-radius:12px}
+.seg button{height:40px;border-radius:9px;border:none;background:transparent;font-weight:600;font-size:14px;color:var(--mut)}
+.seg button.on{background:#fff;font-weight:700;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.chk{display:flex;align-items:center;justify-content:space-between;background:var(--soft);border-radius:14px;padding:12px 14px;font-size:14px;font-weight:700}
+.chk input{width:22px;height:22px;accent-color:var(--acc);margin:0}
+.empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:40px 0;font-weight:600}
+.toast{position:fixed;left:20px;right:20px;bottom:96px;background:#1B2326;color:#fff;padding:12px 14px;border-radius:12px;font-weight:700;font-size:14px;z-index:50;text-align:center;max-width:520px;margin:0 auto}
+/* главная */
 header{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 10px}
+.brsel{position:relative;align-self:flex-start;display:flex;align-items:center;gap:4px;height:28px;font-size:12px;font-weight:700;color:var(--acc2)}
+.brsel select{position:absolute;inset:0;opacity:0}
 .brand{font-size:24px;font-weight:800;letter-spacing:-.5px;color:var(--acc)}
-.sub{font-size:12px;font-weight:700;color:var(--acc2)}
+.adm{width:44px;height:44px;border-radius:14px;background:#1B2326;border:none;display:flex;align-items:center;justify-content:center}
 .search{display:flex;gap:8px;margin:2px 20px 14px}
 .search label{display:flex;align-items:center;gap:10px;flex:1;height:52px;padding:0 16px;border-radius:16px;background:#fff;border:2px solid var(--acc);box-shadow:0 6px 18px rgba(21,128,61,.15)}
-.search input{border:none;background:transparent;font-size:15px;font-weight:600;color:var(--ink);flex:1;min-width:0;outline:none}
-.viewport{overflow:hidden;margin:0 20px;border-radius:22px;touch-action:pan-y}
+.search input{border:none;background:transparent;font-weight:600;flex:1;min-width:0;outline:none}
+.fbtn{width:52px;height:52px;border-radius:16px;border:none;background:var(--grad);display:flex;align-items:center;justify-content:center;flex:none}
+.sortrow{display:flex;gap:6px;margin:-4px 20px 12px;flex-wrap:wrap}
+.sortrow button{height:36px;padding:0 12px;border-radius:10px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:13px}
+.sortrow button.on{border-color:var(--acc);color:var(--acc2);background:var(--mint)}
+.vp{overflow:hidden;margin:0 20px;border-radius:22px;touch-action:pan-y}
 .slides{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1);will-change:transform}
-.slides .banner{flex:none;width:100%;margin:0}
-.banner{position:relative;height:156px;margin:0 20px;border-radius:22px;overflow:hidden;color:#fff;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;transition:background .5s}
+.banner{position:relative;flex:none;width:100%;height:156px;overflow:hidden;color:#fff;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;border:none;text-align:left;font:inherit}
+.banner .tx{position:relative;z-index:1;display:flex;flex-direction:column;gap:6px;max-width:210px}
 .banner .tag{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;background:rgba(255,255,255,.2);padding:4px 8px;border-radius:6px}
-.banner .t{font-size:21px;font-weight:800;line-height:1.15;max-width:230px;margin-top:6px}
-.banner .more{font-size:13px;font-weight:700;opacity:.9}
+.banner .t{font-size:21px;font-weight:800;line-height:1.15}
+.banner .more{position:relative;z-index:1;font-size:13px;font-weight:700;opacity:.9}
+.banner img{position:absolute;right:0;top:0;width:48%;height:100%;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent,#000 40%);mask-image:linear-gradient(90deg,transparent,#000 40%)}
+.banner img.full{width:100%;-webkit-mask-image:none;mask-image:none}
 .banner svg.deco{position:absolute;right:-10px;bottom:-14px;opacity:.18}
 .dots{display:flex;justify-content:center;gap:6px;padding-top:10px}
 .dots button{height:8px;border-radius:4px;border:none;padding:0;transition:all .3s}
 .cats{display:flex;gap:8px;padding:12px 20px 4px;overflow-x:auto;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
-.cats button{padding:9px 15px;border-radius:12px;border:none;background:var(--soft);color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap;min-height:38px}
+.cats button{padding:9px 15px;border-radius:12px;border:none;background:var(--soft);font-size:13px;font-weight:600;white-space:nowrap}
 .cats button.on{background:var(--acc);color:#fff;font-weight:700}
 .cats button.sale{background:#FDECEC;color:#B91C1C;font-weight:700}
-.cats button.sale.on{background:#DC2626;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:10px 20px 24px}
-.card{background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(21,128,61,.07);border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink);cursor:pointer;text-align:left}
+.cats button.sale.on{background:var(--red);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:10px 20px 14px}
+.card{background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(21,128,61,.07);border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:6px;color:var(--ink);text-align:left;font:inherit}
 .ph{position:relative;height:128px;border-radius:12px;background:linear-gradient(160deg,#F2F8F4,#DCEFE2);overflow:hidden;display:flex;align-items:center;justify-content:center}
 .ph img{width:100%;height:100%;object-fit:cover}
-.badge{position:absolute;top:8px;left:8px;background:#DC2626;color:#fff;font-size:11px;font-weight:800;padding:3px 7px;border-radius:6px}
+.badge{position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:3px 7px;border-radius:6px}
 .card .n{font-size:14px;font-weight:700;line-height:1.2}
 .card .s{font-size:12px;color:var(--mut);font-weight:600}
-.card .p{font-size:16px;font-weight:800;margin-top:auto}
-.old{font-size:12px;color:var(--mut);text-decoration:line-through;margin-left:6px;font-weight:600}
+.card .br{font-size:11px;color:var(--acc2);font-weight:700}
+.card .pr{display:flex;align-items:baseline;gap:6px;margin-top:auto}
+.card .p{font-size:16px;font-weight:800}
+.old{font-size:12px;color:var(--mut);text-decoration:line-through;font-weight:600}
 .card.sold{opacity:.6}.card.sold img{filter:grayscale(1)}
 .soldtag{position:absolute;inset:auto 8px 8px 8px;background:rgba(27,35,38,.85);color:#fff;font-size:12px;font-weight:800;text-align:center;padding:5px;border-radius:8px}
-.empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:40px 0;font-weight:600}
-/* product */
-.gal{position:relative;height:340px;background:linear-gradient(160deg,#F2F8F4,#D6EDDD);display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
-.gal::-webkit-scrollbar{display:none}
-.gal img{flex:none;width:100%;height:100%;object-fit:contain;scroll-snap-align:center}
-.back{position:fixed;top:16px;left:16px;width:44px;height:44px;border-radius:14px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.08);z-index:5}
-.pbody{display:flex;flex-direction:column;gap:14px;padding:18px 20px 24px;min-height:calc(var(--tg-viewport-stable-height,100vh) - 340px - 90px)}
+.tabbar{position:sticky;bottom:0;z-index:10;margin-top:auto;display:flex;justify-content:space-around;padding:10px 12px calc(14px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;font-size:11px;font-weight:600;color:var(--mut);min-width:64px;padding:2px 0}
+.tabbar button.on{color:var(--acc);font-weight:700}
+/* карточка товара */
+.gal{position:relative;height:340px;background:linear-gradient(160deg,#F2F8F4,#D6EDDD);flex:none}
+.gal .track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.gal .track::-webkit-scrollbar{display:none}
+.gal .track > *{flex:none;width:100%;height:100%;display:flex;align-items:center;justify-content:center;scroll-snap-align:center}
+.gal img{max-width:100%;max-height:280px;object-fit:contain;filter:drop-shadow(0 18px 24px rgba(20,83,45,.25))}
+.gal .back{position:absolute;top:16px;left:16px;width:44px;height:44px;border-radius:14px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;z-index:2}
+.gal .gd{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:6px}
+.gal .gd span{width:6px;height:6px;border-radius:3px;background:#CBD5CF;transition:all .3s}
+.gal .gd span.on{width:20px;background:var(--acc)}
+.pbody{display:flex;flex-direction:column;gap:14px;padding:18px 20px 24px}
 h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .big{font-size:30px;font-weight:800;color:var(--acc)}
-.specs{background:var(--soft);border-radius:18px;padding:4px 16px}
+.fromm{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 12px;border-radius:14px;background:var(--mint);color:var(--acc2);border:none;text-align:left;width:100%;font:inherit}
+.fromm .go{display:flex;align-items:center;gap:4px;height:40px;padding:0 12px;border-radius:10px;background:var(--grad);color:#fff;font-size:13px;font-weight:800;flex:none}
+.specs{display:flex;flex-direction:column;background:var(--soft);border-radius:18px;padding:4px 16px}
 .row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #E0E7E2;font-size:15px}
 .row:last-child{border-bottom:none}
 .ic{width:34px;height:34px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
 .row .k{color:var(--mut);font-weight:600;flex:1}.row .v{font-weight:800}
-.calc{display:flex;flex-direction:column;gap:10px;background:var(--soft);border-radius:18px;padding:14px}
+.loc{display:flex;align-items:flex-start;gap:12px;padding:4px 2px}
+.calc{display:flex;flex-direction:column;gap:10px;background:var(--soft);border-radius:18px;padding:14px;scroll-margin-top:12px}
+.calc .seg{background:#fff}
+.calc .seg button.on{background:var(--grad);color:#fff;font-weight:800}
 .terms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
-.terms button{height:44px;border-radius:12px;border:2px solid #fff;background:#fff;color:var(--ink);font-weight:800;font-size:14px}
+.terms button{height:44px;border-radius:12px;border:2px solid #fff;background:#fff;font-weight:800;font-size:14px}
 .terms button.on{border-color:var(--acc);color:var(--acc2)}
+.terms button.dis{color:#A3ADA9}
+.warn{display:flex;gap:8px;align-items:center;background:#FFF4E5;color:#92400E;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;line-height:1.35}
+.warn button{border:none;background:#92400E;color:#fff;border-radius:8px;height:34px;padding:0 12px;font-weight:800;font-size:12px;flex:none}
+.down{display:flex;align-items:center;gap:8px;height:48px;border-radius:12px;background:#fff;padding:0 12px;font-size:13px;font-weight:600;color:var(--mut)}
+.down input{flex:1;min-width:0;border:none;outline:none;background:transparent;text-align:right;font-weight:700;color:var(--ink)}
 .res{display:flex;align-items:center;justify-content:space-between;background:var(--grad);color:#fff;border-radius:12px;padding:10px 14px}
 .desc{white-space:pre-wrap;font-size:14px;line-height:1.5;color:var(--mut);font-weight:600}
-.bar{position:sticky;bottom:0;z-index:10;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px 20px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff;width:100%;margin-top:auto}
-.bar a{white-space:nowrap;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15px;text-decoration:none}
-.bar .call{background:var(--grad);color:#fff}
-.bar .tg{background:#fff;border:2px solid var(--acc);color:var(--acc)}
 .soldbig{background:#1B2326;color:#fff;font-weight:800;text-align:center;padding:12px;border-radius:14px;font-size:16px}
-/* tabbar, filiallar, kalkulyator */
-#app{min-height:100vh;display:flex;flex-direction:column}
-.tabbar{position:sticky;bottom:0;z-index:10;margin-top:auto;display:flex;justify-content:space-around;padding:10px 12px calc(14px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
-.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;font-size:11px;font-weight:600;color:var(--mut);min-width:64px;padding:2px 0}
-.tabbar button.on{color:var(--acc);font-weight:700}
-.brsel{position:relative;align-self:flex-start;display:flex;align-items:center;gap:4px;height:28px;font-size:12px;font-weight:700;color:var(--acc2)}
-.brsel select{position:absolute;inset:0;opacity:0;font-size:16px}
-.fbtn{width:52px;height:52px;border-radius:16px;border:none;background:var(--grad);display:flex;align-items:center;justify-content:center;flex:none}
-.sortrow{display:flex;gap:6px;margin:-4px 20px 12px;flex-wrap:wrap}
-.sortrow button{height:36px;padding:0 12px;border-radius:10px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:13px;color:var(--ink)}
-.sortrow button.on{border-color:var(--acc);color:var(--acc2);background:#E3F1E8}
-.card .br{font-size:11px;color:var(--acc2);font-weight:700}
-.fromm{display:flex;align-items:center;gap:10px;padding:8px 8px 8px 12px;border-radius:14px;background:#E3F1E8;color:var(--acc2);text-decoration:none;border:none;text-align:left;width:100%}
-.fromm .go{display:flex;align-items:center;gap:4px;height:40px;padding:0 12px;border-radius:10px;background:var(--grad);color:#fff;font-size:13px;font-weight:800;flex:none}
-.loc{display:flex;align-items:flex-start;gap:12px;padding:4px 2px}
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;background:#fff;border-radius:12px}
-.seg button{height:38px;border-radius:9px;border:none;background:transparent;font-weight:600;font-size:13px;color:var(--mut)}
-.seg button.on{background:var(--grad);color:#fff;font-weight:800}
-.terms button.dis{color:#A3ADA9}
-.down{display:flex;align-items:center;gap:8px;height:44px;border-radius:12px;background:#fff;padding:0 12px;font-size:13px;font-weight:600;color:var(--mut)}
-.down input{flex:1;min-width:0;border:none;outline:none;background:transparent;text-align:right;font-size:15px;font-weight:700;color:var(--ink)}
-.warn{display:flex;gap:8px;align-items:flex-start;background:#FFF4E5;color:#92400E;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;line-height:1.35}
-.warn button{border:none;background:#92400E;color:#fff;border-radius:8px;height:32px;padding:0 10px;font-weight:800;font-size:12px;flex:none}
+.bar{position:sticky;bottom:0;z-index:10;margin-top:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px 20px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff}
+.bar button{height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15px;white-space:nowrap;border:none}
+.bar .call{background:var(--grad);color:#fff}
+.bar .tgb{background:#fff;border:2px solid var(--acc);color:var(--acc)}
+/* aloqa / filiallar */
+.list{display:flex;flex-direction:column;gap:10px;padding:4px 20px 16px}
 .bcard{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px rgba(21,128,61,.06)}
 .bhead{display:flex;align-items:center;gap:10px}
 .bnum{width:40px;height:40px;border-radius:12px;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex:none}
 .binfo{display:grid;grid-template-columns:74px minmax(0,1fr);gap:6px 8px;font-size:13px;font-weight:700;background:var(--soft);border-radius:12px;padding:10px 12px}
 .binfo span:nth-child(odd){color:var(--mut);font-weight:600}
-.bacts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.bacts a{height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:800;font-size:14px;text-decoration:none}
-.bacts .c{background:var(--grad);color:#fff}.bacts .t{border:2px solid var(--acc);color:var(--acc)}
-.list{display:flex;flex-direction:column;gap:10px;padding:4px 20px 24px}
+.bacts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.bacts button{height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;border:none}
+.bacts .c{background:var(--grad);color:#fff}.bacts .t{background:#fff;border:2px solid var(--acc);color:var(--acc)}
 .newbox{display:flex;flex-direction:column;gap:12px;margin:8px 20px 24px;padding:16px;border-radius:18px;background:#fff;border:2px dashed #CBD5CF}
+.newbox.solid{border:2px solid var(--line)}
 .newbox h3{margin:0;font-size:17px;font-weight:800}
-.newbox button.go{height:54px;border-radius:14px;border:none;background:var(--grad);color:#fff;font-weight:800;font-size:15px}
-.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:4px 20px 24px}
-.tiles button{height:110px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(160deg,#F2F8F4,#DCEFE2);display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:14px;gap:2px;text-align:left;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:4px 20px 24px}
+.tiles button{height:110px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(160deg,#F2F8F4,#DCEFE2);display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:14px;gap:2px;text-align:left}
 .tiles b{font-size:17px;font-weight:800}.tiles span{font-size:12px;font-weight:600;color:var(--mut)}
-/* admin */
-.adm{width:44px;height:44px;border-radius:14px;background:#1B2326;border:none;display:flex;align-items:center;justify-content:center;flex:none}
-.top{display:flex;align-items:center;gap:12px;padding:20px 20px 12px}
-.top h2{margin:0;font-size:22px;font-weight:800;flex:1}
-.iconbtn{width:44px;height:44px;border-radius:14px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex:none}
-.addbtn{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 20px 12px;height:52px;border-radius:16px;border:none;background:var(--grad);color:#fff;font-weight:800;font-size:15px;width:calc(100% - 40px)}
-.alist{display:flex;flex-direction:column;gap:10px;padding:0 20px 30px}
-.aitem{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px}
-.aitem .th{width:56px;height:56px;border-radius:12px;background:linear-gradient(160deg,#F2F8F4,#DCEFE2);overflow:hidden;flex:none;display:flex;align-items:center;justify-content:center}
-.aitem .th img{width:100%;height:100%;object-fit:cover}
-.aitem .info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.aitem .info b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.aitem .info span{font-size:12px;color:var(--mut);font-weight:600}
-.acts{display:flex;gap:6px}
-.acts button{width:40px;height:40px;border-radius:12px;border:none;background:var(--soft);display:flex;align-items:center;justify-content:center}
-.acts .s.on{background:#1B2326}
-.form{display:flex;flex-direction:column;gap:12px;padding:0 20px 120px}
-.fl{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:var(--mut)}
-.fl input{height:48px;border-radius:12px;border:1px solid var(--line);background:#fff;padding:0 14px;font-size:15px;font-weight:600;color:var(--ink);outline:none}
-.fl input:focus{border-color:var(--acc)}
-.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:end}
-.fl input{width:100%;min-width:0}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chips button{height:38px;padding:0 14px;border-radius:10px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:13px;color:var(--ink)}
-.chips button.on{border-color:var(--acc);color:var(--acc2);background:#E3F1E8}
-.phs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.phs .ph2{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--soft)}
-.phs .ph2 img{width:100%;height:100%;object-fit:cover}
-.phs .x{position:absolute;top:4px;right:4px;width:28px;height:28px;border-radius:8px;border:none;background:rgba(27,35,38,.8);color:#fff;font-weight:800}
-.phs label{aspect-ratio:1;border-radius:12px;border:2px dashed #BFD9C8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--acc);font-size:12px;font-weight:700;cursor:pointer}
-.save{position:fixed;left:0;right:0;bottom:0;padding:14px 20px calc(18px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);max-width:560px;margin:0 auto}
-.save button{width:100%;height:54px;border-radius:16px;border:none;background:var(--grad);color:#fff;font-weight:800;font-size:16px}
-.save button:disabled{opacity:.6}
-.toast{position:fixed;left:20px;right:20px;bottom:96px;background:#1B2326;color:#fff;padding:12px 14px;border-radius:12px;font-weight:700;font-size:14px;z-index:20;text-align:center}
+/* админ */
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:0 20px 12px}
+.stats div{border-radius:14px;padding:10px 12px;display:flex;flex-direction:column}
+.stats b{font-size:20px;font-weight:800}.stats span{font-size:11px;font-weight:600}
+.anav{display:flex;gap:6px;padding:0 20px 12px;overflow-x:auto;scrollbar-width:none}
+.anav::-webkit-scrollbar{display:none}
+.anav button{padding:9px 14px;border-radius:12px;border:none;background:var(--soft);font-size:13px;font-weight:600;white-space:nowrap}
+.anav button.on{background:var(--grad);color:#fff;font-weight:700}
+.arow{display:flex;align-items:center;gap:10px;background:var(--soft);border-radius:16px;padding:10px}
+.arow .th{position:relative;width:56px;height:56px;border-radius:12px;background:#fff;flex:none}
+.arow .th img{width:56px;height:56px;border-radius:12px;object-fit:cover}
+.arow .th .bd{position:absolute;top:-6px;left:-6px;background:var(--red);color:#fff;font-size:10px;font-weight:800;padding:2px 5px;border-radius:5px}
+.arow .inf{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.arow .inf b{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arow .inf span{font-size:12px;color:var(--mut);font-weight:600}
+.phs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.phs .pi{position:relative;height:96px;border-radius:14px;background:var(--soft);overflow:hidden}
+.phs .pi img{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);object-fit:contain}
+.phs .pi .main{position:absolute;left:6px;bottom:6px;font-size:10px;font-weight:800;color:#fff;background:var(--acc);padding:2px 6px;border-radius:5px}
+.phs .pi .x{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:8px;border:none;background:rgba(27,35,38,.75);color:#fff;font-weight:800}
+.phs label{height:96px;border-radius:14px;border:2px dashed #CBD5CF;background:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--acc)}
+.brpick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.brpick button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border-radius:14px;border:2px solid var(--line);background:#fff;text-align:left}
+.brpick button.on{border-color:var(--acc);background:var(--mint)}
+.brpick b{font-size:14px;font-weight:800}.brpick span{font-size:11px;font-weight:600;color:var(--mut)}
+.disc{display:flex;flex-direction:column;gap:10px;background:#FDECEC;border-radius:18px;padding:14px}
+.disc .chk{background:none;padding:0;color:#B91C1C;font-weight:800}
+.disc .chk input{accent-color:var(--red)}
+.disc .fl{color:#7F1D1D}
+.disc .fl input{height:44px;border-radius:12px;border-color:#F5C2C2}
+.savebar{display:flex;flex-direction:column;gap:8px;padding:16px 20px calc(24px + env(safe-area-inset-bottom));border-top:1px solid var(--line);margin-top:auto}
+.delbtn{height:48px;border-radius:14px;border:none;background:#fff;color:#B91C1C;font-weight:700;font-size:14px}
+.pcard{display:flex;flex-direction:column;gap:8px;background:var(--soft);border-radius:18px;padding:14px}
+.st{font-size:12px;font-weight:700;padding:4px 8px;border-radius:7px}
+.offb{font-size:13px;font-weight:800;color:#fff;background:var(--red);padding:4px 8px;border-radius:7px}
+.scope{display:flex;gap:6px;flex-wrap:wrap}
+.scope button{padding:8px 12px;border-radius:10px;border:2px solid var(--line);background:#fff;font-size:13px;font-weight:600}
+.scope button.on{border-color:var(--acc);font-weight:700}
+.pickl{display:flex;flex-direction:column;gap:6px;max-height:240px;overflow:auto}
+.pickl label{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;background:var(--soft);border-radius:10px;padding:8px 10px}
+.pickl input{width:20px;height:20px;accent-color:var(--acc)}
+.brow{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:8px}
+.brow .h{border:none;background:none;padding:4px;display:flex}
+.brow .bi{width:96px;height:52px;border-radius:10px;object-fit:cover;flex:none}
+.upl{height:150px;border-radius:16px;border:2px dashed #8CCB9F;background:linear-gradient(135deg,#F0FAF3,#E3F1E8);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--acc2);overflow:hidden;position:relative}
+.upl img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.navcard{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;text-align:left;width:100%}
+.navcard .ico{width:40px;height:40px;border-radius:12px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex:none}
+.lbl{font-size:13px;font-weight:800;padding-top:6px}
+.adrow{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.av{width:36px;height:36px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex:none}
+.dash{height:46px;border-radius:14px;border:1px dashed #CBD5CF;background:#fff;font-size:13px;font-weight:700;color:var(--acc)}
 </style>
-</head><body>
-<div class="wrap" id="app"></div>
+</head>
+<body>
+<div id="app"></div>
 <script>
 const tg = window.Telegram && Telegram.WebApp;
-if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor && tg.setHeaderColor('#E6F5EA'); }
+if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor && tg.setHeaderColor('#E6F5EA'); tg.disableVerticalSwipes && tg.disableVerticalSwipes(); }
 const API = 'https://api.github.com/repos/ibrohimrakhimov001-ops/shop/contents/products.json';
 const RAW = 'https://raw.githubusercontent.com/ibrohimrakhimov001-ops/shop/main/';
-const RATES = {3: 15, 6: 20, 12: 38};   // BIRZUM NASIYA: narx*1.02, +15/20/38 %
-const BANNERS = [
-  {tag:'Aksiya', t:'iPhone’larga chegirmalar', bg:'linear-gradient(135deg,#22A55A,#14532D)'},
-  {tag:'Kafolat', t:'Har bir telefonga kafolat beramiz', bg:'linear-gradient(135deg,#178A45,#0B3D24)'},
-  {tag:'Muddatli to‘lov', t:'3, 6 va 12 oyga bo‘lib to‘lang', bg:'linear-gradient(135deg,#15803D,#052E16)'}
-];
-let D = {products: [], kurs: 12800}, cat = 'all', q = '', bi = 0, term = 12, rasmiy = false, down = 0, warn = false, brf = '', sort = 'new', showSort = false;
-const BR = () => D.branches || [];
-const brName = id => (BR().find(b => String(b.id) === String(id)) || {}).name || '';
-// ISHONCH: narx × kurs × 1.01, bosh to‘lov ayiriladi, qoldiq × koeffitsient / oy
-const ISH = {rasmiy: {3: 1.27, 6: 1.36, 12: 1.42}, norasmiy: {12: 1.5}};
-const TABS = [['home', 'Bosh sahifa', '<path d="M3 11l9-7 9 7v9H3z"></path>'],
-  ['catalog', 'Katalog', '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect>'],
-  ['sale', 'Aksiyalar', '<path d="M19 5L5 19"></path><circle cx="7" cy="7" r="2.5"></circle><circle cx="17" cy="17" r="2.5"></circle>'],
-  ['contact', 'Aloqa', '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"></path>']];
-const tabbar = on => `<nav class="tabbar" aria-label="Menyu">${TABS.map(([k, l, ic]) => `<button data-tab="${k}" class="${k === on ? 'on' : ''}" ${k === on ? 'aria-current="page"' : ''}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ic}</svg>${l}</button>`).join('')}</nav>`;
-function tabEvents() { document.querySelectorAll('[data-tab]').forEach(el => el.onclick = () => { location.hash = el.dataset.tab === 'home' ? '' : el.dataset.tab; }); tg && tg.BackButton.hide(); window.scrollTo(0, 0); }
+const INIT = tg ? tg.initData : '';
+const DEF_BANNERS = [
+  {tag: 'Aksiya', title: 'iPhone’larga chegirmalar', link: 'sale'},
+  {tag: 'Kafolat', title: 'Har bir telefonga kafolat beramiz', link: ''},
+  {tag: 'Muddatli to‘lov', title: '3, 6 va 12 oyga bo‘lib to‘lang', link: ''}];
+const BG = ['linear-gradient(135deg,#22A55A,#14532D)', 'linear-gradient(135deg,#178A45,#0B3D24)', 'linear-gradient(135deg,#15803D,#052E16)'];
+
+let D = {products: [], kurs: 12800}, ADMIN = false, APIURL = '';
+let cat = 'all', q = '', bi = 0, brf = '', sort = 'new', showSort = false;
+let term = 12, rasmiy = false, down = 0, warn = 0, lastP = null;
+
 const $ = s => document.querySelector(s);
-const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 const up = n => Math.ceil(n / 1000) * 1000;
-const priceSum = p => p.price * D.kurs * 1.01;
-const monthly = (p, m, r = rasmiy, d = down) => up(Math.max(0, priceSum(p) - d) * ISH[r ? 'rasmiy' : 'norasmiy'][m] / m);
 const img = (p, i = 0) => p.photos && p.photos[i] ? RAW + p.photos[i] : '';
-const phoneSvg = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="1.6" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M11 18h2"></path></svg>';
+const svg = (d, c = 'currentColor', w = 20, sw = 2) => `<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const P = {
+  back: '<path d="M15 5l-7 7 7 7"></path>', shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path>',
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"></path>',
+  tg: '<path d="M21 4L3 11l6 2 2 6 3-4 5 4z"></path><path d="M9 13l12-9"></path>',
+  edit: '<path d="M4 20h4L19 9l-4-4L4 16z"></path>', del: '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path>',
+  pct: '<path d="M19 5L5 19"></path><circle cx="7" cy="7" r="2.5"></circle><circle cx="17" cy="17" r="2.5"></circle>',
+  pin: '<path d="M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle>',
+  dev: '<rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M11 18h2"></path>',
+  chev: '<path d="M9 5l7 7-7 7"></path>', down: '<path d="M6 9l6 6 6-6"></path>'};
+const phoneSvg = svg(P.dev, '#15803D', 40, 1.6);
+const backBtn = (h, g) => `<button class="ib ${g ? 'g' : ''}" aria-label="Orqaga" data-go="${h}">${svg(P.back, '#1B2326')}</button>`;
+function toast(t, ms = 2400) { const el = document.createElement('div'); el.className = 'toast'; el.setAttribute('role', 'status'); el.textContent = t; document.body.appendChild(el); setTimeout(() => el.remove(), ms); }
+function bindGo() { $$('[data-go]').forEach(el => el.onclick = () => { location.hash = el.dataset.go; }); }
+function haptic(t) { try { tg.HapticFeedback.notificationOccurred(t); } catch (e) {} }
 
+/* ---------- данные ---------- */
 async function getData() {
-  try {
-    const r = await fetch(API, {headers: {Accept: 'application/vnd.github.raw'}, cache: 'no-store'});
-    if (r.ok) return await r.json();
-  } catch (e) {}
-  const r = await fetch('products.json?t=' + Date.now(), {cache: 'no-store'});
-  return await r.json();
+  try { const r = await fetch(API, {headers: {Accept: 'application/vnd.github.raw'}, cache: 'no-store'}); if (r.ok) return await r.json(); } catch (e) {}
+  return await (await fetch('products.json?t=' + Date.now(), {cache: 'no-store'})).json();
 }
-
-function brandOf(n) {
-  n = n.toLowerCase();
+function norm() { D.products = (D.products || []).filter(p => p.id); }
+const BR = () => D.branches || [];
+const brOf = id => BR().find(b => String(b.id) === String(id));
+const brName = id => (brOf(id) || {}).name || '';
+const RATES = () => Object.assign({r3: 27, r6: 36, r12: 42, n12: 50}, D.rates || {});
+function brandOf(p) {
+  if (p.brand) return p.brand;
+  const n = (p.name || '').toLowerCase();
   if (n.includes('iphone')) return 'iPhone';
   if (n.includes('samsung') || n.includes('galaxy')) return 'Samsung';
   if (/xiaomi|redmi|poco/.test(n)) return 'Xiaomi';
   return 'Boshqa';
 }
-
-function home() {
-  const list = D.products.filter(p => p.id)
-    .filter(p => cat === 'all' || (cat === 'sale' ? p.sale : brandOf(p.name) === cat))
-    .filter(p => !q || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(q))
-    .filter(p => !brf || String(p.branch) === String(brf))
-    .sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (a.price || 1e9) - (b.price || 1e9) : sort === 'exp' ? (b.price || 0) - (a.price || 0) : b.id - a.id));
-  const brands = [...new Set(D.products.filter(p => p.id).map(p => brandOf(p.name)))];
-  $('#app').innerHTML = `
-  <header><div style="display:flex;flex-direction:column">
-    ${BR().length ? `<label class="brsel">${esc(brf ? brName(brf) : 'Barcha filiallar')}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
-      <select id="brf" aria-label="Filialni tanlash"><option value="">Barcha filiallar</option>${BR().map(b => `<option value="${b.id}" ${String(b.id) === String(brf) ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></label>` : '<div class="sub">Qo‘qon · telefonlar do‘koni</div>'}
-    <div class="brand">Android Kokand</div></div>
-  ${ADMIN ? `<button class="adm" aria-label="Admin panel" onclick="location.hash='admin'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path></svg></button>` : ''}</header>
-  <div class="search"><label><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
-    <input id="q" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label>
-    <button class="fbtn" id="fb" aria-label="Saralash" aria-expanded="${showSort}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"></path></svg></button></div>
-  ${showSort ? `<div class="sortrow">${[['new', 'Yangilari'], ['cheap', 'Arzonroq'], ['exp', 'Qimmatroq']].map(([k, l]) => `<button data-s="${k}" class="${sort === k ? 'on' : ''}">${l}</button>`).join('')}</div>` : ''}
-  <section aria-label="Bannerlar">
-    <div class="viewport" id="vp"><div class="slides" id="slides">${BANNERS.map(b => `<div class="banner" style="background:${b.bg}"><div><span class="tag">${b.tag}</span><div class="t">${b.t}</div></div><span class="more">Batafsil →</span>
-    <svg class="deco" width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M11 18h2"></path></svg></div>`).join('')}</div></div>
-    <div class="dots">${BANNERS.map((_, k) => `<button aria-label="Slayd ${k + 1}" data-b="${k}"></button>`).join('')}</div>
-  </section>
-  <nav class="cats" aria-label="Kategoriyalar">
-    <button data-c="all" class="${cat === 'all' ? 'on' : ''}">Barchasi</button>
-    ${D.products.some(p => p.sale) ? `<button data-c="sale" class="sale ${cat === 'sale' ? 'on' : ''}">% Aksiya</button>` : ''}
-    ${brands.map(x => `<button data-c="${x}" class="${cat === x ? 'on' : ''}">${x}</button>`).join('')}
-  </nav>
-  <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>
-  ${tabbar('home')}`;
-  tabEvents();
-  $('#fb').onclick = () => { showSort = !showSort; home(); };
-  document.querySelectorAll('[data-s]').forEach(el => el.onclick = () => { sort = el.dataset.s; home(); });
-  if ($('#brf')) $('#brf').onchange = e => { brf = e.target.value; home(); };
-  const qi = $('#q');
-  qi.oninput = e => { q = e.target.value.toLowerCase(); const pos = qi.selectionStart; home(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
-  document.querySelectorAll('[data-c]').forEach(el => el.onclick = () => { cat = el.dataset.c; home(); });
-  const sl = $('#slides'), vp = $('#vp');
-  sl.style.transition = 'none'; sl.style.transform = `translateX(${-bi * 100}%)`; sl.offsetWidth; sl.style.transition = '';
-  let x0 = null, dx = 0;   // свайп пальцем
-  vp.ontouchstart = e => { x0 = e.touches[0].clientX; dx = 0; sl.style.transition = 'none'; };
-  vp.ontouchmove = e => { if (x0 === null) return; dx = e.touches[0].clientX - x0; sl.style.transform = `translateX(calc(${-bi * 100}% + ${dx}px))`; };
-  vp.ontouchend = () => { sl.style.transition = ''; const n = BANNERS.length;
-    slide(Math.abs(dx) > 40 ? (bi + (dx < 0 ? 1 : -1) + n) % n : bi); x0 = null; };
-  document.querySelectorAll('[data-b]').forEach(el => el.onclick = () => slide(+el.dataset.b));
-  dots();
-  document.querySelectorAll('[data-p]').forEach(el => el.onclick = () => { location.hash = 'p=' + el.dataset.p; });
-  tg && tg.BackButton.hide();
+const today = () => new Date().toISOString().slice(0, 10);
+const promoState = x => (x.start && today() < x.start) ? 'plan' : (x.end && today() > x.end) ? 'end' : 'on';
+function promoFor(p) {
+  return (D.promos || []).find(x => promoState(x) === 'on' && (x.scope === 'all' || (x.scope === 'brand' && x.brand === brandOf(p)) || (x.scope === 'ids' && (x.ids || []).includes(p.id))));
+}
+function eff(p) {   // итоговая цена: своя скидка товара → иначе активная акция
+  const ownOn = p.sale && p.old && !(p.sale_until && today() > p.sale_until);
+  if (ownOn) return {price: p.price, old: p.old, sale: p.sale};
+  const base = p.sale && p.old ? p.old : p.price;   // своя скидка истекла
+  const pr = base && promoFor(p);
+  if (pr) {
+    const np = Math.max(1, Math.round(pr.type === 'sum' ? base - pr.value : base * (1 - pr.value / 100)));
+    return {price: np, old: base, sale: '−' + Math.round((1 - np / base) * 100) + '%'};
+  }
+  return {price: base, old: null, sale: ''};
+}
+const onSale = p => !!eff(p).sale;
+function banners() {
+  const list = (D.banners || []).length ? D.banners : DEF_BANNERS;
+  const promo = (D.promos || []).filter(x => x.banner && promoState(x) === 'on')
+    .map(x => ({tag: 'Aksiya', title: x.name + (x.value ? ` ${x.type === 'sum' ? '−' + x.value + '$' : '−' + x.value + '%'}` : ''), link: 'sale', text: true}));
+  return [...promo, ...list];
 }
 
-function dots() { document.querySelectorAll('[data-b]').forEach((el, k) => { el.style.width = (k === bi ? 22 : 8) + 'px'; el.style.background = k === bi ? '#15803D' : '#CBD5CF'; }); }
-let lastTouch = 0;
-function slide(k, auto) {
-  const sl = $('#slides'); if (!sl) return;
-  if (auto && Date.now() - lastTouch < 6000) return;   // не листать сразу после свайпа
-  if (!auto) lastTouch = Date.now();
-  bi = k; sl.style.transform = `translateX(${-k * 100}%)`; dots();
-}
-
-function card(p) {
-  const spec = [p.memory, p.state, p.battery].filter(Boolean).join(' · ');
-  return `<button class="card ${p.sold ? 'sold' : ''}" data-p="${p.id}">
-    <div class="ph">${img(p) ? `<img loading="lazy" src="${img(p)}" alt="${esc(p.name)}">` : phoneSvg}
-      ${p.sale && !p.sold ? `<span class="badge">${esc(p.sale)}</span>` : ''}${p.sold ? '<span class="soldtag">SOTILDI</span>' : ''}</div>
-    <span class="n">${esc(p.name)}</span><span class="s">${esc(spec)}</span>${brName(p.branch) ? `<span class="br">${esc(brName(p.branch))}</span>` : ''}
-    <span class="p" style="color:${p.sale ? '#DC2626' : '#1B2326'}">${p.price ? p.price + '$' : 'Narx so‘rang'}${p.old ? `<span class="old">${p.old}$</span>` : ''}</span>
-  </button>`;
-}
-
-const ICONS = {memory:'M6 3h12v18H6zM9 7h6M9 11h6', state:'M5 12l5 5 9-10', warranty:'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z', box:'M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8', battery:'M3 8h15v8H3zM21 11v2M6 11h8'};
-const LABELS = [['memory','Xotira'],['state','Holati'],['warranty','Kafolat'],['box','Karobkasi'],['battery','Batareya']];
-
-function product(id) {
-  const p = D.products.find(x => String(x.id) === String(id));
-  if (!p) { location.hash = ''; return; }
-  if (product.last !== p.id) { product.last = p.id; down = 0; warn = false; }
-  const specs = LABELS.filter(([k]) => p[k]).map(([k, l]) => `<div class="row"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${ICONS[k]}"></path></svg></span><span class="k">${l}</span><span class="v">${esc(p[k])}</span></div>`).join('');
-  const photos = (p.photos || []).map((_, i) => `<img src="${img(p, i)}" alt="${esc(p.name)}">`).join('') || `<div style="margin:auto">${phoneSvg}</div>`;
-  const br = BR().find(b => String(b.id) === String(p.branch)) || (BR().length === 1 ? BR()[0] : null);
-  const phone = ((br && br.phone) || D.phone || '').replace(/[^\d+]/g, '');
-  const tgU = ((br && br.tg) || D.tg || '').replace(/^@/, '');
-  $('#app').innerHTML = `
-  ${tg && tg.BackButton ? '' : '<button class="back" aria-label="Orqaga" onclick="location.hash=\'\'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>'}
-  <div class="gal">${photos}</div>
-  <div class="pbody">
-    <h1>${esc(p.name)}</h1>
-    ${p.sold ? '<div class="soldbig">❌ SOTILDI</div>' : `<span class="big">${p.price ? p.price + '$' : 'Narx so‘rang'}${p.old ? `<span class="old" style="font-size:16px">${p.old}$</span>` : ''}</span>`}
-    ${!p.sold && p.price ? `<button class="fromm" id="tocalc"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"></path></svg>
-      <span style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:12px;font-weight:600">Muddatli to‘lov</span><span style="font-size:14px;font-weight:800">oyiga ${fmt(monthly(p, 12, true, 0))} so‘m dan</span></span>
-      <span class="go">Hisoblash<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"></path></svg></span></button>` : ''}
-    ${specs ? `<section class="specs">${specs}</section>` : ''}
-    ${br ? `<div class="loc"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6-7-11a7 7 0 0114 0c0 5-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
-      <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:700;color:var(--mut)">Filial · ${esc(br.name)}</span><span style="font-size:15px;font-weight:700">${esc(br.addr || '')}</span>${br.hours ? `<span style="font-size:12px;font-weight:600;color:var(--mut)">${esc(br.hours)}</span>` : ''}</div></div>` : ''}
-    ${!p.sold && p.price ? `<section class="calc" id="calc" aria-label="Muddatli to‘lov kalkulyatori">
-      <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:15px;font-weight:800">Muddatli to‘lov</span><span style="font-size:12px;font-weight:600;color:var(--mut)">≈ ${fmt(up(priceSum(p)))} so‘m</span></div>
-      <div class="seg" role="group" aria-label="Ish joyi"><button data-r="0">Norasmiy</button><button data-r="1">Rasmiy ish joyi</button></div>
-      <div class="terms">${[3, 6, 12].map(m => `<button data-m="${m}">${m} oy</button>`).join('')}</div>
-      <div id="warn"></div>
-      <label class="down">Bosh to‘lov <span style="font-size:11px">(ixtiyoriy)</span><input id="down" inputmode="numeric" placeholder="0" aria-label="Boshlang‘ich to‘lov, so‘m" value="${down ? fmt(down) : ''}"><span style="font-weight:700">so‘m</span></label>
-      <div class="res"><div><div style="font-size:12px;font-weight:600;opacity:.9">Oyiga</div><div style="font-size:20px;font-weight:800" id="mon"></div></div>
-      <span style="font-size:12px;font-weight:600;opacity:.9;text-align:right" id="mterm"></span></div>
-    </section>` : ''}
-    ${p.desc && p.imported ? `<div class="desc">${esc(p.desc.split('\n').filter(l => /[\p{L}\p{N}]/u.test(l)).join('\n').trim())}</div>` : ''}
-  </div>
-  <div class="bar">
-    <a class="call" href="${phone ? 'tel:' + phone : '#'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"></path></svg>Qo‘ng‘iroq</a>
-    <a class="tg" href="https://t.me/${esc(tgU)}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4L3 11l6 2 2 6 3-4 5 4z"></path><path d="M9 13l12-9"></path></svg>Telegram</a>
-  </div>`;
-  const setTerm = () => {   // меняем только цифры, страница не перерисовывается
-    if (!rasmiy && term !== 12) term = 12;
-    document.querySelectorAll('[data-m]').forEach(el => { const m = +el.dataset.m, on = m === term; el.classList.toggle('on', on); el.classList.toggle('dis', !rasmiy && m !== 12); el.setAttribute('aria-pressed', on); });
-    document.querySelectorAll('[data-r]').forEach(el => { const on = !!+el.dataset.r === rasmiy; el.classList.toggle('on', on); el.setAttribute('aria-pressed', on); });
-    $('#warn').innerHTML = warn ? `<div class="warn" role="alert"><span style="flex:1">⚠️ 3 va 6 oyga faqat rasmiy ish joyi bo‘lsa beriladi. Norasmiy — faqat 12 oy.</span><button id="torasmiy">Rasmiy</button></div>` : '';
-    if ($('#torasmiy')) $('#torasmiy').onclick = () => { rasmiy = true; term = warn; warn = false; setTerm(); };
-    if ($('#mon')) {
-      const mo = monthly(p, term);
-      $('#mon').textContent = fmt(mo) + ' so‘m';
-      $('#mterm').innerHTML = `${term} oy<br>Jami ${fmt(down + mo * term)} so‘m`;
-    }
-  };
-  document.querySelectorAll('[data-m]').forEach(el => el.onclick = () => {
-    const m = +el.dataset.m;
-    if (!rasmiy && m !== 12) { warn = m; tg && tg.HapticFeedback && tg.HapticFeedback.notificationOccurred('warning'); }
-    else { term = m; warn = false; }
-    setTerm();
-  });
-  document.querySelectorAll('[data-r]').forEach(el => el.onclick = () => { rasmiy = !!+el.dataset.r; warn = false; setTerm(); });
-  if ($('#down')) $('#down').oninput = e => {
-    down = Math.min(+e.target.value.replace(/\D/g, '') || 0, up(priceSum(p)));
-    e.target.value = down ? fmt(down) : ''; setTerm();
-  };
-  if ($('#tocalc')) $('#tocalc').onclick = () => $('#calc').scrollIntoView({behavior: 'smooth', block: 'start'});
-  if ($('#calc')) setTerm();
-  if (tg && tg.BackButton) { tg.BackButton.show(); tg.BackButton.onClick(() => { location.hash = ''; }); }
-  window.scrollTo(0, 0);
-}
-
-/* ================= ADMIN ================= */
-let ADMIN = false, APIURL = '', form = null;
-const INIT = tg ? tg.initData : '';
-const back = h => `<button class="iconbtn" aria-label="Orqaga" onclick="location.hash='${h}'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>`;
-function toast(t, ms = 2200) { const el = document.createElement('div'); el.className = 'toast'; el.textContent = t; document.body.appendChild(el); setTimeout(() => el.remove(), ms); }
-
+/* ---------- API на телефоне (через туннель) ---------- */
 async function apiUrl(force) {
   if (APIURL && !force) return APIURL;
   const r = await fetch(API.replace('products.json', 'api.json'), {headers: {Accept: 'application/vnd.github.raw'}, cache: 'no-store'});
@@ -345,206 +287,509 @@ async function call(path, body, retry = true) {
   try {
     const r = await fetch(await apiUrl() + path, {method: body ? 'POST' : 'GET', headers: {'X-Init-Data': INIT, 'Content-Type': 'application/json'}, body: body ? JSON.stringify(body) : undefined});
     const j = await r.json(); if (!r.ok) throw new Error(j.error || r.status); return j;
-  } catch (e) {
-    if (retry) { await apiUrl(true); return call(path, body, false); }   // туннель мог смениться
-    throw e;
+  } catch (e) { if (retry) { await apiUrl(true); return call(path, body, false); } throw e; }
+}
+async function refresh() { try { D = await getData(); norm(); } catch (e) {} }
+
+/* ---------- звонок: номер клиента → админам ---------- */
+function requestCall(pid) {
+  if (!tg || !tg.requestContact || !INIT) {
+    const ph = ((brOf(pid && (D.products.find(p => p.id === pid) || {}).branch) || {}).phone || D.phone || '').replace(/[^\d+]/g, '');
+    if (ph) location.href = 'tel:' + ph; else toast('Telegram orqali oching');
+    return;
   }
+  call('/api/lead', {pid}).catch(() => {});
+  tg.requestContact((ok, res) => {
+    if (!ok) return toast('Raqam yuborilmadi');
+    const phone = res && res.responseUnsafe && res.responseUnsafe.contact && res.responseUnsafe.contact.phone_number;
+    if (phone) call('/api/lead', {pid, phone}).catch(() => {});
+    haptic('success');
+    tg.showAlert ? tg.showAlert('✅ Rahmat! Tez orada sizga qo‘ng‘iroq qilamiz.') : toast('✅ Rahmat! Tez orada qo‘ng‘iroq qilamiz.');
+  });
 }
-async function refresh() { try { D = await getData(); D.products = (D.products || []).filter(p => p.id); } catch (e) {} }
+function openTg(u) { u = (u || '').replace(/^@/, ''); if (!u) return toast('Telegram ko‘rsatilmagan'); tg && tg.openTelegramLink ? tg.openTelegramLink('https://t.me/' + u) : (location.href = 'https://t.me/' + u); }
 
-function adminList() {
-  if (!ADMIN) { location.hash = ''; return; }
-  const list = [...D.products].sort((a, b) => b.id - a.id);
-  $('#app').innerHTML = `
-  <div class="top">${back('')}<h2>Mahsulotlar (${list.length})</h2>
-    <button class="iconbtn" aria-label="Sozlamalar" onclick="location.hash='settings'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-2.9 1.2V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-2.9-1.2l-.1.1a2 2 0 11-2.8-2.8l.1-.1A1.7 1.7 0 003 14.1H3a2 2 0 110-4h.1a1.7 1.7 0 001.2-2.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 002.9-1.2V3a2 2 0 114 0v.1a1.7 1.7 0 002.9 1.2l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 001.2 2.9H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"></path></svg></button></div>
-  <button class="addbtn" style="background:#fff;color:var(--acc);border:2px solid var(--acc)" onclick="location.hash='branches'">Filiallar (${BR().length})</button>
-  <button class="addbtn" onclick="location.hash='new'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Mahsulot qo‘shish</button>
-  <div class="alist">${list.map(p => `<div class="aitem">
-    <div class="th">${img(p) ? `<img src="${img(p)}" alt="">` : phoneSvg}</div>
-    <div class="info"><b>${esc(p.name)}</b><span>${esc([p.memory, p.state].filter(Boolean).join(' · '))}</span>
-      <span style="color:${p.sold ? '#DC2626' : '#15803D'};font-weight:800">${p.sold ? 'SOTILDI' : (p.price || '?') + '$'}</span></div>
-    <div class="acts">
-      <button aria-label="Tahrirlash" onclick="location.hash='edit=${p.id}'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></button>
-      <button class="s ${p.sold ? 'on' : ''}" aria-label="${p.sold ? 'Sotuvga qaytarish' : 'Sotildi'}" onclick="toggleSold(${p.id})"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${p.sold ? '#fff' : '#DC2626'}" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg></button>
-      <button aria-label="O‘chirish" onclick="delProduct(${p.id})"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg></button>
-    </div></div>`).join('') || '<div class="empty">Hali mahsulot yo‘q</div>'}</div>`;
-  tg && tg.BackButton.hide();
+/* ---------- клавиатура: прячем нижние панели, поле в центр ---------- */
+document.addEventListener('focusin', e => { if (e.target.matches('input:not([type=checkbox]):not([type=file]),select')) { document.body.classList.add('kb'); setTimeout(() => e.target.scrollIntoView({block: 'center', behavior: 'smooth'}), 300); } });
+document.addEventListener('focusout', () => setTimeout(() => { if (!document.activeElement.matches('input,select')) document.body.classList.remove('kb'); }, 100));
+
+/* ================= КЛИЕНТ ================= */
+const TABS = [['', 'Bosh sahifa', '<path d="M3 11l9-7 9 7v9H3z"></path>'],
+  ['catalog', 'Katalog', '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect>'],
+  ['sale', 'Aksiyalar', P.pct], ['contact', 'Aloqa', P.phone]];
+const tabbar = on => `<nav class="tabbar" aria-label="Menyu">${TABS.map(([k, l, ic]) => `<button data-go="${k}" class="${k === on ? 'on' : ''}" ${k === on ? 'aria-current="page"' : ''}>${svg(ic, 'currentColor', 22)}${l}</button>`).join('')}</nav>`;
+function page(html) { $('#app').innerHTML = html; bindGo(); tg && tg.BackButton.hide(); }
+
+function card(p) {
+  const e = eff(p), spec = [p.memory, p.state, p.battery].filter(Boolean).join(' · ');
+  return `<button class="card ${p.sold ? 'sold' : ''}" data-p="${p.id}">
+    <div class="ph">${img(p) ? `<img loading="lazy" src="${img(p)}" alt="${esc(p.name)}">` : phoneSvg}
+      ${e.sale && !p.sold ? `<span class="badge">${esc(e.sale)}</span>` : ''}${p.sold ? '<span class="soldtag">SOTILDI</span>' : ''}</div>
+    <span class="n">${esc(p.name)}</span><span class="s">${esc(spec)}</span>${brName(p.branch) ? `<span class="br">${esc(brName(p.branch))}</span>` : ''}
+    <span class="pr"><span class="p" style="color:${e.sale ? '#DC2626' : '#1B2326'}">${e.price ? e.price + '$' : 'Narx so‘rang'}</span>${e.old ? `<span class="old">${e.old}$</span>` : ''}</span>
+  </button>`;
+}
+function bindCards() { $$('[data-p]').forEach(el => el.onclick = () => { location.hash = 'p=' + el.dataset.p; }); }
+
+function home() {
+  const list = D.products
+    .filter(p => cat === 'all' || (cat === 'sale' ? onSale(p) : brandOf(p) === cat))
+    .filter(p => !q || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(q))
+    .filter(p => !brf || String(p.branch) === String(brf))
+    .sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (eff(a).price || 1e9) - (eff(b).price || 1e9) : sort === 'exp' ? (eff(b).price || 0) - (eff(a).price || 0) : b.id - a.id));
+  const brands = [...new Set(D.products.map(brandOf))];
+  const B = banners(); if (bi >= B.length) bi = 0;
+  page(`
+  <header><div style="display:flex;flex-direction:column">
+    ${BR().length ? `<label class="brsel">${esc(brf ? brName(brf) : 'Barcha filiallar')}${svg(P.down, '#166534', 14, 2.4)}
+      <select id="brf" aria-label="Filialni tanlash"><option value="">Barcha filiallar</option>${BR().map(b => `<option value="${b.id}" ${String(b.id) === String(brf) ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></label>`
+      : '<span style="font-size:12px;font-weight:700;color:#166534;height:28px;display:flex;align-items:center">Qo‘qon · telefonlar do‘koni</span>'}
+    <span class="brand">Android Kokand</span></div>
+    ${ADMIN ? `<button class="adm" aria-label="Admin panel" data-go="admin">${svg(P.shield, '#fff')}</button>` : ''}</header>
+  <div class="search"><label>${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#15803D', 22, 2.4)}
+    <input id="q" type="search" enterkeyhint="search" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label>
+    <button class="fbtn" id="fb" aria-label="Saralash" aria-expanded="${showSort}">${svg('<path d="M4 6h16M7 12h10M10 18h4"></path>', '#fff', 22)}</button></div>
+  ${showSort ? `<div class="sortrow">${[['new', 'Yangilari'], ['cheap', 'Arzonroq'], ['exp', 'Qimmatroq']].map(([k, l]) => `<button data-s="${k}" class="${sort === k ? 'on' : ''}">${l}</button>`).join('')}</div>` : ''}
+  <section aria-label="Bannerlar">
+    <div class="vp" id="vp"><div class="slides" id="slides">${B.map((b, k) => `<button class="banner" data-bl="${esc(b.link || '')}" style="background:${BG[k % 3]}">
+      ${b.img ? `<img src="${RAW + b.img}" alt="" class="${b.text === false ? 'full' : ''}">` : svg(P.dev, '#fff', 150, 1.2).replace('<svg', '<svg class="deco"')}
+      ${b.text === false ? '' : `<div class="tx">${b.tag ? `<span class="tag">${esc(b.tag)}</span>` : ''}<span class="t">${esc(b.title || '')}</span></div><span class="more">Batafsil →</span>`}</button>`).join('')}</div></div>
+    <div class="dots">${B.map((_, k) => `<button aria-label="Slayd ${k + 1}" data-b="${k}"></button>`).join('')}</div>
+  </section>
+  <nav class="cats" aria-label="Kategoriyalar">
+    <button data-c="all" class="${cat === 'all' ? 'on' : ''}">Barchasi</button>
+    ${D.products.some(onSale) ? `<button data-c="sale" class="sale ${cat === 'sale' ? 'on' : ''}">% Aksiya</button>` : ''}
+    ${brands.map(x => `<button data-c="${x}" class="${cat === x ? 'on' : ''}">${x}</button>`).join('')}
+  </nav>
+  <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>
+  ${tabbar('')}`);
+  bindCards();
+  $('#fb').onclick = () => { showSort = !showSort; home(); };
+  $$('[data-s]').forEach(el => el.onclick = () => { sort = el.dataset.s; home(); });
+  $$('[data-c]').forEach(el => el.onclick = () => { cat = el.dataset.c; home(); });
+  if ($('#brf')) $('#brf').onchange = e => { brf = e.target.value; home(); };
+  $$('[data-bl]').forEach(el => el.onclick = () => { const l = el.dataset.bl; if (l.startsWith('p:')) location.hash = 'p=' + l.slice(2); else if (l) location.hash = l; });
+  const qi = $('#q');
+  qi.oninput = e => { q = e.target.value.toLowerCase(); const pos = qi.selectionStart; home(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
+  // карусель
+  const sl = $('#slides'), vp = $('#vp');
+  sl.style.transition = 'none'; sl.style.transform = `translateX(${-bi * 100}%)`; sl.offsetWidth; sl.style.transition = '';
+  let x0 = null, dx = 0;
+  vp.ontouchstart = e => { x0 = e.touches[0].clientX; dx = 0; sl.style.transition = 'none'; };
+  vp.ontouchmove = e => { if (x0 === null) return; dx = e.touches[0].clientX - x0; sl.style.transform = `translateX(calc(${-bi * 100}% + ${dx}px))`; };
+  vp.ontouchend = () => { sl.style.transition = ''; const n = B.length; slide(Math.abs(dx) > 40 ? (bi + (dx < 0 ? 1 : -1) + n) % n : bi); x0 = null; };
+  $$('[data-b]').forEach(el => el.onclick = () => slide(+el.dataset.b));
+  dots();
+}
+let lastTouch = 0;
+function dots() { $$('[data-b]').forEach((el, k) => { el.style.width = (k === bi ? 22 : 8) + 'px'; el.style.background = k === bi ? '#15803D' : '#CBD5CF'; }); }
+function slide(k, auto) {
+  const sl = $('#slides'); if (!sl) return;
+  if (auto && Date.now() - lastTouch < 6000) return;
+  if (!auto) lastTouch = Date.now();
+  bi = k; sl.style.transform = `translateX(${-k * 100}%)`; dots();
 }
 
-async function toggleSold(id) {
-  const p = D.products.find(x => x.id === id); if (!p) return;
-  try { const j = await call('/api/sold', {id, sold: !p.sold}); p.sold = !p.sold; adminList(); toast(p.sold ? '❌ Sotildi — kanal yangilandi' : '↩️ Sotuvga qaytarildi'); j.warn && toast(j.warn, 4000); }
-  catch (e) { toast('Xato: ' + e.message, 4000); }
-}
-function delProduct(id) {
-  const go = async ok => { if (!ok) return;
-    try { const j = await call('/api/delete', {id}); D.products = D.products.filter(x => x.id !== id); adminList(); toast('🗑 O‘chirildi — kanal posti ham'); j.warn && toast(j.warn, 4000); }
-    catch (e) { toast('Xato: ' + e.message, 4000); } };
-  tg && tg.showConfirm ? tg.showConfirm('Mahsulot va kanaldagi post o‘chirilsinmi?', go) : go(confirm('O‘chirilsinmi?'));
+const SPEC = [['memory', 'Xotira', 'M6 3h12v18H6zM9 7h6M9 11h6'], ['state', 'Holati', 'M5 12l5 5 9-10'], ['warranty', 'Kafolat', 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z'],
+  ['box', 'Karobkasi', 'M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8'], ['battery', 'Batareya', 'M3 8h15v8H3zM21 11v2M6 11h8']];
+const priceSum = p => eff(p).price * D.kurs * 1.01;
+function monthly(p, m, r = rasmiy, d = down) {
+  const R = RATES(), k = r ? {3: R.r3, 6: R.r6, 12: R.r12}[m] : (m === 12 ? R.n12 : null);
+  return k == null ? 0 : up(Math.max(0, priceSum(p) - d) * (1 + k / 100) / m);
 }
 
-const STATES = ['Yangi', 'Ideal', 'Zo‘r', 'Yaxshi', 'O‘rtacha'], BOXES = ['Bor', 'Yo‘q'];
-function edit(id) {
-  if (!ADMIN) { location.hash = ''; return; }
-  const p = id ? D.products.find(x => String(x.id) === String(id)) : {};
-  if (id && !p) { location.hash = 'admin'; return; }
-  if (!form || form.id !== (p.id || null)) form = {id: p.id || null, f: {...p}, keep: [...(p.photos || [])], neu: []};
-  const f = form.f, inp = (k, l, ph = '', type = 'text') => `<label class="fl">${l}<input data-k="${k}" type="${type}" ${type === 'number' ? 'inputmode="numeric"' : ''} placeholder="${ph}" value="${esc(f[k] ?? '')}"></label>`;
-  const chips = (k, arr) => `<div class="chips">${arr.map(v => `<button type="button" data-ck="${k}" data-v="${v}" class="${f[k] === v ? 'on' : ''}">${v}</button>`).join('')}</div>`;
-  $('#app').innerHTML = `
-  <div class="top">${back('admin')}<h2>${id ? 'Tahrirlash' : 'Yangi mahsulot'}</h2></div>
-  <div class="form">
-    <div class="fl">Rasmlar (6 tagacha)<div class="phs">
-      ${form.keep.map((r, i) => `<div class="ph2"><img src="${RAW + r}" alt=""><button class="x" aria-label="Rasmni olib tashlash" data-rk="${i}">×</button></div>`).join('')}
-      ${form.neu.map((d, i) => `<div class="ph2"><img src="${d}" alt=""><button class="x" aria-label="Rasmni olib tashlash" data-rn="${i}">×</button></div>`).join('')}
-      ${form.keep.length + form.neu.length < 6 ? `<label><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Rasm<input id="file" type="file" accept="image/*" multiple hidden></label>` : ''}
-    </div></div>
-    ${inp('name', 'Model', 'iPhone 12 Pro')}
-    <div class="two">${inp('memory', 'Xotira', '128 GB')}${inp('battery', 'Batareya', '90%')}</div>
-    <div class="fl">Holati${chips('state', STATES)}</div>
-    <div class="two"><div class="fl">Karobka${chips('box', BOXES)}</div>${inp('warranty', 'Kafolat', '1 oy')}</div>
-    <div class="two">${inp('price', 'Narx, $', '290', 'number')}${inp('old', 'Eski narx, $', 'ixtiyoriy', 'number')}</div>
-    ${inp('sale', 'Chegirma belgisi', '−10% (ixtiyoriy)')}
-    ${BR().length ? `<div class="fl">Filial<div class="chips">${BR().map(b => `<button type="button" data-ck="branch" data-v="${b.id}" class="${String(f.branch) === String(b.id) ? 'on' : ''}">${esc(b.name)}</button>`).join('')}</div></div>` : ''}
+function product(id) {
+  const p = D.products.find(x => String(x.id) === String(id));
+  if (!p) { location.hash = ''; return; }
+  if (lastP !== p.id) { lastP = p.id; down = 0; warn = 0; }
+  const e = eff(p), br = brOf(p.branch) || (BR().length === 1 ? BR()[0] : null);
+  const tgU = (br && br.tg) || D.tg || '';
+  const photos = (p.photos || []).map((_, i) => `<div><img src="${img(p, i)}" alt="${esc(p.name)}"></div>`).join('') || `<div>${phoneSvg}</div>`;
+  const R = RATES();
+  page(`
+  <div class="gal"><button class="back" aria-label="Orqaga" data-go="">${svg(P.back, '#1B2326')}</button>
+    <div class="track" id="gt">${photos}</div>
+    ${(p.photos || []).length > 1 ? `<div class="gd">${p.photos.map((_, i) => `<span class="${i ? '' : 'on'}"></span>`).join('')}</div>` : ''}</div>
+  <div class="pbody">
+    <h1>${esc(p.name)}</h1>
+    ${p.sold ? '<div class="soldbig">❌ SOTILDI</div>' : `<div style="display:flex;flex-direction:column;gap:10px">
+      <span class="big" style="color:${e.sale ? '#DC2626' : '#15803D'}">${e.price ? e.price + '$' : 'Narx so‘rang'}${e.old ? ` <span class="old" style="font-size:16px">${e.old}$</span>` : ''}</span>
+      ${e.price ? `<button class="fromm" id="tocalc">${svg('<rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"></path>', '#166534', 22)}
+        <span style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:12px;font-weight:600">Muddatli to‘lov</span><span style="font-size:14px;font-weight:800">oyiga ${fmt(monthly(p, 12, true, 0))} so‘m dan</span></span>
+        <span class="go">Hisoblash${svg('<path d="M12 5v14M6 13l6 6 6-6"></path>', '#fff', 16, 2.6)}</span></button>` : ''}</div>`}
+    ${SPEC.some(([k]) => p[k]) ? `<section class="specs">${SPEC.filter(([k]) => p[k]).map(([k, l, d]) => `<div class="row"><span class="ic">${svg(`<path d="${d}"></path>`, '#15803D', 18)}</span><span class="k">${l}</span><span class="v">${esc(p[k])}</span></div>`).join('')}</section>` : ''}
+    ${br ? `<div class="loc">${svg(P.pin, '#15803D', 22)}<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:700;color:var(--mut)">Filial · ${esc(br.name)}</span>
+      ${br.addr ? `<span style="font-size:15px;font-weight:700">${esc(br.addr)}</span>` : ''}${br.hours ? `<span style="font-size:12px;font-weight:600;color:var(--mut)">${esc(br.hours)}</span>` : ''}</div></div>` : ''}
+    ${!p.sold && e.price ? `<section class="calc" id="calc" aria-label="Muddatli to‘lov kalkulyatori">
+      <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:15px;font-weight:800">Muddatli to‘lov</span><span style="font-size:12px;font-weight:600;color:var(--mut)">≈ ${fmt(up(priceSum(p)))} so‘m</span></div>
+      <div class="seg" role="group" aria-label="Ish joyi"><button data-r="0">Norasmiy</button><button data-r="1">Rasmiy ish joyi</button></div>
+      <div class="terms">${[3, 6, 12].map(m => `<button data-m="${m}">${m} oy</button>`).join('')}</div>
+      <div id="warn" aria-live="polite"></div>
+      <label class="down">Bosh to‘lov <span style="font-size:11px">(ixtiyoriy)</span><input id="down" inputmode="numeric" enterkeyhint="done" placeholder="0" aria-label="Boshlang‘ich to‘lov, so‘m" value="${down ? fmt(down) : ''}"><span style="font-weight:700">so‘m</span></label>
+      <div class="res"><div><div style="font-size:12px;font-weight:600;opacity:.9">Oyiga</div><div style="font-size:20px;font-weight:800" id="mon"></div></div>
+        <span style="font-size:12px;font-weight:600;opacity:.9;text-align:right" id="jami"></span></div>
+    </section>` : ''}
+    ${p.desc && p.imported ? `<div class="desc">${esc(p.desc.split('\n').filter(l => /[\p{L}\p{N}]/u.test(l)).join('\n').trim())}</div>` : ''}
   </div>
-  <div class="save"><button id="sv">${id ? 'Saqlash' : 'Saqlash va kanalga joylash'}</button></div>`;
-  document.querySelectorAll('[data-k]').forEach(el => el.oninput = () => { f[el.dataset.k] = el.value; });
-  document.querySelectorAll('[data-ck]').forEach(el => el.onclick = () => { const k = el.dataset.ck; f[k] = String(f[k]) === el.dataset.v ? '' : el.dataset.v; edit(id); });
-  document.querySelectorAll('[data-rk]').forEach(el => el.onclick = () => { form.keep.splice(+el.dataset.rk, 1); edit(id); });
-  document.querySelectorAll('[data-rn]').forEach(el => el.onclick = () => { form.neu.splice(+el.dataset.rn, 1); edit(id); });
-  const fi = $('#file'); if (fi) fi.onchange = async () => { for (const file of [...fi.files].slice(0, 6 - form.keep.length - form.neu.length)) form.neu.push(await shrink(file)); edit(id); };
-  $('#sv').onclick = () => saveForm(id);
-  tg && tg.BackButton.hide();
+  <div class="bar"><button class="call" id="callb">${svg(P.phone, '#fff')}Qo‘ng‘iroq</button><button class="tgb" id="tgb">${svg(P.tg, '#15803D')}Telegram</button></div>`);
+  if (tg) { tg.BackButton.offClick(goBack); tg.BackButton.onClick(goBack); tg.BackButton.show(); }
+  window.scrollTo(0, 0);
+  $('#callb').onclick = () => requestCall(p.id);
+  $('#tgb').onclick = () => openTg(tgU);
+  const gt = $('#gt'); gt.onscroll = () => { const k = Math.round(gt.scrollLeft / gt.clientWidth); $$('.gd span').forEach((s, i) => s.classList.toggle('on', i === k)); };
+  if (!$('#calc')) return;
+  const set = () => {
+    if (!rasmiy && term !== 12) term = 12;
+    $$('[data-m]').forEach(el => { const m = +el.dataset.m, on = m === term; el.classList.toggle('on', on); el.classList.toggle('dis', !rasmiy && m !== 12); el.setAttribute('aria-pressed', on); });
+    $$('[data-r]').forEach(el => { const on = !!+el.dataset.r === rasmiy; el.classList.toggle('on', on); el.setAttribute('aria-pressed', on); });
+    $('#warn').innerHTML = warn ? `<div class="warn" role="alert"><span style="flex:1">⚠️ ${warn} oyga faqat <b>rasmiy ish joyi</b> bo‘lsa beriladi. Norasmiy — faqat 12 oy.</span><button id="tor">Rasmiy</button></div>` : '';
+    if ($('#tor')) $('#tor').onclick = () => { rasmiy = true; term = warn; warn = 0; set(); };
+    const mo = monthly(p, term);
+    $('#mon').textContent = fmt(mo) + ' so‘m';
+    $('#jami').innerHTML = `Jami<br>${fmt(down + mo * term)} so‘m`;
+  };
+  $$('[data-m]').forEach(el => el.onclick = () => { const m = +el.dataset.m; if (!rasmiy && m !== 12) { warn = m; haptic('warning'); } else { term = m; warn = 0; } set(); });
+  $$('[data-r]').forEach(el => el.onclick = () => { rasmiy = !!+el.dataset.r; warn = 0; set(); });
+  $('#down').oninput = ev => { down = Math.min(+ev.target.value.replace(/\D/g, '') || 0, up(priceSum(p))); ev.target.value = down ? fmt(down) : ''; set(); };
+  $('#down').onkeydown = ev => { if (ev.key === 'Enter') ev.target.blur(); };
+  $('#tocalc') && ($('#tocalc').onclick = () => $('#calc').scrollIntoView({behavior: 'smooth', block: 'start'}));
+  set();
+}
+function goBack() { history.length > 1 ? history.back() : (location.hash = ''); }
+
+function catalog() {
+  const g = {}; D.products.filter(p => !p.sold).forEach(p => { const b = brandOf(p); g[b] = (g[b] || 0) + 1; });
+  page(`<div class="hdr"><h2>Katalog</h2></div>
+  <div class="tiles">${Object.entries(g).map(([b, n]) => `<button data-cat="${esc(b)}"><b>${esc(b)}</b><span>${n} ta telefon</span></button>`).join('') || '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>
+  ${tabbar('catalog')}`);
+  $$('[data-cat]').forEach(el => el.onclick = () => { cat = el.dataset.cat; location.hash = ''; });
+}
+function sales() {
+  const pr = (D.promos || []).filter(x => promoState(x) === 'on');
+  const list = D.products.filter(p => onSale(p) && !p.sold);
+  page(`<div class="hdr"><h2>Aksiya va chegirmalar</h2></div>
+  ${pr.length ? `<div class="list" style="padding-bottom:4px">${pr.map(x => `<div class="pcard"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span style="font-size:15px;font-weight:800">${esc(x.name)}</span><span class="offb">${x.type === 'sum' ? '−' + x.value + '$' : '−' + x.value + '%'}</span></div>
+    <span style="font-size:12px;font-weight:600;color:var(--mut)">${esc(scopeText(x))}${x.end ? ' · ' + esc(x.end) + ' gacha' : ''}</span></div>`).join('')}</div>` : ''}
+  <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha aksiyalar yo‘q</div>'}</div>
+  ${tabbar('sale')}`);
+  bindCards();
+}
+function contact() {
+  const list = BR().length ? BR() : [{name: 'Android Kokand', phone: D.phone, tg: D.tg}];
+  page(`<div class="hdr"><h2>Filiallar va aloqa</h2></div>
+  <div class="list">${list.map((b, i) => {
+    const n = D.products.filter(p => !p.sold && String(p.branch) === String(b.id)).length, t = (b.tg || '').replace(/^@/, '');
+    return `<div class="bcard"><div class="bhead"><span class="bnum">${i + 1}</span><div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:15px;font-weight:800">${esc(b.name)}</span>${b.id ? `<span style="font-size:12px;font-weight:600;color:var(--mut)">${n} ta telefon</span>` : ''}</div></div>
+    <div class="binfo">${b.addr ? `<span>Manzil</span><span>${esc(b.addr)}</span>` : ''}${b.phone ? `<span>Telefon</span><span>${esc(b.phone)}</span>` : ''}${t ? `<span>Telegram</span><span>@${esc(t)}</span>` : ''}${b.hours ? `<span>Ish vaqti</span><span>${esc(b.hours)}</span>` : ''}</div>
+    <div class="bacts"><button class="c" data-call>${svg(P.phone, '#fff', 18)}&nbsp;Qo‘ng‘iroq</button>${t ? `<button class="t" data-tgu="${esc(t)}">Telegram</button>` : ''}</div></div>`;
+  }).join('')}</div>
+  ${tabbar('contact')}`);
+  $$('[data-call]').forEach(el => el.onclick = () => requestCall(null));
+  $$('[data-tgu]').forEach(el => el.onclick = () => openTg(el.dataset.tgu));
 }
 
-function shrink(file, max = 1280) {   // сжатие фото в браузере: ≤1280 px, JPEG 0.82
+/* ================= АДМИН ================= */
+const ANAV = [['admin', 'Mahsulotlar'], ['promos', 'Aksiyalar'], ['banners', 'Bannerlar'], ['branches', 'Filiallar'], ['settings', 'Sozlamalar']];
+const anav = on => `<nav class="anav" aria-label="Bo‘limlar">${ANAV.map(([k, l]) => `<button data-go="${k}" class="${k === on ? 'on' : ''}">${l}</button>`).join('')}</nav>`;
+const guard = () => { if (!ADMIN) { location.hash = ''; return false; } return true; };
+
+function admin() {
+  if (!guard()) return;
+  const list = [...D.products].sort((a, b) => (!!a.sold - !!b.sold) || b.id - a.id);
+  page(`
+  <div class="hdr">${backBtn('', 1)}<div style="display:flex;flex-direction:column;flex:1"><span class="sub2">Admin rejimi</span><h2>Boshqaruv</h2></div></div>
+  <div class="stats"><div style="background:var(--soft)"><b>${D.products.filter(p => !p.sold).length}</b><span style="color:var(--mut)">mahsulot</span></div>
+    <div style="background:#FDECEC"><b style="color:#B91C1C">${D.products.filter(p => !p.sold && onSale(p)).length}</b><span style="color:#B91C1C">chegirmada</span></div>
+    <div style="background:var(--mint)"><b style="color:#166534">${banners().length}</b><span style="color:#166534">banner</span></div></div>
+  ${anav('admin')}
+  <div class="list" style="padding-top:0">${list.map(p => { const e = eff(p); return `<div class="arow">
+    <div class="th">${img(p) ? `<img src="${img(p)}" alt="">` : ''}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
+    <div class="inf"><b>${esc([p.name, p.memory].filter(Boolean).join(' '))}</b><span>${e.price || '?'}$ · <span style="color:${p.sold ? '#B91C1C' : '#166534'}">${p.sold ? 'sotilgan' : 'sotuvda'}</span></span></div>
+    <button class="sq e" aria-label="Tahrirlash" data-go="edit=${p.id}">${svg(P.edit, '#15803D', 17)}</button>
+    <button class="sq o" aria-label="Chegirma" data-go="edit=${p.id}&d">${svg(P.pct, '#B45309', 17)}</button>
+    <button class="sq d" aria-label="O‘chirish" data-del="${p.id}">${svg(P.del, '#B91C1C', 17)}</button></div>`; }).join('') || '<div class="empty">Hali mahsulot yo‘q</div>'}</div>
+  <div style="padding:6px 20px calc(24px + env(safe-area-inset-bottom));margin-top:auto"><button class="btn" data-go="new">+ Mahsulot qo‘shish</button></div>`);
+  $$('[data-del]').forEach(el => el.onclick = () => delProduct(+el.dataset.del));
+}
+function confirmDo(text, fn) { tg && tg.showConfirm ? tg.showConfirm(text, ok => ok && fn()) : confirm(text) && fn(); }
+function delProduct(id, after) {
+  confirmDo('Mahsulot va kanaldagi post o‘chirilsinmi?', async () => {
+    try { const j = await call('/api/delete', {id}); D.products = D.products.filter(x => x.id !== id); toast('🗑 O‘chirildi'); j.warn && toast(j.warn, 4000); after ? after() : admin(); }
+    catch (e) { toast('Xato: ' + e.message, 4000); }
+  });
+}
+
+const BRANDS = ['iPhone', 'Samsung', 'Xiaomi', 'Boshqa'], MEMS = ['32 GB', '64 GB', '128 GB', '256 GB', '512 GB', '1 TB'], STATES = ['Yangi', 'Ideal', 'Zo‘r', 'Yaxshi', 'O‘rtacha'];
+let F = null;
+function edit(id, focusDisc) {
+  if (!guard()) return;
+  const p = id ? D.products.find(x => String(x.id) === String(id)) : null;
+  if (id && !p) { location.hash = 'admin'; return; }
+  if (!F || F.id !== (p ? p.id : null)) {
+    const has = p && p.sale && p.old;
+    F = {id: p ? p.id : null, keep: [...((p && p.photos) || [])], neu: [],
+      name: p ? p.name : '', brand: p ? brandOf(p) : 'iPhone', memory: (p && p.memory) || '128 GB', state: (p && p.state) || 'Ideal',
+      warranty: (p && p.warranty) || '', battery: ((p && p.battery) || '').replace(/\D/g, ''), price: p ? (has ? p.old : p.price) || '' : '',
+      box: (p && p.box) || 'Yo‘q', disc: !!has, pct: has ? String(p.sale).replace(/\D/g, '') : '', newp: has ? p.price : '', until: (p && p.sale_until) || '',
+      branch: p ? p.branch || '' : (BR().length === 1 ? String(BR()[0].id) : ''), instock: p ? !p.sold : true};
+  }
+  const opt = (arr, v) => [...new Set([...arr, v].filter(Boolean))].map(x => `<option ${x === v ? 'selected' : ''}>${esc(x)}</option>`).join('');
+  const nph = F.keep.length + F.neu.length;
+  page(`
+  <div class="hdr">${backBtn('admin', 1)}<h2>Mahsulot</h2></div>
+  <div style="display:flex;flex-direction:column;gap:18px;padding:4px 20px 16px">
+    <section style="display:flex;flex-direction:column;gap:8px"><span style="font-size:13px;font-weight:800">Rasmlar · 6 tagacha</span>
+      <div class="phs">${[...F.keep.map((r, i) => ({src: RAW + r, k: 'k' + i})), ...F.neu.map((d, i) => ({src: d, k: 'n' + i}))].map((x, i) =>
+        `<div class="pi"><img src="${x.src}" alt="">${i ? '' : '<span class="main">Asosiy</span>'}<button class="x" aria-label="Rasmni olib tashlash" data-rm="${x.k}">×</button></div>`).join('')}
+        ${nph < 6 ? `<label aria-label="Rasm qo‘shish">+<input id="file" type="file" accept="image/*" multiple hidden></label>` : ''}</div></section>
+    <section style="display:flex;flex-direction:column;gap:10px">
+      ${BR().length ? `<div class="fl">Filial *<div class="brpick">${BR().map(b => `<button type="button" data-br="${b.id}" class="${String(F.branch) === String(b.id) ? 'on' : ''}" aria-pressed="${String(F.branch) === String(b.id)}"><b>${esc(b.name)}</b><span>${esc(b.addr || '')}</span></button>`).join('')}</div></div>` : ''}
+      <label class="fl">Model<input data-f="name" placeholder="iPhone 12 Pro" value="${esc(F.name)}"></label>
+      <div class="g2">
+        <label class="fl">Brend<select data-f="brand">${opt(BRANDS, F.brand)}</select></label>
+        <label class="fl">Xotira<select data-f="memory">${opt(MEMS, F.memory)}</select></label>
+        <label class="fl">Holati<select data-f="state">${opt(STATES, F.state)}</select></label>
+        <label class="fl">Kafolat<input data-f="warranty" placeholder="1 oy" value="${esc(F.warranty)}"></label>
+        <label class="fl">Batareya, %<input data-f="battery" inputmode="numeric" placeholder="90" value="${esc(F.battery)}"></label>
+        <label class="fl">Narxi, $<input data-f="price" inputmode="numeric" placeholder="290" value="${esc(F.price)}"></label>
+      </div>
+      <div class="fl">Karobkasi<div class="seg">${['Bor', 'Yo‘q'].map(v => `<button type="button" data-box="${v}" class="${F.box === v ? 'on' : ''}">${v}</button>`).join('')}</div></div>
+    </section>
+    <section class="disc" id="disc">
+      <label class="chk">Chegirma<input type="checkbox" id="dc" ${F.disc ? 'checked' : ''}></label>
+      ${F.disc ? `<div class="g2"><label class="fl">Chegirma, %<input data-f="pct" inputmode="numeric" placeholder="10" value="${esc(F.pct)}"></label>
+        <label class="fl">Yoki yangi narx, $<input data-f="newp" inputmode="numeric" placeholder="260" value="${esc(F.newp)}"></label></div>
+        <label class="fl">Qachongacha<input data-f="until" type="date" value="${esc(F.until)}"></label>` : ''}
+    </section>
+    <label class="chk">Sotuvda bor<input type="checkbox" id="stk" ${F.instock ? 'checked' : ''}></label>
+  </div>
+  <div class="savebar"><button class="btn" id="sv">Saqlash</button>${F.id ? '<button class="delbtn" id="dl">Mahsulotni o‘chirish</button>' : ''}</div>`);
+  $$('[data-f]').forEach(el => el.oninput = el.onchange = () => {
+    F[el.dataset.f] = el.value;
+    if (el.dataset.f === 'pct' && F.price && el.value) { F.newp = Math.round(F.price * (1 - el.value / 100)); const n = $('[data-f=newp]'); if (n) n.value = F.newp; }
+    if (el.dataset.f === 'newp' && F.price && el.value) { F.pct = Math.round((1 - el.value / F.price) * 100); const n = $('[data-f=pct]'); if (n) n.value = F.pct; }
+  });
+  $$('[data-br]').forEach(el => el.onclick = () => { F.branch = el.dataset.br; edit(id); });
+  $$('[data-box]').forEach(el => el.onclick = () => { F.box = el.dataset.box; edit(id); });
+  $$('[data-rm]').forEach(el => el.onclick = () => { const k = el.dataset.rm; (k[0] === 'k' ? F.keep : F.neu).splice(+k.slice(1), 1); edit(id); });
+  $('#dc').onchange = e => { F.disc = e.target.checked; edit(id, true); };
+  $('#stk').onchange = e => { F.instock = e.target.checked; };
+  const fi = $('#file'); if (fi) fi.onchange = async () => { for (const f of [...fi.files].slice(0, 6 - nph)) F.neu.push(await shrink(f)); edit(id); };
+  $('#sv').onclick = () => saveForm();
+  if ($('#dl')) $('#dl').onclick = () => delProduct(F.id, () => { F = null; location.hash = 'admin'; });
+  if (focusDisc) setTimeout(() => $('#disc').scrollIntoView({block: 'center'}), 50);
+}
+function shrink(file, max = 1280) {
   return new Promise((ok, bad) => { const im = new Image(); im.onload = () => {
     const k = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement('canvas');
     c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
     c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(im.src); ok(c.toDataURL('image/jpeg', 0.82)); };
     im.onerror = bad; im.src = URL.createObjectURL(file); });
 }
-
-async function saveForm(id) {
-  const f = form.f;
-  if (!f.name || !String(f.name).trim()) return toast('Model nomini yozing');
-  if (!id && !form.neu.length) return toast('Kamida 1 ta rasm qo‘shing');
+async function saveForm() {
+  if (!F.name.trim()) return toast('Model nomini yozing');
+  if (BR().length && !F.branch) return toast('Filialni tanlang');
+  if (!F.id && !F.neu.length) return toast('Kamida 1 ta rasm qo‘shing');
+  const orig = +F.price || 0;
+  let price = orig, old = '', sale = '', until = '';
+  if (F.disc && orig) {
+    const np = +F.newp || (F.pct ? Math.round(orig * (1 - F.pct / 100)) : 0);
+    if (!np || np >= orig) return toast('Chegirmani to‘g‘ri kiriting');
+    price = np; old = orig; sale = '−' + Math.round((1 - np / orig) * 100) + '%'; until = F.until;
+  }
+  const fields = {name: F.name.trim(), brand: F.brand, memory: F.memory, state: F.state, warranty: F.warranty, battery: F.battery ? F.battery + '%' : '',
+    box: F.box, price, old, sale, sale_until: until, branch: F.branch};
   const b = $('#sv'); b.disabled = true; b.textContent = 'Saqlanmoqda…';
   try {
-    const fields = {}; ['name', 'memory', 'state', 'battery', 'box', 'warranty', 'price', 'old', 'sale', 'branch'].forEach(k => fields[k] = f[k] ?? '');
-    const j = await call('/api/save', {id: id ? +id : null, fields, keep: form.keep, new_photos: form.neu});
-    toast(id ? '✅ Saqlandi' : '✅ Saqlandi va kanalga joylandi'); j.warn && toast(j.warn, 4000);
-    form = null; setTimeout(async () => { await refresh(); location.hash = 'admin'; adminList(); }, 1500);
+    const j = await call('/api/save', {id: F.id, fields, keep: F.keep, new_photos: F.neu});
+    const pid = j.id, was = F.id ? D.products.find(x => x.id === F.id) : null;
+    if ((was ? !was.sold : true) !== F.instock) await call('/api/sold', {id: pid, sold: !F.instock});
+    toast(F.id ? '✅ Saqlandi' : '✅ Saqlandi va kanalga joylandi'); j.warn && toast(j.warn, 4000);
+    F = null; setTimeout(async () => { await refresh(); location.hash = 'admin'; route(); }, 1200);
   } catch (e) { b.disabled = false; b.textContent = 'Qayta urinish'; toast('Xato: ' + e.message, 4000); }
 }
 
-function settings() {
-  if (!ADMIN) { location.hash = ''; return; }
-  $('#app').innerHTML = `
-  <div class="top">${back('admin')}<h2>Sozlamalar</h2></div>
-  <div class="form">
-    <label class="fl">Dollar kursi, so‘m<input id="s_kurs" type="number" inputmode="numeric" value="${D.kurs || ''}"></label>
-    <label class="fl">Telefon raqam<input id="s_phone" type="tel" placeholder="+998 90 123 45 67" value="${esc(D.phone || '')}"></label>
-    <label class="fl">Telegram username<input id="s_tg" placeholder="android_kokand" value="${esc(D.tg || '')}"></label>
-  </div>
-  <div class="save"><button id="sv">Saqlash</button></div>`;
-  $('#sv').onclick = async () => {
-    const body = {kurs: $('#s_kurs').value, phone: $('#s_phone').value, tg: $('#s_tg').value};
-    try { await call('/api/settings', body); Object.assign(D, body, {kurs: +body.kurs}); toast('✅ Saqlandi'); }
-    catch (e) { toast('Xato: ' + e.message, 4000); }
+/* --- aksiyalar --- */
+let PR = null;
+const scopeText = x => x.scope === 'all' ? 'Barcha mahsulotlar' : x.scope === 'brand' ? `Brend ${x.brand}` : `${(x.ids || []).length} ta mahsulot`;
+const ST = {on: ['Faol', '#166534', '#E3F1E8'], plan: ['Rejalashtirilgan', '#B45309', '#FFF4E5'], end: ['Tugagan', '#5C676B', '#E5EAE7']};
+function promos() {
+  if (!guard()) return;
+  if (!PR) PR = {id: null, name: '', type: 'pct', value: '', scope: 'brand', brand: 'iPhone', ids: [], start: today(), end: '', banner: true};
+  const brands = [...new Set([...BRANDS, ...D.products.map(brandOf)])];
+  page(`
+  <div class="hdr">${backBtn('admin', 1)}<h2>Aksiya va chegirmalar</h2></div>
+  ${anav('promos')}
+  <div class="list">${(D.promos || []).map(x => { const [s, c, bg] = ST[promoState(x)]; return `<div class="pcard">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span style="font-size:15px;font-weight:800">${esc(x.name)}</span><span class="offb">${x.type === 'sum' ? '−' + x.value + '$' : '−' + x.value + '%'}</span></div>
+    <span style="font-size:12px;font-weight:600;color:var(--mut)">${esc(scopeText(x))} · ${esc(x.start || '…')} — ${esc(x.end || '…')}</span>
+    <div style="display:flex;align-items:center;justify-content:space-between"><span class="st" style="color:${c};background:${bg}">${s}</span>
+      <div style="display:flex;gap:6px"><button class="sq e" aria-label="Tahrirlash" data-pe="${x.id}">${svg(P.edit, '#15803D', 17)}</button><button class="sq d" aria-label="O‘chirish" data-pd="${x.id}">${svg(P.del, '#B91C1C', 17)}</button></div></div></div>`; }).join('') || '<div class="empty" style="padding:16px 0">Aksiyalar yo‘q</div>'}</div>
+  <section class="newbox solid"><h3>${PR.id ? 'Aksiyani tahrirlash' : 'Yangi aksiya'}</h3>
+    <label class="fl">Nomi<input id="pn" placeholder="iPhone haftaligi" value="${esc(PR.name)}"></label>
+    <div class="fl">Chegirma turi<div class="seg"><button type="button" data-pt="pct" class="${PR.type === 'pct' ? 'on' : ''}">Foiz, %</button><button type="button" data-pt="sum" class="${PR.type === 'sum' ? 'on' : ''}">Summa, $</button></div></div>
+    <label class="fl">Chegirma miqdori<input id="pv" inputmode="numeric" placeholder="10" value="${esc(PR.value)}"></label>
+    <div class="fl">Qaysi mahsulotlarga<div class="scope">
+      <button type="button" data-ps="brand" class="${PR.scope === 'brand' ? 'on' : ''}">Brend${PR.scope === 'brand' ? ': ' + esc(PR.brand) : ''}</button>
+      <button type="button" data-ps="all" class="${PR.scope === 'all' ? 'on' : ''}">Barcha mahsulotlar</button>
+      <button type="button" data-ps="ids" class="${PR.scope === 'ids' ? 'on' : ''}">Tanlash${PR.ids.length ? ' (' + PR.ids.length + ')' : ''}</button></div>
+      ${PR.scope === 'brand' ? `<select id="pb" aria-label="Brend">${brands.map(b => `<option ${b === PR.brand ? 'selected' : ''}>${b}</option>`).join('')}</select>` : ''}
+      ${PR.scope === 'ids' ? `<div class="pickl">${D.products.filter(p => !p.sold).map(p => `<label><input type="checkbox" data-pi="${p.id}" ${PR.ids.includes(p.id) ? 'checked' : ''}>${esc(p.name)} ${esc(p.memory || '')}</label>`).join('')}</div>` : ''}</div>
+    <div class="g2"><label class="fl">Boshlanishi<input id="p1" type="date" value="${esc(PR.start)}"></label><label class="fl">Tugashi<input id="p2" type="date" value="${esc(PR.end)}"></label></div>
+    <label class="chk">Karuselga banner qo‘shish<input type="checkbox" id="pbn" ${PR.banner ? 'checked' : ''}></label>
+    <button class="btn" id="psv">${PR.id ? 'Saqlash' : 'Aksiyani boshlash'}</button>
+    ${PR.id ? '<button class="delbtn" id="pcancel" style="color:var(--mut)">Bekor qilish</button>' : ''}
+  </section>`);
+  if ($('#pb')) { $('#pb').style.cssText = 'height:48px;border-radius:14px;border:1px solid #DDE3DF;background:#fff;padding:0 10px;font-weight:600'; }
+  const keep = () => { PR.name = $('#pn').value; PR.value = $('#pv').value; PR.start = $('#p1').value; PR.end = $('#p2').value; PR.banner = $('#pbn').checked; if ($('#pb')) PR.brand = $('#pb').value; };
+  $$('[data-pt]').forEach(el => el.onclick = () => { keep(); PR.type = el.dataset.pt; promos(); });
+  $$('[data-ps]').forEach(el => el.onclick = () => { keep(); PR.scope = el.dataset.ps; promos(); });
+  $$('[data-pi]').forEach(el => el.onchange = () => { const id = +el.dataset.pi; PR.ids = el.checked ? [...PR.ids, id] : PR.ids.filter(x => x !== id); });
+  $$('[data-pe]').forEach(el => el.onclick = () => { const x = D.promos.find(y => y.id === +el.dataset.pe); PR = {...x, ids: [...(x.ids || [])], value: String(x.value)}; promos(); scrollTo(0, document.body.scrollHeight); });
+  $$('[data-pd]').forEach(el => el.onclick = () => confirmDo('Aksiya o‘chirilsinmi?', () => savePromos(D.promos.filter(y => y.id !== +el.dataset.pd))));
+  if ($('#pcancel')) $('#pcancel').onclick = () => { PR = null; promos(); };
+  $('#psv').onclick = () => {
+    keep();
+    if (!PR.name.trim()) return toast('Aksiya nomini yozing');
+    if (!(+PR.value > 0)) return toast('Chegirma miqdorini yozing');
+    if (PR.scope === 'ids' && !PR.ids.length) return toast('Mahsulotlarni tanlang');
+    const x = {...PR, value: +PR.value, id: PR.id || Date.now()};
+    savePromos(PR.id ? D.promos.map(y => y.id === PR.id ? x : y) : [...(D.promos || []), x]);
   };
 }
-
-/* ================= KATALOG / AKSIYALAR / ALOQA ================= */
-const head = t => `<div class="top"><h2>${t}</h2></div>`;
-function catalog() {
-  const live = D.products.filter(p => !p.sold), groups = {};
-  live.forEach(p => { const b = brandOf(p.name); groups[b] = (groups[b] || 0) + 1; });
-  $('#app').innerHTML = `${head('Katalog')}
-  <div class="tiles">${Object.entries(groups).map(([b, n]) => `<button data-cat="${b}"><b>${b}</b><span>${n} ta telefon</span></button>`).join('') || '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>
-  ${tabbar('catalog')}`;
-  document.querySelectorAll('[data-cat]').forEach(el => el.onclick = () => { cat = el.dataset.cat; location.hash = ''; });
-  tabEvents();
-}
-function sales() {
-  const list = D.products.filter(p => p.sale && !p.sold);
-  $('#app').innerHTML = `${head('Aksiya va chegirmalar')}
-  <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha aksiyalar yo‘q</div>'}</div>
-  ${tabbar('sale')}`;
-  document.querySelectorAll('[data-p]').forEach(el => el.onclick = () => { location.hash = 'p=' + el.dataset.p; });
-  tabEvents();
-}
-function contact() {
-  const list = BR().length ? BR() : [{name: 'Android Kokand', phone: D.phone, tg: D.tg}];
-  $('#app').innerHTML = `${head('Filiallar va aloqa')}
-  <div class="list">${list.map((b, i) => {
-    const ph = (b.phone || '').replace(/[^\d+]/g, ''), t = (b.tg || '').replace(/^@/, '');
-    const n = D.products.filter(p => !p.sold && String(p.branch) === String(b.id)).length;
-    return `<div class="bcard"><div class="bhead"><span class="bnum">${i + 1}</span><div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:15px;font-weight:800">${esc(b.name)}</span>${b.id ? `<span style="font-size:12px;font-weight:600;color:var(--mut)">${n} ta telefon</span>` : ''}</div></div>
-    <div class="binfo">${b.addr ? `<span>Manzil</span><span>${esc(b.addr)}</span>` : ''}${b.phone ? `<span>Telefon</span><span>${esc(b.phone)}</span>` : ''}${t ? `<span>Telegram</span><span>@${esc(t)}</span>` : ''}${b.hours ? `<span>Ish vaqti</span><span>${esc(b.hours)}</span>` : ''}</div>
-    <div class="bacts">${ph ? `<a class="c" href="tel:${ph}">Qo‘ng‘iroq</a>` : ''}${t ? `<a class="t" href="https://t.me/${esc(t)}">Telegram</a>` : ''}</div></div>`;
-  }).join('')}</div>
-  ${tabbar('contact')}`;
-  tabEvents();
+async function savePromos(list) {
+  try { const j = await call('/api/promos', {promos: list}); D.promos = j.promos; PR = null; toast('✅ Saqlandi'); promos(); }
+  catch (e) { toast('Xato: ' + e.message, 4000); }
 }
 
-/* ================= ADMIN: FILIALLAR ================= */
+/* --- bannerlar --- */
+let BN = null;
+const linkText = l => !l ? 'Havolasiz' : l === 'sale' ? 'Aksiyalar' : l === 'contact' ? 'Filiallar' : l.startsWith('p:') ? 'Mahsulot: ' + ((D.products.find(p => 'p:' + p.id === l) || {}).name || '?') : l;
+function bannersAdmin() {
+  if (!guard()) return;
+  const list = D.banners || [];
+  if (!BN) BN = {title: '', tag: '', link: '', text: true, new_img: ''};
+  const lt = BN.link.startsWith('p:') ? 'p' : BN.link;
+  page(`
+  <div class="hdr">${backBtn('admin')}<div style="display:flex;flex-direction:column;flex:1"><h2>Bannerlar</h2><span class="sub2">Tartib: ⠿ ni bossangiz yuqoriga ko‘tariladi</span></div></div>
+  ${anav('banners')}
+  <div class="list">${list.map((b, i) => `<div class="brow">
+    <button class="h" aria-label="Yuqoriga" data-bu="${i}"><svg width="16" height="16" viewBox="0 0 24 24" fill="#9AA5A0" aria-hidden="true"><circle cx="9" cy="6" r="1.6"></circle><circle cx="15" cy="6" r="1.6"></circle><circle cx="9" cy="12" r="1.6"></circle><circle cx="15" cy="12" r="1.6"></circle><circle cx="9" cy="18" r="1.6"></circle><circle cx="15" cy="18" r="1.6"></circle></svg></button>
+    ${b.img ? `<img class="bi" src="${RAW + b.img}" alt="">` : `<span class="bi" style="background:${BG[i % 3]}"></span>`}
+    <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(b.title || b.tag || 'Banner')}</span><span style="font-size:11px;font-weight:600;color:var(--mut)">${esc(linkText(b.link))}</span></div>
+    <button class="sq d" aria-label="O‘chirish" data-bd="${i}">${svg(P.del, '#B91C1C', 17)}</button></div>`).join('') || '<div class="empty" style="padding:16px 0">Hozir standart bannerlar ko‘rsatilmoqda</div>'}</div>
+  <section class="newbox solid" style="box-shadow:0 4px 14px rgba(21,128,61,.06)"><h3>Yangi banner</h3>
+    <label class="upl">${BN.new_img ? `<img src="${BN.new_img}" alt="">` : `${svg('<rect x="3" y="4" width="18" height="16" rx="3"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-9 9"></path>', '#15803D', 32)}
+      <span style="font-size:14px;font-weight:800">Rasm yuklash</span><span style="font-size:11px;font-weight:600;color:#3F6B50">1200 × 520 px tavsiya etiladi · JPG, PNG</span>`}
+      <input id="bf" type="file" accept="image/*" hidden></label>
+    <label class="fl">Sarlavha · ixtiyoriy<input id="bt" placeholder="iPhone’larga chegirmalar" value="${esc(BN.title)}"></label>
+    <label class="fl">Belgi · ixtiyoriy<input id="bg" placeholder="Aksiya" value="${esc(BN.tag)}"></label>
+    <label class="fl">Bosilganda ochiladi<select id="bl"><option value="">Hech narsa</option><option value="p" ${lt === 'p' ? 'selected' : ''}>Mahsulot</option><option value="sale" ${lt === 'sale' ? 'selected' : ''}>Aksiya</option><option value="contact" ${lt === 'contact' ? 'selected' : ''}>Filial</option></select></label>
+    ${lt === 'p' ? `<label class="fl">Mahsulot<select id="blp">${D.products.filter(p => !p.sold).map(p => `<option value="${p.id}" ${BN.link === 'p:' + p.id ? 'selected' : ''}>${esc(p.name)} ${esc(p.memory || '')}</option>`).join('')}</select></label>` : ''}
+    <label class="chk">Matnni rasm ustida ko‘rsatish<input type="checkbox" id="btx" ${BN.text ? 'checked' : ''}></label>
+    <button class="btn" id="bsv">Bannerni saqlash</button>
+  </section>`);
+  const keep = () => { BN.title = $('#bt').value; BN.tag = $('#bg').value; BN.text = $('#btx').checked; const l = $('#bl').value; BN.link = l === 'p' ? 'p:' + ($('#blp') ? $('#blp').value : (D.products[0] || {}).id) : l; };
+  $('#bl').onchange = () => { keep(); bannersAdmin(); };
+  $('#bf').onchange = async e => { keep(); if (e.target.files[0]) BN.new_img = await shrink(e.target.files[0], 1200); bannersAdmin(); };
+  $$('[data-bu]').forEach(el => el.onclick = () => { const i = +el.dataset.bu; if (!i) return; const l = [...list]; [l[i - 1], l[i]] = [l[i], l[i - 1]]; saveBanners(l); });
+  $$('[data-bd]').forEach(el => el.onclick = () => confirmDo('Banner o‘chirilsinmi?', () => saveBanners(list.filter((_, i) => i !== +el.dataset.bd))));
+  $('#bsv').onclick = () => {
+    keep();
+    if (!BN.new_img && !BN.title) return toast('Rasm yoki sarlavha qo‘shing');
+    saveBanners([...list, {...BN}]);
+  };
+}
+async function saveBanners(list) {
+  const b = $('#bsv'); if (b) { b.disabled = true; b.textContent = 'Saqlanmoqda…'; }
+  try { const j = await call('/api/banners', {banners: list}); D.banners = j.banners; BN = null; bi = 0; toast('✅ Saqlandi'); bannersAdmin(); }
+  catch (e) { toast('Xato: ' + e.message, 4000); if (b) { b.disabled = false; b.textContent = 'Bannerni saqlash'; } }
+}
+
+/* --- filiallar --- */
 const BF = [['name', 'Nomi', 'Masalan: Markaz filiali', 'text'], ['addr', 'Manzil', 'Qo‘qon shahar, ...', 'text'], ['phone', 'Telefon raqami', '+998 __ ___ __ __', 'tel'], ['tg', 'Telegram', '@username', 'text'], ['hours', 'Ish vaqti', 'Har kuni 9:00–21:00', 'text']];
 let bEdit = null;
 function branchesAdmin() {
-  if (!ADMIN) { location.hash = ''; return; }
+  if (!guard()) return;
   const cur = bEdit ? BR().find(b => b.id === bEdit) || {} : {};
-  $('#app').innerHTML = `<div class="top">${back('admin')}<h2>Filiallar</h2></div>
+  page(`<div class="hdr">${backBtn('admin')}<h2>Filiallar</h2></div>
+  ${anav('branches')}
   <div class="list">${BR().map((b, i) => `<div class="bcard"><div class="bhead"><span class="bnum">${i + 1}</span>
     <div style="display:flex;flex-direction:column;flex:1;min-width:0"><span style="font-size:15px;font-weight:800">${esc(b.name)}</span><span style="font-size:12px;font-weight:600;color:var(--mut)">${D.products.filter(p => String(p.branch) === String(b.id)).length} ta telefon</span></div>
-    <div class="acts"><button aria-label="Tahrirlash" data-be="${b.id}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></button>
-    <button aria-label="O‘chirish" data-bd="${b.id}" style="background:#FDECEC"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#B91C1C" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg></button></div></div>
+    <button class="sq e" aria-label="Tahrirlash" data-be="${b.id}">${svg(P.edit, '#15803D', 17)}</button><button class="sq d" aria-label="O‘chirish" data-bd="${b.id}">${svg(P.del, '#B91C1C', 17)}</button></div>
     <div class="binfo"><span>Manzil</span><span>${esc(b.addr || '—')}</span><span>Telefon</span><span>${esc(b.phone || '—')}</span><span>Telegram</span><span>${esc(b.tg || '—')}</span><span>Ish vaqti</span><span>${esc(b.hours || '—')}</span></div></div>`).join('')}</div>
   <section class="newbox"><h3>${bEdit ? 'Filialni tahrirlash' : 'Yangi filial'}</h3>
     ${BF.map(([k, l, ph, t]) => `<label class="fl">${l}<input data-bf="${k}" type="${t}" placeholder="${ph}" value="${esc(cur[k] || '')}"></label>`).join('')}
-    <button class="go" id="bsave">${bEdit ? 'Saqlash' : '+ Filial qo‘shish'}</button></section>`;
-  document.querySelectorAll('[data-be]').forEach(el => el.onclick = () => { bEdit = +el.dataset.be; branchesAdmin(); window.scrollTo(0, document.body.scrollHeight); });
-  document.querySelectorAll('[data-bd]').forEach(el => el.onclick = () => {
-    const go = ok => ok && saveBranches(BR().filter(b => b.id !== +el.dataset.bd));
-    tg && tg.showConfirm ? tg.showConfirm('Filial o‘chirilsinmi?', go) : go(confirm('O‘chirilsinmi?'));
-  });
+    <button class="btn" id="bsave" style="height:54px;border-radius:14px">${bEdit ? 'Saqlash' : '+ Filial qo‘shish'}</button></section>`);
+  $$('[data-be]').forEach(el => el.onclick = () => { bEdit = +el.dataset.be; branchesAdmin(); scrollTo(0, document.body.scrollHeight); });
+  $$('[data-bd]').forEach(el => el.onclick = () => confirmDo('Filial o‘chirilsinmi?', () => saveBranches(BR().filter(b => b.id !== +el.dataset.bd))));
   $('#bsave').onclick = () => {
-    const v = {}; document.querySelectorAll('[data-bf]').forEach(el => v[el.dataset.bf] = el.value.trim());
+    const v = {}; $$('[data-bf]').forEach(el => v[el.dataset.bf] = el.value.trim());
     if (!v.name) return toast('Filial nomini yozing');
-    const list = bEdit ? BR().map(b => b.id === bEdit ? {...b, ...v} : b) : [...BR(), {id: Date.now(), ...v}];
-    saveBranches(list);
+    saveBranches(bEdit ? BR().map(b => b.id === bEdit ? {...b, ...v} : b) : [...BR(), {id: Date.now(), ...v}]);
   };
-  tg && tg.BackButton.hide();
 }
 async function saveBranches(list) {
   try { await call('/api/branches', {branches: list}); D.branches = list; bEdit = null; toast('✅ Saqlandi'); branchesAdmin(); }
   catch (e) { toast('Xato: ' + e.message, 4000); }
 }
 
-function route() {
-  const h = location.hash;
-  if (h === '#catalog') return catalog();
-  if (h === '#sale') return sales();
-  if (h === '#contact') return contact();
-  if (h === '#branches') return branchesAdmin();
-  if (h === '#admin') return adminList();
-  if (h === '#settings') return settings();
-  if (h === '#new') return edit(null);
-  let m = h.match(/edit=(\d+)/); if (m) return edit(m[1]);
-  m = h.match(/p=(\d+)/);
-  m ? product(m[1]) : home();
+/* --- sozlamalar --- */
+let ADM = null;
+function settings() {
+  if (!guard()) return;
+  const R = RATES();
+  page(`<div class="hdr">${backBtn('admin')}<h2>Sozlamalar</h2></div>
+  ${anav('settings')}
+  <div style="display:flex;flex-direction:column;gap:12px;padding:4px 20px 16px">
+    <button class="navcard" data-go="branches"><span class="ico">${svg(P.pin, '#fff')}</span>
+      <span style="display:flex;flex-direction:column;flex:1"><span style="font-size:15px;font-weight:800">Filiallar</span><span style="font-size:12px;font-weight:600;color:var(--mut)">${BR().length} ta filial · manzil, telefon, Telegram</span></span>${svg(P.chev, '#5C676B', 18)}</button>
+    <span class="lbl">Muddatli to‘lov</span>
+    <label class="fl">Dollar kursi, so‘m<input id="s_kurs" inputmode="numeric" placeholder="12 800" value="${D.kurs || ''}"></label>
+    <span style="font-size:12px;font-weight:700;color:var(--mut)">Ustama · rasmiy ish joyi</span>
+    <div class="g3">${[3, 6, 12].map(m => `<label class="fl">${m} oy, %<input data-rt="r${m}" inputmode="numeric" value="${R['r' + m]}"></label>`).join('')}</div>
+    <span style="font-size:12px;font-weight:700;color:var(--mut)">Ustama · norasmiy</span>
+    <div class="g3"><label class="fl">12 oy, %<input data-rt="n12" inputmode="numeric" value="${R.n12}"></label></div>
+    <span class="lbl">Adminlar</span>
+    <div id="adl" style="display:flex;flex-direction:column;gap:8px">${ADM ? '' : '<span style="font-size:13px;color:var(--mut);font-weight:600">Yuklanmoqda…</span>'}</div>
+    <div id="adadd"><button class="dash" id="adb" style="width:100%">+ Telegram ID orqali admin qo‘shish</button></div>
+  </div>
+  <div class="savebar" style="border-top:none"><button class="btn" id="ssv">Saqlash</button></div>`);
+  const drawAdm = () => { $('#adl').innerHTML = (ADM || []).map((a, i) => `<div class="adrow"><span class="av">${i ? 'A' : '★'}</span><span style="flex:1;font-size:14px;font-weight:700">${a}${i ? '' : ' <span style="font-weight:600;color:var(--mut)">· asosiy</span>'}</span>${i ? `<button class="sq d" aria-label="Adminni o‘chirish" data-ar="${a}">${svg(P.del, '#B91C1C', 17)}</button>` : ''}</div>`).join('');
+    $$('[data-ar]').forEach(el => el.onclick = () => confirmDo('Admin o‘chirilsinmi?', async () => { try { ADM = (await call('/api/admins', {remove: +el.dataset.ar})).admins; drawAdm(); } catch (e) { toast('Xato: ' + e.message); } })); };
+  if (ADM) drawAdm(); else call('/api/admins').then(j => { ADM = j.admins; if ($('#adl')) drawAdm(); }).catch(() => {});
+  $('#adb').onclick = () => {
+    $('#adadd').innerHTML = `<div style="display:flex;gap:8px"><label class="fl" style="flex:1"><input id="adid" inputmode="numeric" placeholder="Telegram ID, masalan 123456789" aria-label="Telegram ID"></label><button class="btn" id="adok" style="width:90px;height:48px;border-radius:14px">Qo‘shish</button></div>`;
+    $('#adid').focus();
+    $('#adok').onclick = async () => { const v = +$('#adid').value.replace(/\D/g, ''); if (!v) return toast('ID ni yozing');
+      try { ADM = (await call('/api/admins', {add: v})).admins; toast('✅ Admin qo‘shildi'); settings(); } catch (e) { toast('Xato: ' + e.message); } };
+  };
+  $('#ssv').onclick = async () => {
+    const rates = {}; $$('[data-rt]').forEach(el => rates[el.dataset.rt] = +el.value || 0);
+    const kurs = +$('#s_kurs').value.replace(/\D/g, '');
+    if (!kurs) return toast('Kursni yozing');
+    try { await call('/api/settings', {kurs, rates}); D.kurs = kurs; D.rates = rates; toast('✅ Saqlandi'); } catch (e) { toast('Xato: ' + e.message, 4000); }
+  };
 }
 
+/* ================= маршруты ================= */
+function route() {
+  document.body.classList.remove('kb');
+  const h = location.hash.replace(/^#/, '');
+  const S = {catalog, sale: sales, contact, admin, promos, banners: bannersAdmin, branches: branchesAdmin, settings, new: () => edit(null)};
+  if (S[h]) return S[h]();
+  let m = h.match(/^edit=(\d+)(&d)?/); if (m) return edit(m[1], !!m[2]);
+  m = h.match(/p=(\d+)/); m ? product(m[1]) : home();
+}
 (async () => {
   try { D = await getData(); } catch (e) {}
-  D.products = (D.products || []).filter(p => p.id);
+  norm();
   if (INIT) { try { ADMIN = (await call('/api/me')).admin; } catch (e) {} }
   const sp = tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param;
   if (sp && /^p_\d+$/.test(sp)) location.hash = 'p=' + sp.slice(2);
   window.onhashchange = route;
   route();
-  setInterval(() => { if ($('#slides')) slide((bi + 1) % BANNERS.length, true); }, 4000);   // только сдвиг, без перерисовки
+  setInterval(() => { if ($('#slides') && !document.body.classList.contains('kb')) slide((bi + 1) % banners().length, true); }, 4000);
 })();
 </script>
 </body></html>
