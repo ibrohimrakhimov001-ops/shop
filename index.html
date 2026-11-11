@@ -26,6 +26,7 @@ input,select{font-size:16px}   /* <16px → телефон приближает 
 .sq.e{background:var(--mint)}.sq.o{background:#FFF4E5}.sq.d{background:#FDECEC}
 .btn{height:56px;border-radius:16px;border:none;background:var(--grad);color:#fff;font-weight:800;font-size:15px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
 .btn:disabled{opacity:.6}
+.sfx{position:relative;display:block}.sfx input{padding-right:60px}.sfx i{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-style:normal;font-size:15px;font-weight:700;color:var(--mut);pointer-events:none}
 .cwrap{padding:4px 20px 120px;display:flex;flex-direction:column;gap:14px}
 .ccard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:0 4px 14px rgba(21,128,61,.07)}
 .ch{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;margin-bottom:6px}
@@ -524,8 +525,8 @@ function calcPage() {   // как в боте @Androidkokandbot: ISHONCH (narx×
     bag: '<path d="M5 8h14l-1 12H6z"></path><path d="M9 8V6a3 3 0 016 0v2"></path>'};
   page(`<div class="hdr"><h2>Muddatli to‘lov kalkulyatori</h2></div>
   <div class="cwrap">
-    <label class="fl">Telefon narxi, $<input id="cu" inputmode="decimal" placeholder="Masalan: 380" autocomplete="off"></label>
-    <label class="fl"><span>Oldindan to‘lov, so‘m <span style="font-weight:600">(ixtiyoriy)</span></span><input id="cd" inputmode="numeric" placeholder="0" autocomplete="off"></label>
+    <label class="fl">Telefon narxi<span class="sfx"><input id="cu" inputmode="decimal" placeholder="Masalan: 380" autocomplete="off"><i>$</i></span></label>
+    <label class="fl"><span>Oldindan to‘lov <span style="font-weight:600">(ixtiyoriy)</span></span><span class="sfx"><input id="cd" inputmode="numeric" placeholder="0" autocomplete="off"><i>so‘m</i></span></label>
     <div id="cres"></div></div>
   ${tabbar('calc')}`);
   const inp = $('#cu'), dn = $('#cd'), out = $('#cres');
