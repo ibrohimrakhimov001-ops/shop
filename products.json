@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 11:47:13",
+ "updated": "2026-11-11 11:47:28",
  "kurs": 12800,
  "phone": "",
  "tg": "",
@@ -22,10 +22,10 @@
    "sold": false,
    "created": "2026-11-11 11:25",
    "battery": "",
-   "box": "",
+   "box": "Yo‘q",
    "old": null,
    "sale": "",
-   "branch": "1794379620332"
+   "branch": ""
   }
  ],
  "branches": [
