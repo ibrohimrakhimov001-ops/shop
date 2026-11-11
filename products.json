@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 17:32:11",
+ "updated": "2026-11-11 17:50:49",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -388,6 +388,28 @@
     200
    ],
    "created": "2026-11-11 17:32"
+  },
+  {
+   "name": "IPhone 16 Pro",
+   "desc": "📱IPhone 16 Pro\n💽Xotira 256 GB \n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yöq\n🔋Batareka 91%\n💰Naqtga 810$\n📌Manzil: Qöqon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "256 GB",
+   "battery": "91%",
+   "price": 810,
+   "state": "Ideal",
+   "box": "Bor",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 4401447640,
+   "photos": [
+    "photos/4401447640_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    201,
+    202
+   ],
+   "created": "2026-11-11 17:50"
   }
  ],
  "branches": [
