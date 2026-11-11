@@ -340,12 +340,12 @@ function card(p) {
 function bindCards() { $$('[data-p]').forEach(el => el.onclick = () => { location.hash = 'p=' + el.dataset.p; }); }
 
 function home() {
-  const list = D.products
+  const list = D.products.filter(p => !p.sold)
     .filter(p => cat === 'all' || (cat === 'sale' ? onSale(p) : brandOf(p) === cat))
     .filter(p => !q || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(q))
     .filter(p => !brf || String(p.branch) === String(brf))
     .sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (eff(a).price || 1e9) - (eff(b).price || 1e9) : sort === 'exp' ? (eff(b).price || 0) - (eff(a).price || 0) : b.id - a.id));
-  const brands = [...new Set(D.products.map(brandOf))];
+  const brands = [...new Set(D.products.filter(p => !p.sold).map(brandOf))];
   const B = banners(); if (bi >= B.length) bi = 0;
   page(`
   <header><div style="display:flex;flex-direction:column">
@@ -366,7 +366,7 @@ function home() {
   </section>
   <nav class="cats" aria-label="Kategoriyalar">
     <button data-c="all" class="${cat === 'all' ? 'on' : ''}">Barchasi</button>
-    ${D.products.some(onSale) ? `<button data-c="sale" class="sale ${cat === 'sale' ? 'on' : ''}">% Aksiya</button>` : ''}
+    ${D.products.some(p => !p.sold && onSale(p)) ? `<button data-c="sale" class="sale ${cat === 'sale' ? 'on' : ''}">% Aksiya</button>` : ''}
     ${brands.map(x => `<button data-c="${x}" class="${cat === x ? 'on' : ''}">${x}</button>`).join('')}
   </nav>
   <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>
