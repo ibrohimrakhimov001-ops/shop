@@ -92,6 +92,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:20p
 .card .p{font-size:16px;font-weight:800}
 .old{font-size:12px;color:var(--mut);text-decoration:line-through;font-weight:600}
 .card.sold{opacity:.6}.card.sold img{filter:grayscale(1)}
+.newtag{position:absolute;top:8px;right:8px;background:#15803D;color:#fff;font-size:11px;font-weight:800;padding:3px 7px;border-radius:6px;box-shadow:0 2px 6px rgba(21,128,61,.3)}
 .soldtag{position:absolute;inset:auto 8px 8px 8px;background:rgba(27,35,38,.85);color:#fff;font-size:12px;font-weight:800;text-align:center;padding:5px;border-radius:8px}
 .tabbar{position:sticky;bottom:0;z-index:10;margin-top:auto;display:flex;justify-content:space-around;padding:10px 12px calc(14px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
 .tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;border:none;background:none;font-size:11px;font-weight:600;color:var(--mut);min-width:64px;padding:2px 0}
@@ -370,7 +371,7 @@ function card(p) {
   const e = eff(p), spec = [p.memory, p.state, p.battery].filter(Boolean).join(' · ');
   return `<button class="card ${p.sold ? 'sold' : ''}" data-p="${p.id}">
     <div class="ph">${img(p) ? `<img loading="lazy" src="${th(p)}" data-full="${img(p)}" alt="${esc(p.name)}">` : phoneSvg}
-      ${e.sale && !p.sold ? `<span class="badge">${esc(e.sale)}</span>` : ''}${p.sold ? '<span class="soldtag">SOTILDI</span>' : ''}</div>
+      ${e.sale && !p.sold ? `<span class="badge">${esc(e.sale)}</span>` : ''}${/^yangi/i.test(p.state || '') && !p.sold ? '<span class="newtag">Yangi</span>' : ''}${p.sold ? '<span class="soldtag">SOTILDI</span>' : ''}</div>
     <span class="n">${esc(p.name)}</span><span class="s">${esc(spec)}</span>${brName(p.branch) ? `<span class="br">${esc(brName(p.branch))}</span>` : ''}
     <span class="pr"><span class="p" style="color:${e.sale ? '#DC2626' : '#1B2326'}">${e.price ? e.price + '$' : 'Narx so‘rang'}</span>${e.old ? `<span class="old">${e.old}$</span>` : ''}</span>
   </button>`;
