@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 17:19:21",
+ "updated": "2026-11-11 17:19:56",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -62,6 +62,26 @@
    "created": "2026-11-11 17:19",
    "channel_msgs": [
     177
+   ]
+  },
+  {
+   "name": "IPhone 11 Pro",
+   "desc": "📱IPhone 11 Pro\n💽Xotira 64 GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yuq\n🔋Batareka 90%\n💰Narxi 220$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "64 GB",
+   "battery": "90%",
+   "price": 220,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 1794399593,
+   "photos": [
+    "photos/1794399593_0.jpg"
+   ],
+   "sold": false,
+   "created": "2026-11-11 17:19",
+   "channel_msgs": [
+    178
    ]
   }
  ],
