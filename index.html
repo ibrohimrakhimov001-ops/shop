@@ -28,7 +28,8 @@ input,select{font-size:16px}   /* <16px → телефон приближает 
 .btn:disabled{opacity:.6}
 .cwrap{padding:4px 20px 120px;display:flex;flex-direction:column;gap:14px}
 .ccard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;box-shadow:0 4px 14px rgba(21,128,61,.07)}
-.ch{font-weight:800;font-size:15px;margin-bottom:4px}
+.ch{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;margin-bottom:6px}
+.ci{width:32px;height:32px;border-radius:10px;background:#E8F5EC;display:flex;align-items:center;justify-content:center;flex:none}
 .crow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid var(--line);font-size:15px}
 .ch + .crow{border-top:none}.crow span{color:var(--mut);font-weight:600}.crow b{font-weight:800;color:var(--ink)}
 #cres{display:flex;flex-direction:column;gap:12px}
@@ -517,21 +518,31 @@ function sales() {
   ${tabbar('sale')}`);
   bindCards();
 }
-function calcPage() {   // как в боте @Androidkokandbot: ISHONCH (narx×1.01) и BIRZUM NASIYA (narx×1.02)
+function calcPage() {   // как в боте @Androidkokandbot: ISHONCH (narx×1.01) и BIRZUM NASIYA (narx×1.02), минус предоплата
+  const IC = {bank: '<path d="M3 10l9-6 9 6"></path><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"></path>',
+    bag: '<path d="M5 8h14l-1 12H6z"></path><path d="M9 8V6a3 3 0 016 0v2"></path>'};
   page(`<div class="hdr"><h2>Muddatli to‘lov kalkulyatori</h2></div>
-  <div class="cwrap"><label class="fl">Telefon narxi, $<input id="cu" inputmode="decimal" placeholder="Masalan: 380" autocomplete="off"></label><div id="cres"></div></div>
+  <div class="cwrap">
+    <label class="fl">Telefon narxi, $<input id="cu" inputmode="decimal" placeholder="Masalan: 380" autocomplete="off"></label>
+    <label class="fl">Oldindan to‘lov, so‘m <span style="font-weight:600">(ixtiyoriy)</span><input id="cd" inputmode="numeric" placeholder="0" autocomplete="off"></label>
+    <div id="cres"></div></div>
   ${tabbar('calc')}`);
-  const inp = $('#cu'), out = $('#cres');
+  const inp = $('#cu'), dn = $('#cd'), out = $('#cres');
+  const head = (ic, t) => `<div class="ch"><span class="ci">${svg(IC[ic], '#15803D', 18)}</span>${t}</div>`;
   const tbl = (base, rows) => rows.map(([oy, pct]) => `<div class="crow"><span>${oy} oy</span><b>${fmt(base * (1 + pct / 100) / oy)} so‘m</b></div>`).join('');
   const draw = () => {
     const usd = parseFloat(inp.value.replace(/\s/g, '').replace(',', '.').replace('$', ''));
+    const d = +dn.value.replace(/\D/g, '') || 0;
     if (!(usd > 0)) { out.innerHTML = '<div class="empty">Narxni dollarda kiriting — oylik to‘lovlar shu yerda chiqadi</div>'; return; }
-    const narx = usd * D.kurs, R = RATES();
-    out.innerHTML = `<div class="ccard"><div class="ch">🏦 ISHONCH · Rasmiy</div>${tbl(narx * 1.01, [[3, R.r3], [6, R.r6], [12, R.r12]])}</div>
-      <div class="ccard"><div class="ch">🏦 ISHONCH · No rasmiy</div>${tbl(narx * 1.01, [[12, R.n12]])}</div>
-      <div class="ccard"><div class="ch">🛒 BIRZUM NASIYA</div>${tbl(narx * 1.02, [[3, 15], [6, 20], [12, 38]])}</div>`;
+    const narx = usd * D.kurs, R = RATES(), ish = narx * 1.01 - d, bz = narx * 1.02 - d;
+    if (ish <= 0) { out.innerHTML = '<div class="empty">Oldindan to‘lov telefon narxidan katta</div>'; return; }
+    out.innerHTML = `<div class="ccard">${head('bank', 'ISHONCH · Rasmiy')}${tbl(ish, [[3, R.r3], [6, R.r6], [12, R.r12]])}</div>
+      <div class="ccard">${head('bank', 'ISHONCH · No rasmiy')}${tbl(ish, [[12, R.n12]])}</div>
+      <div class="ccard">${head('bag', 'BIRZUM NASIYA')}${tbl(bz, [[3, 15], [6, 20], [12, 38]])}</div>`;
   };
-  inp.oninput = draw; draw();
+  inp.oninput = draw;
+  dn.oninput = () => { const v = +dn.value.replace(/\D/g, '') || 0; dn.value = v ? fmt(v) : ''; draw(); };
+  draw();
 }
 function contact() {
   const list = BR().length ? BR() : [{name: 'Android Kokand', phone: D.phone, tg: D.tg}];
