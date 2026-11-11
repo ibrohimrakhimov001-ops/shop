@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 17:31:23",
+ "updated": "2026-11-11 17:31:37",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -284,6 +284,26 @@
     191
    ],
    "created": "2026-11-11 17:31"
+  },
+  {
+   "name": "Redmi Note 17 Pro Max 5G",
+   "desc": "📱Redmi Note 17 Pro Max 5G\n💽Xotira 8/256 GB\n☑️Holati yangi 🆕\n☑️Kafolat 1 yil\n📦Karopkasi bor\n🔋Batareka 10000mAh \n💰Naqtga 435$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "8/256 GB",
+   "battery": "100%",
+   "price": 435,
+   "state": "Yangi",
+   "box": "Bor",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 1794400290,
+   "photos": [
+    "photos/1794400290_0.jpg"
+   ],
+   "sold": false,
+   "created": "2026-11-11 17:31",
+   "channel_msgs": [
+    192
+   ]
   }
  ],
  "branches": [
