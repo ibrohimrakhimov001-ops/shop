@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 12:03:35",
+ "updated": "2026-11-11 12:05:02",
  "kurs": 12800,
  "phone": "",
  "tg": "",
@@ -26,6 +26,26 @@
    "old": null,
    "sale": "",
    "branch": ""
+  },
+  {
+   "id": 1794380702,
+   "sold": false,
+   "created": "2026-11-11 12:05",
+   "photos": [
+    "photos/1794380702_2980_0.jpg"
+   ],
+   "name": "12 Pro",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Ideal",
+   "battery": "90%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 330,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794379620332"
   }
  ],
  "branches": [
