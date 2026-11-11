@@ -340,19 +340,8 @@ async function refresh() { try { D = await getData(); norm(); } catch (e) {} }
 // номер: филиал товара → единственный филиал → общий номер магазина
 const phoneOf = br => ((br && br.phone) || (BR().length === 1 && BR()[0].phone) || BR().map(b => b.phone).find(Boolean) || D.phone || '').split(/[,;]/)[0].replace(/[^\d+]/g, '');
 const callLink = (ph, cls, w = 20) => ph
-  ? `<button class="${cls}" onclick="dial('${ph}')" aria-label="Qo‘ng‘iroq: ${ph}">${svg(P.phone, '#fff', w)}&nbsp;Qo‘ng‘iroq</button>`
+  ? `<a class="${cls}" href="tel:+${ph.replace(/^\+/, '')}" aria-label="Qo‘ng‘iroq: ${ph}">${svg(P.phone, '#fff', w)}&nbsp;Qo‘ng‘iroq</a>`
   : `<button class="${cls}" onclick="toast('Telefon raqam kiritilmagan')">${svg(P.phone, '#fff', w)}&nbsp;Qo‘ng‘iroq</button>`;
-async function dial(ph) {   // tel: внутри Telegram не открывается → бот присылает контакт, там кнопка «Позвонить»
-  if (!INIT) { location.href = 'tel:' + ph; return; }
-  try {
-    await call('/api/call', {phone: ph});
-    haptic('success'); toast('Raqam chatga yuborildi — «Qo‘ng‘iroq qilish» ni bosing', 3000);
-    setTimeout(() => tg.close(), 1600);
-  } catch (e) {
-    try { await navigator.clipboard.writeText('+' + ph.replace(/\D/g, '')); } catch (x) {}
-    toast('Raqam nusxalandi: +' + ph.replace(/\D/g, ''), 4000);
-  }
-}
 function openTg(u) { u = (u || '').replace(/^@/, ''); if (!u) return toast('Telegram ko‘rsatilmagan'); tg && tg.openTelegramLink ? tg.openTelegramLink('https://t.me/' + u) : (location.href = 'https://t.me/' + u); }
 
 /* ---------- клавиатура: прячем нижние панели, поле в центр ---------- */
