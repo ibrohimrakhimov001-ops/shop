@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 12:33:39",
+ "updated": "2026-11-11 12:35:12",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -67,6 +67,26 @@
    ],
    "sold": false,
    "created": "2026-11-11 12:27"
+  },
+  {
+   "id": 1794382512,
+   "sold": false,
+   "created": "2026-11-11 12:35",
+   "photos": [
+    "photos/1794382512_12493_0.jpg"
+   ],
+   "name": "14 Pro max",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Ideal",
+   "battery": "100%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 530,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794379620332"
   }
  ],
  "branches": [
