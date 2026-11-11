@@ -1,29 +1,9 @@
 {
- "updated": "2026-11-11 17:00:15",
+ "updated": "2026-11-11 17:00:19",
  "kurs": 12100,
  "phone": "",
  "tg": "",
  "products": [
-  {
-   "name": "IPhone 13 Pro",
-   "desc": "📱IPhone 13 Pro\n💽Xotira 128 GB \n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yuq\n🔋Batareka 88%\n💰Naqtga 430$\n📌Manzil: Qöqon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
-   "memory": "128 GB",
-   "battery": "88%",
-   "price": 430,
-   "state": "Ideal",
-   "box": "Bor",
-   "branch": 1794379620332,
-   "warranty": "1 oy",
-   "id": 1794396918,
-   "photos": [
-    "photos/1794396918_0.jpg"
-   ],
-   "sold": false,
-   "created": "2026-11-11 16:35",
-   "channel_msgs": [
-    165
-   ]
-  },
   {
    "id": 1794397155,
    "sold": false,
