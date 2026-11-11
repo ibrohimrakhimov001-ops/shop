@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 17:21:39",
+ "updated": "2026-11-11 17:29:52",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -162,6 +162,26 @@
    "created": "2026-11-11 17:21",
    "channel_msgs": [
     182
+   ]
+  },
+  {
+   "name": "IPhone 13",
+   "desc": "📱IPhone 13 \n📶 1Sim + esim✅\n💽Xotira 128 GB \n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yo'q\n🔋Batareka 91%\n💰Naqtga 350$\n📌Manzil: Qöqon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "128 GB",
+   "battery": "91%",
+   "price": 350,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 1794400189,
+   "photos": [
+    "photos/1794400189_0.jpg"
+   ],
+   "sold": false,
+   "created": "2026-11-11 17:29",
+   "channel_msgs": [
+    183
    ]
   }
  ],
