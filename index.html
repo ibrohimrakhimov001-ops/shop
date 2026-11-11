@@ -257,7 +257,8 @@ function haptic(t) { try { tg.HapticFeedback.notificationOccurred(t); } catch (e
 async function getData() {
   try {   // сначала прямо с телефона (адрес из памяти; если устарел — берём свежий с Pages)
     const old = await apiUrl();
-    const j = await phoneProducts(old) || await phoneProducts(await apiUrl(true));
+    let j = await phoneProducts(old);
+    if (!j) { const fresh = await apiUrl(true); if (fresh !== old) j = await phoneProducts(fresh); }   // телефон выключен → не ждём дважды
     if (j) return j;
   } catch (e) {}
   return await (await fetch('products.json?t=' + Date.now(), {cache: 'no-store'})).json();
