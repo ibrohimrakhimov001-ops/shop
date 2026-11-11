@@ -1,33 +1,9 @@
 {
- "updated": "2026-11-11 17:00:35",
+ "updated": "2026-11-11 17:00:53",
  "kurs": 12100,
  "phone": "",
  "tg": "",
- "products": [
-  {
-   "id": 1794397155,
-   "sold": false,
-   "created": "2026-11-11 16:39",
-   "photos": [
-    "photos/1794397155_55527_0.jpg"
-   ],
-   "name": "Iphone 11 pro",
-   "brand": "iPhone",
-   "memory": "128 GB",
-   "state": "Ideal",
-   "battery": "90%",
-   "box": "Yo‘q",
-   "warranty": "1 oy",
-   "price": 320,
-   "old": null,
-   "sale": "",
-   "sale_until": "",
-   "branch": "1794379620332",
-   "channel_msgs": [
-    166
-   ]
-  }
- ],
+ "products": [],
  "branches": [
   {
    "id": 1794379620332,
