@@ -163,7 +163,7 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .phs .pi .x{position:absolute;top:4px;right:4px;width:26px;height:26px;border-radius:8px;border:none;background:rgba(27,35,38,.75);color:#fff;font-weight:800}
 .phs label{height:96px;border-radius:14px;border:2px dashed #CBD5CF;background:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:var(--acc)}
 .brpick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.brpick button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border-radius:14px;border:2px solid var(--line);background:#fff;text-align:left}
+.brpick button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border-radius:14px;border:2px solid var(--line);background:#fff;text-align:left;color:var(--ink)}
 .brpick button.on{border-color:var(--acc);background:var(--mint)}
 .brpick b{font-size:14px;font-weight:800}.brpick span{font-size:11px;font-weight:600;color:var(--mut)}
 .disc{display:flex;flex-direction:column;gap:10px;background:#FDECEC;border-radius:18px;padding:14px}
@@ -503,7 +503,7 @@ function admin() {
     <div style="background:var(--mint)"><b style="color:#166534">${banners().length}</b><span style="color:#166534">banner</span></div></div>
   ${anav('admin')}
   <div class="list" style="padding-top:0">${list.map(p => { const e = eff(p); return `<div class="arow">
-    <div class="th">${img(p) ? `<img src="${img(p)}" alt="">` : ''}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
+    <div class="th">${img(p) ? `<img src="${img(p)}" alt="">` : `<span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center">${svg(P.dev, '#15803D', 26, 1.6)}</span>`}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
     <div class="inf"><b>${esc([p.name, p.memory].filter(Boolean).join(' '))}</b><span>${e.price || '?'}$ · <span style="color:${p.sold ? '#B91C1C' : '#166534'}">${p.sold ? 'sotilgan' : 'sotuvda'}</span></span></div>
     <button class="sq e" aria-label="Tahrirlash" data-go="edit=${p.id}">${svg(P.edit, '#15803D', 17)}</button>
     <button class="sq o" aria-label="Chegirma" data-go="edit=${p.id}&d">${svg(P.pct, '#B45309', 17)}</button>
