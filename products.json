@@ -1,33 +1,9 @@
 {
- "updated": "2026-11-11 16:59:53",
+ "updated": "2026-11-11 17:00:15",
  "kurs": 12100,
  "phone": "",
  "tg": "",
  "products": [
-  {
-   "name": "IPhone 16 Pro Max",
-   "desc": "📱IPhone 16 Pro Max\n💽Xotira 256 GB \n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi bor\n🔋Batareka 89-91%\n💰Naqtga 900$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
-   "memory": "256 GB",
-   "battery": "89%",
-   "price": 900,
-   "state": "Ideal",
-   "warranty": "1 oy",
-   "box": "bor",
-   "id": 1794388356,
-   "photos": [
-    "photos/1794388356_0.jpg"
-   ],
-   "sold": false,
-   "created": "2026-11-11 14:12",
-   "channel_msgs": [
-    164
-   ],
-   "brand": "iPhone",
-   "old": null,
-   "sale": "",
-   "sale_until": "",
-   "branch": "1794386923402"
-  },
   {
    "name": "IPhone 13 Pro",
    "desc": "📱IPhone 13 Pro\n💽Xotira 128 GB \n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yuq\n🔋Batareka 88%\n💰Naqtga 430$\n📌Manzil: Qöqon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
