@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 17:31:56",
+ "updated": "2026-11-11 17:32:00",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -325,6 +325,27 @@
     194
    ],
    "created": "2026-11-11 17:31"
+  },
+  {
+   "name": "Redmi 17",
+   "desc": "📱Redmi 17\n💽Xotira 4+4/256 GB \n☑️Holati yangi 🆕\n☑️Kafolat 1 yil\n📦Karopkasi bor\n🔋Batareka 7500mAh\n💰Naqtga 217$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "4/256 GB",
+   "price": 217,
+   "state": "Yangi",
+   "box": "Bor",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 4400318997,
+   "photos": [
+    "photos/4400318997_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    195,
+    196
+   ],
+   "created": "2026-11-11 17:32"
   }
  ],
  "branches": [
