@@ -1,50 +1,199 @@
 <!doctype html>
 <html lang="uz"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Android Kokand</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
 <style>
-:root{--bg:var(--tg-theme-bg-color,#fff);--tx:var(--tg-theme-text-color,#111);--hint:var(--tg-theme-hint-color,#888);--card:var(--tg-theme-secondary-bg-color,#f2f2f7);--acc:#16a34a}
+:root{--acc:#15803D;--acc2:#166534;--ink:#1B2326;--mut:#5C676B;--line:#E5EAE7;--soft:#F2F5F3;--grad:linear-gradient(135deg,#178A45,#14532D)}
 *{box-sizing:border-box}
-body{margin:0;padding:16px;font-family:-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--tx)}
-h1{font-size:22px;margin:0 0 4px}
-.hint{color:var(--hint);font-size:13px;margin:0 0 16px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.card{background:var(--card);border-radius:14px;padding:12px;position:relative}
-.card .ph{height:110px;border-radius:10px;background:#d1fae5;display:flex;align-items:center;justify-content:center;font-size:44px}
-.card b{display:block;margin-top:8px}
-.price{color:var(--acc);font-weight:700;margin-top:4px}
-.sold .ph{filter:grayscale(1);opacity:.5}
-.sold .price{color:#dc2626}
+html,body{margin:0;background:#fff}
+body{font-family:Manrope,system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,#E6F5EA 0,#fff 300px) no-repeat;min-height:100vh}
+button,input{font-family:inherit}
+.wrap{max-width:560px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 10px}
+.brand{font-size:24px;font-weight:800;letter-spacing:-.5px;color:var(--acc)}
+.sub{font-size:12px;font-weight:700;color:var(--acc2)}
+.search{display:flex;gap:8px;margin:2px 20px 14px}
+.search label{display:flex;align-items:center;gap:10px;flex:1;height:52px;padding:0 16px;border-radius:16px;background:#fff;border:2px solid var(--acc);box-shadow:0 6px 18px rgba(21,128,61,.15)}
+.search input{border:none;background:transparent;font-size:15px;font-weight:600;color:var(--ink);flex:1;min-width:0;outline:none}
+.banner{position:relative;height:156px;margin:0 20px;border-radius:22px;overflow:hidden;color:#fff;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;transition:background .5s}
+.banner .tag{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;background:rgba(255,255,255,.2);padding:4px 8px;border-radius:6px}
+.banner .t{font-size:21px;font-weight:800;line-height:1.15;max-width:230px;margin-top:6px}
+.banner .more{font-size:13px;font-weight:700;opacity:.9}
+.banner svg.deco{position:absolute;right:-10px;bottom:-14px;opacity:.18}
+.dots{display:flex;justify-content:center;gap:6px;padding-top:10px}
+.dots button{height:8px;border-radius:4px;border:none;padding:0;transition:all .3s}
+.cats{display:flex;gap:8px;padding:12px 20px 4px;overflow-x:auto;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cats button{padding:9px 15px;border-radius:12px;border:none;background:var(--soft);color:var(--ink);font-size:13px;font-weight:600;white-space:nowrap;min-height:38px}
+.cats button.on{background:var(--acc);color:#fff;font-weight:700}
+.cats button.sale{background:#FDECEC;color:#B91C1C;font-weight:700}
+.cats button.sale.on{background:#DC2626;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:10px 20px 24px}
+.card{background:#fff;border:1px solid var(--line);box-shadow:0 4px 14px rgba(21,128,61,.07);border-radius:18px;padding:10px;display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink);cursor:pointer;text-align:left}
+.ph{position:relative;height:128px;border-radius:12px;background:linear-gradient(160deg,#F2F8F4,#DCEFE2);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ph img{width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;top:8px;left:8px;background:#DC2626;color:#fff;font-size:11px;font-weight:800;padding:3px 7px;border-radius:6px}
+.card .n{font-size:14px;font-weight:700;line-height:1.2}
+.card .s{font-size:12px;color:var(--mut);font-weight:600}
+.card .p{font-size:16px;font-weight:800}
+.old{font-size:12px;color:var(--mut);text-decoration:line-through;margin-left:6px;font-weight:600}
+.card.sold{opacity:.6}.card.sold img{filter:grayscale(1)}
+.soldtag{position:absolute;inset:auto 8px 8px 8px;background:rgba(27,35,38,.85);color:#fff;font-size:12px;font-weight:800;text-align:center;padding:5px;border-radius:8px}
+.empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:40px 0;font-weight:600}
+/* product */
+.gal{position:relative;height:340px;background:linear-gradient(160deg,#F2F8F4,#D6EDDD);display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.gal::-webkit-scrollbar{display:none}
+.gal img{flex:none;width:100%;height:100%;object-fit:contain;scroll-snap-align:center}
+.back{position:fixed;top:16px;left:16px;width:44px;height:44px;border-radius:14px;background:#fff;border:none;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.08);z-index:5}
+.pbody{display:flex;flex-direction:column;gap:14px;padding:18px 20px 110px}
+h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
+.big{font-size:30px;font-weight:800;color:var(--acc)}
+.specs{background:var(--soft);border-radius:18px;padding:4px 16px}
+.row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #E0E7E2;font-size:15px}
+.row:last-child{border-bottom:none}
+.ic{width:34px;height:34px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.row .k{color:var(--mut);font-weight:600;flex:1}.row .v{font-weight:800}
+.calc{display:flex;flex-direction:column;gap:10px;background:var(--soft);border-radius:18px;padding:14px}
+.terms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.terms button{height:44px;border-radius:12px;border:2px solid #fff;background:#fff;color:var(--ink);font-weight:800;font-size:14px}
+.terms button.on{border-color:var(--acc);color:var(--acc2)}
+.res{display:flex;align-items:center;justify-content:space-between;background:var(--grad);color:#fff;border-radius:12px;padding:10px 14px}
+.desc{white-space:pre-wrap;font-size:14px;line-height:1.5;color:var(--mut);font-weight:600}
+.bar{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px 20px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#fff;max-width:560px;margin:0 auto}
+.bar a{height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800;font-size:15px;text-decoration:none}
+.bar .call{background:var(--grad);color:#fff}
+.bar .tg{background:#fff;border:2px solid var(--acc);color:var(--acc)}
+.soldbig{background:#1B2326;color:#fff;font-weight:800;text-align:center;padding:12px;border-radius:14px;font-size:16px}
 </style>
 </head><body>
-<h1>📱 Android Kokand</h1>
-<p class="hint" id="upd">Yuklanmoqda…</p>
-<div class="grid" id="list"></div>
+<div class="wrap" id="app"></div>
 <script>
-const tg = window.Telegram && Telegram.WebApp; if (tg) { tg.ready(); tg.expand(); }
+const tg = window.Telegram && Telegram.WebApp;
+if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor && tg.setHeaderColor('#E6F5EA'); }
 const API = 'https://api.github.com/repos/ibrohimrakhimov001-ops/shop/contents/products.json';
-async function getData(){
-  try {  // сразу после push (~1-2 с), лимит 60 запросов/час с IP
-    const r = await fetch(API, {headers:{Accept:'application/vnd.github.raw'}, cache:'no-store'});
+const RAW = 'https://raw.githubusercontent.com/ibrohimrakhimov001-ops/shop/main/';
+const RATES = {3: 15, 6: 20, 12: 38};   // BIRZUM NASIYA: narx*1.02, +15/20/38 %
+const BANNERS = [
+  {tag:'Aksiya', t:'iPhone’larga chegirmalar', bg:'linear-gradient(135deg,#22A55A,#14532D)'},
+  {tag:'Kafolat', t:'Har bir telefonga kafolat beramiz', bg:'linear-gradient(135deg,#178A45,#0B3D24)'},
+  {tag:'Muddatli to‘lov', t:'3, 6 va 12 oyga bo‘lib to‘lang', bg:'linear-gradient(135deg,#15803D,#052E16)'}
+];
+let D = {products: [], kurs: 12800}, cat = 'all', q = '', bi = 0, term = 12;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const up = n => Math.ceil(n / 1000) * 1000;
+const monthly = (p, m) => up(p.price * D.kurs * 1.02 * (1 + RATES[m] / 100) / m);
+const img = (p, i = 0) => p.photos && p.photos[i] ? RAW + p.photos[i] : '';
+const phoneSvg = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="1.6" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M11 18h2"></path></svg>';
+
+async function getData() {
+  try {
+    const r = await fetch(API, {headers: {Accept: 'application/vnd.github.raw'}, cache: 'no-store'});
     if (r.ok) return await r.json();
-  } catch(e) {}
-  // запасной вариант: файл на Pages (может отставать ~30 с)
-  const r = await fetch('products.json?t=' + Date.now(), {cache:'no-store'});
+  } catch (e) {}
+  const r = await fetch('products.json?t=' + Date.now(), {cache: 'no-store'});
   return await r.json();
 }
-async function load(){
-  const d = await getData();
-  document.getElementById('upd').textContent = 'Yangilandi: ' + d.updated + ' (telefondan)';
-  document.getElementById('list').innerHTML = d.products.map(p => `
-    <div class="card ${p.sold ? 'sold' : ''}">
-      <div class="ph">📱</div>
-      <b>${p.name}</b>
-      <div class="hint" style="margin:2px 0 0">${p.memory}</div>
-      <div class="price">${p.sold ? '❌ SOTILDI' : p.price + ' $'}</div>
-    </div>`).join('');
+
+function brandOf(n) {
+  n = n.toLowerCase();
+  if (n.includes('iphone')) return 'iPhone';
+  if (n.includes('samsung') || n.includes('galaxy')) return 'Samsung';
+  if (/xiaomi|redmi|poco/.test(n)) return 'Xiaomi';
+  return 'Boshqa';
 }
-load();
+
+function home() {
+  const list = D.products.filter(p => p.id)
+    .filter(p => cat === 'all' || (cat === 'sale' ? p.sale : brandOf(p.name) === cat))
+    .filter(p => !q || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(q))
+    .sort((a, b) => (a.sold - b.sold) || (b.id - a.id));
+  const brands = [...new Set(D.products.filter(p => p.id).map(p => brandOf(p.name)))];
+  const b = BANNERS[bi];
+  $('#app').innerHTML = `
+  <header><div><div class="sub">Qo‘qon · telefonlar do‘koni</div><div class="brand">Android Kokand</div></div></header>
+  <div class="search"><label><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+    <input id="q" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label></div>
+  <section aria-label="Bannerlar">
+    <div class="banner" style="background:${b.bg}"><div><span class="tag">${b.tag}</span><div class="t">${b.t}</div></div><span class="more">Android Kokand</span>
+    <svg class="deco" width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"></rect><path d="M11 18h2"></path></svg></div>
+    <div class="dots">${BANNERS.map((_, k) => `<button aria-label="Slayd ${k + 1}" data-b="${k}" style="width:${k === bi ? 22 : 8}px;background:${k === bi ? '#15803D' : '#CBD5CF'}"></button>`).join('')}</div>
+  </section>
+  <nav class="cats" aria-label="Kategoriyalar">
+    <button data-c="all" class="${cat === 'all' ? 'on' : ''}">Barchasi</button>
+    ${D.products.some(p => p.sale) ? `<button data-c="sale" class="sale ${cat === 'sale' ? 'on' : ''}">% Aksiya</button>` : ''}
+    ${brands.map(x => `<button data-c="${x}" class="${cat === x ? 'on' : ''}">${x}</button>`).join('')}
+  </nav>
+  <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>`;
+  const qi = $('#q');
+  qi.oninput = e => { q = e.target.value.toLowerCase(); const pos = qi.selectionStart; home(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
+  document.querySelectorAll('[data-c]').forEach(el => el.onclick = () => { cat = el.dataset.c; home(); });
+  document.querySelectorAll('[data-b]').forEach(el => el.onclick = () => { bi = +el.dataset.b; home(); });
+  document.querySelectorAll('[data-p]').forEach(el => el.onclick = () => { location.hash = 'p=' + el.dataset.p; });
+  tg && tg.BackButton.hide();
+}
+
+function card(p) {
+  const spec = [p.memory, p.state, p.battery].filter(Boolean).join(' · ');
+  return `<button class="card ${p.sold ? 'sold' : ''}" data-p="${p.id}">
+    <div class="ph">${img(p) ? `<img loading="lazy" src="${img(p)}" alt="${esc(p.name)}">` : phoneSvg}
+      ${p.sale && !p.sold ? `<span class="badge">${esc(p.sale)}</span>` : ''}${p.sold ? '<span class="soldtag">SOTILDI</span>' : ''}</div>
+    <span class="n">${esc(p.name)}</span><span class="s">${esc(spec)}</span>
+    <span class="p" style="color:${p.sale ? '#DC2626' : '#1B2326'}">${p.price ? p.price + '$' : 'Narx so‘rang'}${p.old ? `<span class="old">${p.old}$</span>` : ''}</span>
+  </button>`;
+}
+
+const ICONS = {memory:'M6 3h12v18H6zM9 7h6M9 11h6', state:'M5 12l5 5 9-10', warranty:'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z', box:'M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8', battery:'M3 8h15v8H3zM21 11v2M6 11h8'};
+const LABELS = [['memory','Xotira'],['state','Holati'],['warranty','Kafolat'],['box','Karobkasi'],['battery','Batareya']];
+
+function product(id) {
+  const p = D.products.find(x => String(x.id) === String(id));
+  if (!p) { location.hash = ''; return; }
+  const specs = LABELS.filter(([k]) => p[k]).map(([k, l]) => `<div class="row"><span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${ICONS[k]}"></path></svg></span><span class="k">${l}</span><span class="v">${esc(p[k])}</span></div>`).join('');
+  const photos = (p.photos || []).map((_, i) => `<img src="${img(p, i)}" alt="${esc(p.name)}">`).join('') || `<div style="margin:auto">${phoneSvg}</div>`;
+  const phone = (D.phone || '').replace(/[^\d+]/g, '');
+  $('#app').innerHTML = `
+  ${tg && tg.BackButton ? '' : '<button class="back" aria-label="Orqaga" onclick="location.hash=\'\'"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B2326" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></button>'}
+  <div class="gal">${photos}</div>
+  <div class="pbody">
+    <h1>${esc(p.name)}</h1>
+    ${p.sold ? '<div class="soldbig">❌ SOTILDI</div>' : `<span class="big">${p.price ? p.price + '$' : 'Narx so‘rang'}${p.old ? `<span class="old" style="font-size:16px">${p.old}$</span>` : ''}</span>`}
+    ${specs ? `<section class="specs">${specs}</section>` : ''}
+    ${!p.sold && p.price ? `<section class="calc" aria-label="Muddatli to‘lov">
+      <span style="font-size:15px;font-weight:800">Muddatli to‘lov</span>
+      <div class="terms">${[3, 6, 12].map(m => `<button data-m="${m}" aria-pressed="${m === term}" class="${m === term ? 'on' : ''}">${m} oy</button>`).join('')}</div>
+      <div class="res"><div><div style="font-size:12px;font-weight:600;opacity:.9">Oyiga</div><div style="font-size:20px;font-weight:800">${fmt(monthly(p, term))} so‘m</div></div>
+      <span style="font-size:12px;font-weight:600;opacity:.9;text-align:right">${term} oy davomida</span></div>
+    </section>` : ''}
+    ${p.desc && p.imported ? `<div class="desc">${esc(p.desc)}</div>` : ''}
+  </div>
+  <div class="bar">
+    <a class="call" href="${phone ? 'tel:' + phone : '#'}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"></path></svg>Qo‘ng‘iroq</a>
+    <a class="tg" href="https://t.me/${esc(D.tg || '')}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M21 4L3 11l6 2 2 6 3-4 5 4z"></path><path d="M9 13l12-9"></path></svg>Telegram</a>
+  </div>`;
+  document.querySelectorAll('[data-m]').forEach(el => el.onclick = () => { term = +el.dataset.m; product(id); });
+  if (tg && tg.BackButton) { tg.BackButton.show(); tg.BackButton.onClick(() => { location.hash = ''; }); }
+  window.scrollTo(0, 0);
+}
+
+function route() {
+  const m = location.hash.match(/p=(\d+)/);
+  m ? product(m[1]) : home();
+}
+
+(async () => {
+  try { D = await getData(); } catch (e) {}
+  D.products = (D.products || []).filter(p => p.id);
+  const sp = tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param;
+  if (sp && /^p_\d+$/.test(sp)) location.hash = 'p=' + sp.slice(2);
+  window.onhashchange = route;
+  route();
+  setInterval(() => { if (!location.hash) { bi = (bi + 1) % BANNERS.length; const f = document.activeElement && document.activeElement.id === 'q'; if (!f) home(); } }, 4000);
+})();
 </script>
 </body></html>

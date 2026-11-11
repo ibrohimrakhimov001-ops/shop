@@ -1,29 +1,7 @@
 {
- "updated": "2026-11-11 10:36:58",
- "products": [
-  {
-   "name": "iPhone 13",
-   "memory": "128 GB",
-   "price": 420,
-   "sold": false
-  },
-  {
-   "name": "Samsung S22",
-   "memory": "256 GB",
-   "price": 380,
-   "sold": false
-  },
-  {
-   "name": "Redmi Note 12",
-   "memory": "128 GB",
-   "price": 150,
-   "sold": true
-  },
-  {
-   "name": "iPhone 11",
-   "memory": "64 GB",
-   "price": 250,
-   "sold": true
-  }
- ]
+ "updated": "",
+ "kurs": 12800,
+ "phone": "",
+ "tg": "",
+ "products": []
 }
