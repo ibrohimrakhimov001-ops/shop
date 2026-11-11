@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 17:20:05",
+ "updated": "2026-11-11 17:20:14",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -102,6 +102,26 @@
    "created": "2026-11-11 17:20",
    "channel_msgs": [
     179
+   ]
+  },
+  {
+   "name": "IPhone 14",
+   "desc": "📱IPhone 14\n💽Xotira 128 GB \n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yo’q\n🔋Batareka 85%\n💰Naqtga 390$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "128 GB",
+   "battery": "85%",
+   "price": 390,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 1794399611,
+   "photos": [
+    "photos/1794399611_0.jpg"
+   ],
+   "sold": false,
+   "created": "2026-11-11 17:20",
+   "channel_msgs": [
+    180
    ]
   }
  ],
