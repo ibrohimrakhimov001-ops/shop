@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 12:05:02",
+ "updated": "2026-11-11 12:05:57",
  "kurs": 12800,
  "phone": "",
  "tg": "",
@@ -25,7 +25,9 @@
    "box": "Yo‘q",
    "old": null,
    "sale": "",
-   "branch": ""
+   "branch": "1794379620332",
+   "brand": "Samsung",
+   "sale_until": ""
   },
   {
    "id": 1794380702,
