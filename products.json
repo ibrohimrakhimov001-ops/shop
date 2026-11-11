@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11 12:38:48",
+ "updated": "2026-11-11 12:38:51",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -19,7 +19,7 @@
    "photos": [
     "photos/1794378352_0.jpg"
    ],
-   "sold": false,
+   "sold": true,
    "created": "2026-11-11 11:25",
    "battery": "",
    "box": "Yo‘q",
