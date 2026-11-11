@@ -230,13 +230,13 @@ const LOCAL = {};   // только что загруженные фото: пу
 const src = path => LOCAL[path] || PAGES + path;
 const img = (p, i = 0) => p.photos && p.photos[i] ? src(p.photos[i]) : '';
 const PAGES = 'https://ibrohimrakhimov001-ops.github.io/shop/';
-function imgRetry(el) {   // raw.githubusercontent мог закэшировать 404 → пробуем GitHub Pages, потом снова raw
+function imgRetry(el) {   // Pages ещё не собрался → берём фото с телефона, потом снова пробуем Pages
   const n = +(el.dataset.n || 0); if (n >= 12) return;
   el.dataset.n = n + 1;
-  const path = el.src.split('?')[0].replace(RAW, '').replace(PAGES, '');
-  setTimeout(() => { el.src = (n % 2 ? RAW : PAGES) + path + '?r=' + Date.now(); }, n ? 8000 : 0);
+  const path = el.src.split('?')[0].replace(RAW, '').replace(PAGES, '').replace(APIURL + '/', '');
+  setTimeout(() => { el.src = (n % 2 === 0 && APIURL ? APIURL + '/' : PAGES) + path + (n ? '?r=' + Date.now() : ''); }, n ? 8000 : 0);
 }
-document.addEventListener('error', e => { const t = e.target; if (t.tagName === 'IMG' && (t.src.startsWith(RAW) || t.src.startsWith(PAGES))) imgRetry(t); }, true);
+document.addEventListener('error', e => { const t = e.target; if (t.tagName === 'IMG' && (t.src.startsWith(RAW) || t.src.startsWith(PAGES) || (APIURL && t.src.startsWith(APIURL)))) imgRetry(t); }, true);
 const svg = (d, c = 'currentColor', w = 20, sw = 2) => `<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 const P = {
   back: '<path d="M15 5l-7 7 7 7"></path>', shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path>',
@@ -832,10 +832,6 @@ function route() {
   let m = h.match(/^edit=(\d+)(&d)?/); if (m) return edit(m[1], !!m[2]);
   m = h.match(/p=(\d+)/); m ? product(m[1]) : home();
 }
-document.addEventListener('error', e => {
-  const t = e.target;
-  if (t.tagName === 'IMG' && APIURL && !t.dataset.f && t.src.startsWith(PAGES)) { t.dataset.f = 1; t.src = APIURL + '/' + t.src.slice(PAGES.length); }
-}, true);
 function skeleton() {
   const c = '<div class="card skc"><div class="sk" style="height:128px"></div><div class="sk" style="height:14px;width:80%"></div><div class="sk" style="height:11px;width:60%"></div><div class="sk" style="height:16px;width:40%"></div></div>';
   $('#app').innerHTML = `<div class="skw"><div class="sk" style="height:12px;width:90px"></div><div class="sk" style="height:24px;width:170px;margin-top:8px"></div>
