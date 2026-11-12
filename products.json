@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 15:56:54",
+ "updated": "2026-11-12 16:25:50",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1118,6 +1118,26 @@
    "box": "Yo‘q",
    "warranty": "1 oy",
    "price": 90,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
+  },
+  {
+   "id": 1794482750,
+   "sold": false,
+   "created": "2026-11-12 16:25",
+   "photos": [
+    "photos/1794482750_50155_0.jpg"
+   ],
+   "name": "iPhone 13 Pro",
+   "brand": "iPhone",
+   "memory": "256 GB",
+   "state": "Ideal",
+   "battery": "83%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 450,
    "old": null,
    "sale": "",
    "sale_until": "",
