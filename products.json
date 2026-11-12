@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:47:28",
+ "updated": "2026-11-12 14:48:09",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -786,6 +786,26 @@
    "box": "Yo‘q",
    "warranty": "1 oy",
    "price": 350,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794379620332"
+  },
+  {
+   "id": 1794476889,
+   "sold": false,
+   "created": "2026-11-12 14:48",
+   "photos": [
+    "photos/1794476889_89816_0.jpg"
+   ],
+   "name": "Samsung S24",
+   "brand": "Samsung",
+   "memory": "256 GB",
+   "state": "Zo‘r",
+   "battery": "",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 420,
    "old": null,
    "sale": "",
    "sale_until": "",
