@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:07:28",
+ "updated": "2026-11-12 14:13:11",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -493,6 +493,30 @@
    "channel_msgs": [
     211
    ]
+  },
+  {
+   "id": 1794474790,
+   "sold": false,
+   "created": "2026-11-12 14:13",
+   "photos": [
+    "photos/1794474790_90736_0.jpg",
+    "photos/1794474790_90822_1.jpg",
+    "photos/1794474790_90887_2.jpg",
+    "photos/1794474790_90956_3.jpg",
+    "photos/1794474790_91021_4.jpg"
+   ],
+   "name": "13 Pro",
+   "brand": "iPhone",
+   "memory": "1 TB",
+   "state": "Ideal",
+   "battery": "90%",
+   "box": "Yo‘q",
+   "warranty": "",
+   "price": 450,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
   }
  ],
  "branches": [
