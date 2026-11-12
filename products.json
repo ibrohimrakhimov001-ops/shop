@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 15:38:38",
+ "updated": "2026-11-12 15:42:37",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -993,6 +993,26 @@
    "box": "Yo‘q",
    "warranty": "1 oy",
    "price": 190,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
+  },
+  {
+   "id": 1794480157,
+   "sold": false,
+   "created": "2026-11-12 15:42",
+   "photos": [
+    "photos/1794480157_57384_0.jpg"
+   ],
+   "name": "iPhone 11",
+   "brand": "iPhone",
+   "memory": "64 GB",
+   "state": "Yaxshi",
+   "battery": "75%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 150,
    "old": null,
    "sale": "",
    "sale_until": "",
