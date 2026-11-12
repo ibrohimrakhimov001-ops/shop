@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:02:00",
+ "updated": "2026-11-12 14:02:30",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -415,9 +415,9 @@
    "box": "Bor",
    "warranty": "1 oy",
    "price": 950,
-   "old": 970,
-   "sale": "−2%",
-   "sale_until": "",
+   "old": 1070,
+   "sale": "−11%",
+   "sale_until": "2026-11-19",
    "branch": "1794386923402",
    "channel_msgs": [
     208
