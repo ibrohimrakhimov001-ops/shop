@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:44:10",
+ "updated": "2026-11-12 14:45:23",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -742,6 +742,26 @@
    "brand": "iPhone",
    "memory": "128 GB",
    "state": "Yangi",
+   "battery": "",
+   "box": "Bor",
+   "warranty": "1 yil",
+   "price": 220,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794379620332"
+  },
+  {
+   "id": 1794476722,
+   "sold": false,
+   "created": "2026-11-12 14:45",
+   "photos": [
+    "photos/1794476722_22974_0.jpg"
+   ],
+   "name": "Samsung A18",
+   "brand": "Samsung",
+   "memory": "128 GB",
+   "state": "Ideal",
    "battery": "",
    "box": "Bor",
    "warranty": "1 yil",
