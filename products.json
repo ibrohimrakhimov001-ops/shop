@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:33:29",
+ "updated": "2026-11-12 14:36:45",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -664,6 +664,27 @@
    "channel_msgs": [
     220
    ]
+  },
+  {
+   "id": 1794476205,
+   "sold": false,
+   "created": "2026-11-12 14:36",
+   "photos": [
+    "photos/1794476205_5494_0.jpg",
+    "photos/1794476205_5665_1.jpg"
+   ],
+   "name": "13 Mini",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Ideal",
+   "battery": "86%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 280,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794379620332"
   }
  ],
  "branches": [
