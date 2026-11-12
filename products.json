@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:22:10",
+ "updated": "2026-11-12 14:23:16",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -561,6 +561,26 @@
    "created": "2026-11-12 14:22",
    "channel_msgs": [
     215
+   ]
+  },
+  {
+   "name": "IPhone 15 Pro",
+   "desc": "📱IPhone 15 Pro\n💽Xotira 256 GB \n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi bor\n🔋Batareka 90%\n💰Naqtga 620$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "256 GB",
+   "battery": "90%",
+   "price": 620,
+   "state": "Ideal",
+   "box": "Bor",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 1794475393,
+   "photos": [
+    "photos/1794475393_0.jpg"
+   ],
+   "sold": false,
+   "created": "2026-11-12 14:23",
+   "channel_msgs": [
+    216
    ]
   }
  ],
