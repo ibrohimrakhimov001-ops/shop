@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 12:27:06",
+ "updated": "2026-11-12 12:27:10",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -369,27 +369,6 @@
    "channel_msgs": [
     197,
     198
-   ],
-   "created": "2026-11-11 17:32"
-  },
-  {
-   "name": "Honor T10",
-   "desc": "📱Honor T10\n💽Xotira 4/64 GB \n☑️Holati yangi 🆕\n☑️Kafolat 1 yil\n📦Karopkasi bor\n🔋Batareka 5000mAh\n💰Naqtga 125$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
-   "memory": "4/64 GB",
-   "price": 125,
-   "state": "Yangi",
-   "box": "Bor",
-   "branch": 1794386923402,
-   "warranty": "1 oy",
-   "id": 4400330018,
-   "photos": [
-    "photos/4400330018_0.jpg"
-   ],
-   "sold": false,
-   "imported": true,
-   "channel_msgs": [
-    199,
-    200
    ],
    "created": "2026-11-11 17:32"
   },
