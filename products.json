@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:49:29",
+ "updated": "2026-11-12 14:50:10",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -826,6 +826,26 @@
    "box": "Bor",
    "warranty": "1 oy",
    "price": 940,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794379620332"
+  },
+  {
+   "id": 1794477010,
+   "sold": false,
+   "created": "2026-11-12 14:50",
+   "photos": [
+    "photos/1794477010_10477_0.jpg"
+   ],
+   "name": "14 Pro max",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Ideal",
+   "battery": "100%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 550,
    "old": null,
    "sale": "",
    "sale_until": "",
