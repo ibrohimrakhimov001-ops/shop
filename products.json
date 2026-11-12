@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 15:35:26",
+ "updated": "2026-11-12 15:38:15",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -969,6 +969,30 @@
    "box": "Yo‘q",
    "warranty": "1 oy",
    "price": 210,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
+  },
+  {
+   "id": 1794479895,
+   "sold": false,
+   "created": "2026-11-12 15:38",
+   "photos": [
+    "photos/1794479895_95519_0.jpg",
+    "photos/1794479895_95603_1.jpg",
+    "photos/1794479895_95669_2.jpg",
+    "photos/1794479895_95735_3.jpg",
+    "photos/1794479895_95800_4.jpg"
+   ],
+   "name": "iPhone 12 mini",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Ideal",
+   "battery": "91%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 190,
    "old": null,
    "sale": "",
    "sale_until": "",
