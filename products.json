@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 15:55:18",
+ "updated": "2026-11-12 15:56:54",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1093,6 +1093,31 @@
    "box": "Yo‘q",
    "warranty": "1 oy",
    "price": 415,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
+  },
+  {
+   "id": 1794481014,
+   "sold": false,
+   "created": "2026-11-12 15:56",
+   "photos": [
+    "photos/1794481014_14172_0.jpg",
+    "photos/1794481014_14257_1.jpg",
+    "photos/1794481014_14323_2.jpg",
+    "photos/1794481014_14388_3.jpg",
+    "photos/1794481014_14455_4.jpg",
+    "photos/1794481014_14521_5.jpg"
+   ],
+   "name": "iPhone 8",
+   "brand": "iPhone",
+   "memory": "64 GB",
+   "state": "Ideal",
+   "battery": "100%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 90,
    "old": null,
    "sale": "",
    "sale_until": "",
