@@ -140,6 +140,10 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .bar .call{background:var(--grad);color:#fff}
 .bar .tgb{background:#fff;border:2px solid var(--acc);color:var(--acc)}
 /* aloqa / filiallar */
+.agrp summary{list-style:none;display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:14px;background:var(--soft);cursor:pointer;font-size:15px}
+.agrp summary::-webkit-details-marker{display:none}
+.agrp summary span{margin-left:auto;font-size:12px;font-weight:700;color:var(--mut)}
+.agrp summary > svg:last-child{transition:transform .2s}.agrp[open] summary > svg:last-child{transform:rotate(180deg)}
 .list{display:flex;flex-direction:column;gap:10px;padding:4px 20px 16px}
 .bcard{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px rgba(21,128,61,.06)}
 .bhead{display:flex;align-items:center;gap:10px}
@@ -567,19 +571,32 @@ const guard = () => { if (!ADMIN) { location.hash = ''; return false; } return t
 let aq = '';
 function adminRows() {
   const list = [...D.products].filter(p => !aq || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(aq)).sort((a, b) => (!!a.sold - !!b.sold) || b.id - a.id);
-  return list.map(p => { const e = eff(p); return `<div class="arow">
+  if (!list.length) return `<div class="empty">${aq ? 'Hech narsa topilmadi' : 'Hali mahsulot yo‘q'}</div>`;
+  const groups = [...BR().map(b => ({id: String(b.id), name: b.name})), {id: '', name: 'Filial ko‘rsatilmagan'}];
+  return groups.map(g => {
+    const items = list.filter(p => g.id ? String(p.branch) === g.id : !brOf(p.branch));
+    if (!items.length) return '';
+    const sold = items.filter(p => p.sold).length;
+    return `<details class="agrp" data-g="${g.id}" ${acol[g.id] && !aq ? '' : 'open'}><summary>${svg(P.pin, '#15803D', 17)}<b>${esc(g.name)}</b>
+      <span>${items.length - sold} sotuvda${sold ? ' · ' + sold + ' sotilgan' : ''}</span>${svg(P.down, '#5B6B66', 16, 2.4)}</summary>
+      <div class="list" style="padding:10px 0 4px">${items.map(arow).join('')}</div></details>`;
+  }).join('');
+}
+const acol = {};   // свернутые филиалы
+function arow(p) {
+  { const e = eff(p); return `<div class="arow">
     <div class="th">${img(p) ? `<img src="${th(p)}" data-full="${img(p)}" alt="">` : `<span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center">${svg(P.dev, '#15803D', 26, 1.6)}</span>`}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
     <div class="inf"><b>${esc([p.name, p.memory].filter(Boolean).join(' '))}</b><span>${e.price || '?'}$</span>
       <button class="soldb ${p.sold ? 'on' : ''}" data-sold="${p.id}" aria-pressed="${!!p.sold}">${p.sold ? '↩ Sotuvga qaytarish' : '✓ Sotildi'}</button></div>
     <button class="sq e" aria-label="Tahrirlash" data-go="edit=${p.id}">${svg(P.edit, '#15803D', 17)}</button>
     <button class="sq o" aria-label="Chegirma" data-go="edit=${p.id}&d">${svg(P.pct, '#B45309', 17)}</button>
-    <button class="sq d" aria-label="O‘chirish" data-del="${p.id}">${svg(P.del, '#B91C1C', 17)}</button></div>`; }).join('')
-    || `<div class="empty">${aq ? 'Hech narsa topilmadi' : 'Hali mahsulot yo‘q'}</div>`;
+    <button class="sq d" aria-label="O‘chirish" data-del="${p.id}">${svg(P.del, '#B91C1C', 17)}</button></div>`; }
 }
 function bindRows() {
   bindGo();
   $$('[data-del]').forEach(el => el.onclick = () => delProduct(+el.dataset.del));
   $$('[data-sold]').forEach(el => el.onclick = () => toggleSold(+el.dataset.sold, el));
+  $$('.agrp').forEach(d => d.ontoggle = () => { if (!aq) acol[d.dataset.g] = !d.open; });
 }
 async function toggleSold(id, el) {
   const p = D.products.find(x => x.id === id); if (!p) return;
@@ -599,10 +616,10 @@ function admin() {
     <div style="background:#FDECEC"><b style="color:#B91C1C">${D.products.filter(p => !p.sold && onSale(p)).length}</b><span style="color:#B91C1C">chegirmada</span></div>
     <div style="background:var(--mint)"><b style="color:#166534">${banners().length}</b><span style="color:#166534">banner</span></div></div>
   ${anav('admin')}
+  <div style="padding:0 20px 12px"><button class="btn" data-go="new">+ Mahsulot qo‘shish</button></div>
   <div class="search" style="margin:0 20px 12px"><label style="height:48px;border-width:1px;box-shadow:none;border-color:#DDE3DF">${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#15803D', 20, 2.4)}
     <input id="aq" type="search" enterkeyhint="search" aria-label="Mahsulot qidirish" placeholder="Qidirish: iPhone 13, A55..." value="${esc(aq)}"></label></div>
-  <div class="list" id="arows" style="padding-top:0">${adminRows()}</div>
-  <div class="savebar" style="border-top:none"><button class="btn" data-go="new">+ Mahsulot qo‘shish</button></div>`);
+  <div class="list" id="arows" style="padding-top:0;padding-bottom:calc(24px + env(safe-area-inset-bottom))">${adminRows()}</div>`);
   bindRows();
   $('#aq').oninput = e => { aq = e.target.value.toLowerCase().trim(); $('#arows').innerHTML = adminRows(); bindRows(); };
 }
