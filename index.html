@@ -48,15 +48,22 @@ input,select{font-size:16px}   /* <16px → телефон приближает 
 .empty{grid-column:1/-1;text-align:center;color:var(--mut);padding:40px 0;font-weight:600}
 .toast{position:fixed;left:20px;right:20px;bottom:96px;background:#1B2326;color:#fff;padding:12px 14px;border-radius:12px;font-weight:700;font-size:14px;z-index:50;text-align:center;max-width:520px;margin:0 auto}
 /* главная */
-header{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 10px}
-.brsel{position:relative;align-self:flex-start;display:flex;align-items:center;gap:4px;height:28px;font-size:12px;font-weight:700;color:var(--acc2)}
+header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:18px 20px 14px;background:radial-gradient(120% 90% at 85% 0,#E3F1E8 0,transparent 60%)}
+.logo{display:flex;flex-direction:column;gap:2px;min-width:0}
+.brand{font-size:30px;font-weight:900;letter-spacing:-1px;line-height:1.05;color:var(--ink);white-space:nowrap}.brand em{font-style:normal;color:var(--acc)}
+.slog{font-size:14px;font-weight:600;color:var(--mut)}
+.slog u{text-decoration:none;position:relative;display:inline-block}
+.slog u svg{position:absolute;left:0;right:0;bottom:-5px;width:100%;height:7px;fill:none;stroke:#22A55A;stroke-width:2.4;stroke-linecap:round}
+.hr{display:flex;align-items:center;gap:8px;flex:none}
+.brsel{position:relative;display:flex;align-items:center;gap:6px;height:42px;padding:0 12px;border-radius:14px;background:var(--mint);font-size:14px;font-weight:700;color:var(--ink);max-width:150px}
+.brsel span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brsel svg{flex:none}
 .brsel select{position:absolute;inset:0;opacity:0}
-.brand{font-size:24px;font-weight:800;letter-spacing:-.5px;color:var(--acc)}
-.adm{width:44px;height:44px;border-radius:14px;background:#1B2326;border:none;display:flex;align-items:center;justify-content:center}
-.search{display:flex;gap:8px;margin:2px 20px 14px}
-.search label{display:flex;align-items:center;gap:10px;flex:1;height:52px;padding:0 16px;border-radius:16px;background:#fff;border:2px solid var(--acc);box-shadow:0 6px 18px rgba(21,128,61,.15)}
-.search input{border:none;background:transparent;font-weight:600;flex:1;min-width:0;outline:none}
-.fbtn{width:52px;height:52px;border-radius:16px;border:none;background:var(--grad);display:flex;align-items:center;justify-content:center;flex:none}
+.adm{width:42px;height:42px;border-radius:14px;background:#1B2326;border:none;display:flex;align-items:center;justify-content:center;flex:none}
+.search{display:flex;gap:10px;margin:0 20px 14px}
+.search label{display:flex;align-items:center;gap:12px;flex:1;height:56px;padding:0 18px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:0 6px 20px rgba(27,35,38,.07)}
+.search input{border:none;background:transparent;font-weight:500;font-size:16px;flex:1;min-width:0;outline:none}
+.fbtn{width:56px;height:56px;border-radius:18px;border:none;background:var(--grad);display:flex;align-items:center;justify-content:center;flex:none}
 .sortrow{display:flex;gap:6px;margin:-4px 20px 12px;flex-wrap:wrap}
 .sortrow button{height:36px;padding:0 12px;border-radius:10px;border:2px solid var(--line);background:#fff;font-weight:700;font-size:13px}
 .sortrow button.on{border-color:var(--acc);color:var(--acc2);background:var(--mint)}
@@ -389,15 +396,15 @@ function home() {
   const brands = [...new Set(D.products.filter(p => !p.sold).map(brandOf))];
   const B = banners(); if (bi >= B.length) bi = 0;
   page(`
-  <header><div style="display:flex;flex-direction:column">
-    ${BR().length ? `<label class="brsel">${esc(brf ? brName(brf) : 'Barcha filiallar')}${svg(P.down, '#166534', 14, 2.4)}
+  <header><div class="logo"><span class="brand">Android <em>Kokand</em></span>
+    <span class="slog">Siz <u>orzu<svg viewBox="0 0 60 8" preserveAspectRatio="none" aria-hidden="true"><path d="M2 6C18 1 40 1 58 4"></path></svg></u> qilgan texnika bizda!</span></div>
+    <div class="hr">${ADMIN ? `<button class="adm" aria-label="Admin panel" data-go="admin">${svg(P.shield, '#fff', 20)}</button>` : ''}
+    ${BR().length ? `<label class="brsel">${svg(P.pin, '#15803D', 18)}<span>${esc(brf ? brName(brf) : 'Barchasi')}</span>${svg(P.down, '#166534', 14, 2.4)}
       <select id="brf" aria-label="Filialni tanlash"><option value="">Barcha filiallar</option>${BR().map(b => `<option value="${b.id}" ${String(b.id) === String(brf) ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></label>`
-      : '<span style="font-size:12px;font-weight:700;color:#166534;height:28px;display:flex;align-items:center">Qo‘qon · telefonlar do‘koni</span>'}
-    <span class="brand">Android Kokand</span></div>
-    ${ADMIN ? `<button class="adm" aria-label="Admin panel" data-go="admin">${svg(P.shield, '#fff')}</button>` : ''}</header>
-  <div class="search"><label>${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#15803D', 22, 2.4)}
+      : `<span class="brsel">${svg(P.pin, '#15803D', 18)}<span>Qo‘qon</span></span>`}</div></header>
+  <div class="search"><label>${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#1B2326', 22, 2.2)}
     <input id="q" type="search" enterkeyhint="search" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label>
-    <button class="fbtn" id="fb" aria-label="Saralash" aria-expanded="${showSort}">${svg('<path d="M4 6h16M7 12h10M10 18h4"></path>', '#fff', 22)}</button></div>
+    <button class="fbtn" id="fb" aria-label="Saralash" aria-expanded="${showSort}">${svg('<path d="M4 6h16M4 12h16M4 18h16"></path><circle cx="9" cy="6" r="2.2" fill="#15803D"></circle><circle cx="15" cy="12" r="2.2" fill="#15803D"></circle><circle cx="9" cy="18" r="2.2" fill="#15803D"></circle>', '#fff', 24, 2)}</button></div>
   ${showSort ? `<div class="sortrow">${[['new', 'Yangilari'], ['cheap', 'Arzonroq'], ['exp', 'Qimmatroq']].map(([k, l]) => `<button data-s="${k}" class="${sort === k ? 'on' : ''}">${l}</button>`).join('')}</div>` : ''}
   <section aria-label="Bannerlar">
     <div class="vp" id="vp"><div class="slides" id="slides">${B.map((b, k) => `<button class="banner" data-bl="${esc(b.link || '')}" style="background:${BG[k % 3]}">
