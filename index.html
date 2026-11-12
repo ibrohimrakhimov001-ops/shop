@@ -59,7 +59,9 @@ header{display:flex;align-items:center;justify-content:space-between;gap:10px;pa
 .brsel span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .brsel svg{flex:none}
 .brsel select{position:absolute;inset:0;opacity:0}
-.adm{width:56px;height:56px;border-radius:18px;background:#1B2326;border:none;display:flex;align-items:center;justify-content:center;flex:none}
+header.a .brand{font-size:clamp(19px,5.4vw,32px)}header.a .hr{gap:6px}header.a .brsel{font-size:13px;gap:5px}
+@media(max-width:400px){header.a .brsel > svg:nth-of-type(2){display:none}}
+.adm{width:42px;height:42px;border-radius:14px;background:#1B2326;border:none;display:flex;align-items:center;justify-content:center;flex:none}
 .search{display:flex;gap:10px;margin:0 20px 14px}
 .search label{min-width:0;display:flex;align-items:center;gap:12px;flex:1;height:56px;padding:0 18px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:0 6px 20px rgba(27,35,38,.07)}
 .search input{border:none;background:transparent;font-weight:500;font-size:16px;flex:1;min-width:0;outline:none}
@@ -373,7 +375,7 @@ document.addEventListener('focusout',() => setTimeout(() => { if (!document.acti
 const TABS = [['', 'Bosh sahifa', '<path d="M3 11l9-7 9 7v9H3z"></path>'],
   ['catalog', 'Katalog', '<rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect>'],
   ['calc', 'Kalkulyator', '<rect x="4" y="2" width="16" height="20" rx="2"></rect><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 18h8"></path>'], ['contact', 'Aloqa', P.phone]];
-const tabbar = on => `<nav class="tabbar" aria-label="Menyu">${(ADMIN ? [...TABS, ['admin', 'Admin', P.shield]] : TABS).map(([k, l, ic]) => `<button data-go="${k}" class="${k === on ? 'on' : ''}" ${k === on ? 'aria-current="page"' : ''}>${svg(ic, 'currentColor', 22)}${l}</button>`).join('')}</nav>`;
+const tabbar = on => `<nav class="tabbar" aria-label="Menyu">${TABS.map(([k, l, ic]) => `<button data-go="${k}" class="${k === on ? 'on' : ''}" ${k === on ? 'aria-current="page"' : ''}>${svg(ic, 'currentColor', 22)}${l}</button>`).join('')}</nav>`;
 function page(html) { $('#app').innerHTML = html; bindGo(); tg && tg.BackButton.hide(); }
 
 function card(p) {
@@ -396,11 +398,12 @@ function home() {
   const brands = [...new Set(D.products.filter(p => !p.sold).map(brandOf))];
   const B = banners(); if (bi >= B.length) bi = 0;
   page(`
-  <header><div class="logo"><span class="brand">Android <em>Kokand</em></span></div>
+  <header class="${ADMIN ? 'a' : ''}"><div class="logo"><span class="brand">Android <em>Kokand</em></span></div>
     <div class="hr">
     ${BR().length ? `<label class="brsel">${svg(P.pin, '#15803D', 18)}<span>${esc(brf ? brName(brf) : 'Barchasi')}</span>${svg(P.down, '#166534', 14, 2.4)}
       <select id="brf" aria-label="Filialni tanlash"><option value="">Barcha filiallar</option>${BR().map(b => `<option value="${b.id}" ${String(b.id) === String(brf) ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></label>`
-      : `<span class="brsel">${svg(P.pin, '#15803D', 18)}<span>Qo‘qon</span></span>`}</div></header>
+      : `<span class="brsel">${svg(P.pin, '#15803D', 18)}<span>Qo‘qon</span></span>`}
+    ${ADMIN ? `<button class="adm" aria-label="Admin panel" data-go="admin">${svg(P.shield, '#fff', 20)}</button>` : ''}</div></header>
   <div class="search"><label>${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#1B2326', 22, 2.2)}
     <input id="q" type="search" enterkeyhint="search" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label>
     <button class="fbtn" id="fb" aria-label="Saralash" aria-expanded="${showSort}">${svg('<path d="M4 6h16M4 12h16M4 18h16"></path><circle cx="9" cy="6" r="2.2" fill="#15803D"></circle><circle cx="15" cy="12" r="2.2" fill="#15803D"></circle><circle cx="9" cy="18" r="2.2" fill="#15803D"></circle>', '#fff', 24, 2)}</button></div>
