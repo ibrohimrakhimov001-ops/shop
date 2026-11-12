@@ -715,7 +715,7 @@ async function saveForm() {
     const pid = j.id, was = F.id ? D.products.find(x => x.id === F.id) : null;
     (j.photos || []).filter(x => !F.keep.includes(x)).forEach((x, i) => { if (F.neu[i]) LOCAL[x] = F.neu[i]; });
     if ((was ? !was.sold : true) !== F.instock) await call('/api/sold', {id: pid, sold: !F.instock});
-    toast(F.id ? '✅ Saqlandi' : '✅ Saqlandi va kanalga joylandi'); j.warn && toast(j.warn, 4000);
+    toast(F.id || D.post === false ? '✅ Saqlandi' : '✅ Saqlandi va kanalga joylandi'); j.warn && toast(j.warn, 4000);
     F = null; setTimeout(async () => { await refresh(); location.hash = 'admin'; route(); }, 1200);
   } catch (e) { b.disabled = false; b.textContent = 'Qayta urinish'; toast('Xato: ' + e.message, 4000); }
 }
@@ -860,6 +860,8 @@ function settings() {
   <div style="display:flex;flex-direction:column;gap:12px;padding:4px 20px 16px">
     <button class="navcard" data-go="branches"><span class="ico">${svg(P.pin, '#fff')}</span>
       <span style="display:flex;flex-direction:column;flex:1"><span style="font-size:15px;font-weight:800">Filiallar</span><span style="font-size:12px;font-weight:600;color:var(--mut)">${BR().length} ta filial · manzil, telefon, Telegram</span></span>${svg(P.chev, '#5C676B', 18)}</button>
+    <span class="lbl">Telegram kanal</span>
+    <label class="chk">Yangi mahsulotni kanalga joylash<input type="checkbox" id="s_post" ${D.post !== false ? 'checked' : ''}></label>
     <span class="lbl">Muddatli to‘lov</span>
     <label class="fl">Dollar kursi, so‘m<input id="s_kurs" inputmode="numeric" placeholder="12 800" value="${D.kurs || ''}"></label>
     <span style="font-size:12px;font-weight:700;color:var(--mut)">Ustama · rasmiy ish joyi</span>
@@ -880,6 +882,9 @@ function settings() {
     $('#adok').onclick = async () => { const v = +$('#adid').value.replace(/\D/g, ''); if (!v) return toast('ID ni yozing');
       try { ADM = (await call('/api/admins', {add: v})).admins; toast('✅ Admin qo‘shildi'); settings(); } catch (e) { toast('Xato: ' + e.message); } };
   };
+  $('#s_post').onchange = async e => { const v = e.target.checked;
+    try { await call('/api/settings', {post: v}); D.post = v; toast(v ? '✅ Kanalga joylash yoqildi' : '⏸ Kanalga joylash o‘chirildi'); }
+    catch (er) { e.target.checked = !v; toast('Xato: ' + er.message, 4000); } };
   $('#ssv').onclick = async () => {
     const rates = {}; $$('[data-rt]').forEach(el => rates[el.dataset.rt] = +el.value || 0);
     const kurs = +$('#s_kurs').value.replace(/\D/g, '');
