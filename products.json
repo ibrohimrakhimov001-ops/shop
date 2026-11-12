@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 15:43:54",
+ "updated": "2026-11-12 15:52:57",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1033,6 +1033,26 @@
    "box": "Bor",
    "warranty": "1 oy",
    "price": 230,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
+  },
+  {
+   "id": 1794480777,
+   "sold": false,
+   "created": "2026-11-12 15:52",
+   "photos": [
+    "photos/1794480777_77850_0.jpg"
+   ],
+   "name": "Honor X9D",
+   "brand": "Boshqa",
+   "memory": "256 GB",
+   "state": "Ideal",
+   "battery": "",
+   "box": "Bor",
+   "warranty": "1 oy",
+   "price": 290,
    "old": null,
    "sale": "",
    "sale_until": "",
