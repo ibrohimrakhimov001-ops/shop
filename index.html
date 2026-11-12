@@ -923,7 +923,11 @@ function skeleton() {
   if (sp && /^p_\d+$/.test(sp)) location.hash = 'p=' + sp.slice(2);
   window.onhashchange = route;
   route();
-  if (INIT) call('/api/me').then(j => { if (j.admin) { ADMIN = true; route(); } }).catch(() => {});
+  // статус админа: сразу из памяти (сервер всё равно проверяет), затем уточняем с повтором — туннель иногда моргает
+  try { if (INIT && localStorage.getItem('adm') === '1') { ADMIN = true; route(); } } catch (e) {}
+  const me = n => call('/api/me').then(j => { const a = !!j.admin; try { localStorage.setItem('adm', a ? '1' : '0'); } catch (e) {}
+    if (a !== ADMIN) { ADMIN = a; route(); } }).catch(() => n > 0 && setTimeout(() => me(n - 1), 2500));
+  if (INIT) me(4);
   setInterval(() => { if ($('#slides') && !document.body.classList.contains('kb')) slide((bi + 1) % banners().length, true); }, 4000);
 })();
 </script>
