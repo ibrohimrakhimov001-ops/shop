@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:24:25",
+ "updated": "2026-11-12 14:25:37",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -620,6 +620,25 @@
    "created": "2026-11-12 14:24",
    "channel_msgs": [
     218
+   ]
+  },
+  {
+   "name": "Samsung S24 Ultra",
+   "desc": "📱Samsung S24 Ultra\n📶Dubay 2 ta sim✅\n💽Xotira 12/256GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi bor\n🔋Batareka 5000mAh\n💰Narxi 660$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "12/256 GB",
+   "price": 660,
+   "state": "Ideal",
+   "box": "Bor",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 1794475534,
+   "photos": [
+    "photos/1794475534_0.jpg"
+   ],
+   "sold": false,
+   "created": "2026-11-12 14:25",
+   "channel_msgs": [
+    219
    ]
   }
  ],
