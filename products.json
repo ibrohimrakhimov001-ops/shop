@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:45:43",
+ "updated": "2026-11-12 14:47:28",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -766,6 +766,26 @@
    "box": "Bor",
    "warranty": "1 yil",
    "price": 220,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794379620332"
+  },
+  {
+   "id": 1794476848,
+   "sold": false,
+   "created": "2026-11-12 14:47",
+   "photos": [
+    "photos/1794476848_48508_0.jpg"
+   ],
+   "name": "Samsung S23+",
+   "brand": "Samsung",
+   "memory": "256 GB",
+   "state": "Ideal",
+   "battery": "",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 350,
    "old": null,
    "sale": "",
    "sale_until": "",
