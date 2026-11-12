@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:05:57",
+ "updated": "2026-11-12 14:07:22",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -470,6 +470,26 @@
    "channel_msgs": [
     210
    ]
+  },
+  {
+   "id": 1794474442,
+   "sold": false,
+   "created": "2026-11-12 14:07",
+   "photos": [
+    "photos/1794474442_42368_0.jpg"
+   ],
+   "name": "15 Pro",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Zo‘r",
+   "battery": "90%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 660,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
   }
  ],
  "branches": [
