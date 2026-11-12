@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:07:22",
+ "updated": "2026-11-12 14:07:28",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -489,7 +489,10 @@
    "old": null,
    "sale": "",
    "sale_until": "",
-   "branch": "1794386923402"
+   "branch": "1794386923402",
+   "channel_msgs": [
+    211
+   ]
   }
  ],
  "branches": [
