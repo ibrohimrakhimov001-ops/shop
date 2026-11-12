@@ -140,10 +140,7 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .bar .call{background:var(--grad);color:#fff}
 .bar .tgb{background:#fff;border:2px solid var(--acc);color:var(--acc)}
 /* aloqa / filiallar */
-.agrp summary{list-style:none;display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:14px;background:var(--soft);cursor:pointer;font-size:15px}
-.agrp summary::-webkit-details-marker{display:none}
-.agrp summary span{margin-left:auto;font-size:12px;font-weight:700;color:var(--mut)}
-.agrp summary > svg:last-child{transition:transform .2s}.agrp[open] summary > svg:last-child{transform:rotate(180deg)}
+.asub{font-size:12px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;padding:10px 4px 0}
 .list{display:flex;flex-direction:column;gap:10px;padding:4px 20px 16px}
 .bcard{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 4px 14px rgba(21,128,61,.06)}
 .bhead{display:flex;align-items:center;gap:10px}
@@ -571,18 +568,18 @@ const guard = () => { if (!ADMIN) { location.hash = ''; return false; } return t
 let aq = '';
 function adminRows() {
   const list = [...D.products].filter(p => !aq || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(aq)).sort((a, b) => (!!a.sold - !!b.sold) || b.id - a.id);
-  if (!list.length) return `<div class="empty">${aq ? 'Hech narsa topilmadi' : 'Hali mahsulot yo‘q'}</div>`;
-  const groups = [...BR().map(b => ({id: String(b.id), name: b.name})), {id: '', name: 'Filial ko‘rsatilmagan'}];
-  return groups.map(g => {
-    const items = list.filter(p => g.id ? String(p.branch) === g.id : !brOf(p.branch));
-    if (!items.length) return '';
-    const sold = items.filter(p => p.sold).length;
-    return `<details class="agrp" data-g="${g.id}" ${acol[g.id] && !aq ? '' : 'open'}><summary>${svg(P.pin, '#15803D', 17)}<b>${esc(g.name)}</b>
-      <span>${items.length - sold} sotuvda${sold ? ' · ' + sold + ' sotilgan' : ''}</span>${svg(P.down, '#5B6B66', 16, 2.4)}</summary>
-      <div class="list" style="padding:10px 0 4px">${items.map(arow).join('')}</div></details>`;
-  }).join('');
+  const inBr = p => !abr || (abr === 'none' ? !brOf(p.branch) : String(p.branch) === abr);
+  const items = list.filter(inBr), act = items.filter(p => !p.sold), sold = items.filter(p => p.sold);
+  if (!items.length) return `<div class="empty">${aq ? 'Hech narsa topilmadi' : 'Bu filialda mahsulot yo‘q'}</div>`;
+  return act.map(arow).join('') + (sold.length ? `<div class="asub">Sotilganlar · ${sold.length}</div>` + sold.map(arow).join('') : '');
 }
-const acol = {};   // свернутые филиалы
+let abr = '';   // выбранный филиал в админке: '' — все, 'none' — без филиала
+function abrTabs() {
+  const n = f => D.products.filter(p => !p.sold && f(p)).length;
+  const tabs = [['', 'Hammasi', n(() => true)], ...BR().map(b => [String(b.id), b.name, n(p => String(p.branch) === String(b.id))])];
+  const none = n(p => !brOf(p.branch)); if (none) tabs.push(['none', 'Filialsiz', none]);
+  return tabs.map(([id, l, c]) => `<button data-abr="${id}" class="${abr === id ? 'on' : ''}">${esc(l)} <b style="opacity:.7">${c}</b></button>`).join('');
+}
 function arow(p) {
   { const e = eff(p); return `<div class="arow">
     <div class="th">${img(p) ? `<img src="${th(p)}" data-full="${img(p)}" alt="">` : `<span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center">${svg(P.dev, '#15803D', 26, 1.6)}</span>`}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
@@ -596,7 +593,7 @@ function bindRows() {
   bindGo();
   $$('[data-del]').forEach(el => el.onclick = () => delProduct(+el.dataset.del));
   $$('[data-sold]').forEach(el => el.onclick = () => toggleSold(+el.dataset.sold, el));
-  $$('.agrp').forEach(d => d.ontoggle = () => { if (!aq) acol[d.dataset.g] = !d.open; });
+  $$('[data-abr]').forEach(el => el.onclick = () => { abr = el.dataset.abr; $('#abrs').innerHTML = abrTabs(); $('#arows').innerHTML = adminRows(); bindRows(); });
 }
 async function toggleSold(id, el) {
   const p = D.products.find(x => x.id === id); if (!p) return;
@@ -616,7 +613,8 @@ function admin() {
     <div style="background:#FDECEC"><b style="color:#B91C1C">${D.products.filter(p => !p.sold && onSale(p)).length}</b><span style="color:#B91C1C">chegirmada</span></div>
     <div style="background:var(--mint)"><b style="color:#166534">${banners().length}</b><span style="color:#166534">banner</span></div></div>
   ${anav('admin')}
-  <div style="padding:0 20px 12px"><button class="btn" data-go="new">+ Mahsulot qo‘shish</button></div>
+  <div style="padding:0 20px 4px"><button class="btn" data-go="new">+ Mahsulot qo‘shish</button></div>
+  <nav class="cats" id="abrs" aria-label="Filiallar" style="padding:12px 20px">${abrTabs()}</nav>
   <div class="search" style="margin:0 20px 12px"><label style="height:48px;border-width:1px;box-shadow:none;border-color:#DDE3DF">${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#15803D', 20, 2.4)}
     <input id="aq" type="search" enterkeyhint="search" aria-label="Mahsulot qidirish" placeholder="Qidirish: iPhone 13, A55..." value="${esc(aq)}"></label></div>
   <div class="list" id="arows" style="padding-top:0;padding-bottom:calc(24px + env(safe-area-inset-bottom))">${adminRows()}</div>`);
@@ -643,7 +641,7 @@ function edit(id, focusDisc) {
       name: p ? p.name : '', brand: p ? brandOf(p) : 'iPhone', memory: (p && p.memory) || '128 GB', state: (p && p.state) || 'Ideal',
       warranty: (p && p.warranty) || '', battery: ((p && p.battery) || '').replace(/\D/g, ''), price: p ? (has ? p.old : p.price) || '' : '',
       box: (p && p.box) || 'Yo‘q', disc: !!has, pct: has ? String(p.sale).replace(/\D/g, '') : '', newp: has ? p.price : '', until: (p && p.sale_until) || '',
-      branch: p ? p.branch || '' : (BR().length === 1 ? String(BR()[0].id) : ''), instock: p ? !p.sold : true};
+      branch: p ? p.branch || '' : (abr && abr !== 'none' ? abr : BR().length === 1 ? String(BR()[0].id) : ''), instock: p ? !p.sold : true};
   }
   const opt = (arr, v) => [...new Set([...arr, v].filter(Boolean))].map(x => `<option ${x === v ? 'selected' : ''}>${esc(x)}</option>`).join('');
   const nph = F.keep.length + F.neu.length;
