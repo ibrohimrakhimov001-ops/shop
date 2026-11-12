@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:04:33",
+ "updated": "2026-11-12 14:05:51",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -446,6 +446,27 @@
    "channel_msgs": [
     209
    ]
+  },
+  {
+   "id": 1794474351,
+   "sold": false,
+   "created": "2026-11-12 14:05",
+   "photos": [
+    "photos/1794474351_51328_0.jpg",
+    "photos/1794474351_51433_1.jpg"
+   ],
+   "name": "15 Pro Max",
+   "brand": "iPhone",
+   "memory": "256 GB",
+   "state": "Ideal",
+   "battery": "94%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 760,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
   }
  ],
  "branches": [
