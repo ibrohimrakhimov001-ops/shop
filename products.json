@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 15:42:37",
+ "updated": "2026-11-12 15:43:54",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1013,6 +1013,26 @@
    "box": "Yo‘q",
    "warranty": "1 oy",
    "price": 150,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
+  },
+  {
+   "id": 1794480234,
+   "sold": false,
+   "created": "2026-11-12 15:43",
+   "photos": [
+    "photos/1794480234_34431_0.jpg"
+   ],
+   "name": "iPhone 11",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Ideal",
+   "battery": "88%",
+   "box": "Bor",
+   "warranty": "1 oy",
+   "price": 230,
    "old": null,
    "sale": "",
    "sale_until": "",
