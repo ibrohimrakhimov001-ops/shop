@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 15:06:15",
+ "updated": "2026-11-12 15:09:59",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -870,6 +870,29 @@
    "sale": "",
    "sale_until": "",
    "branch": "1794379620332"
+  },
+  {
+   "id": 1794478199,
+   "sold": false,
+   "created": "2026-11-12 15:09",
+   "photos": [
+    "photos/1794478199_99282_0.jpg",
+    "photos/1794478199_99380_1.jpg",
+    "photos/1794478199_99446_2.jpg",
+    "photos/1794478199_99511_3.jpg"
+   ],
+   "name": "16 Pro Max",
+   "brand": "iPhone",
+   "memory": "256 GB",
+   "state": "Yaxshi",
+   "battery": "91%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 890,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
   }
  ],
  "branches": [
