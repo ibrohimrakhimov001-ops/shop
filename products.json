@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:26:12",
+ "updated": "2026-11-12 14:28:50",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -668,6 +668,14 @@
    "title": "17 Pro chegirma narxda",
    "tag": "",
    "link": "p:1794474112"
+  },
+  {
+   "id": 1794475730845,
+   "img": "photos/banner_1794475730845_75730.jpg",
+   "text": true,
+   "title": "13 pro",
+   "tag": "",
+   "link": ""
   }
  ],
  "rates": {
