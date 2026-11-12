@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:42:32",
+ "updated": "2026-11-12 14:44:10",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -726,6 +726,26 @@
    "box": "Yo‘q",
    "warranty": "1 oy",
    "price": 335,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794379620332"
+  },
+  {
+   "id": 1794476650,
+   "sold": false,
+   "created": "2026-11-12 14:44",
+   "photos": [
+    "photos/1794476650_50153_0.jpg"
+   ],
+   "name": "Samsung A18",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Yangi",
+   "battery": "",
+   "box": "Bor",
+   "warranty": "1 yil",
+   "price": 220,
    "old": null,
    "sale": "",
    "sale_until": "",
