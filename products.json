@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:02:30",
+ "updated": "2026-11-12 14:04:26",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -422,6 +422,27 @@
    "channel_msgs": [
     208
    ]
+  },
+  {
+   "id": 1794474266,
+   "sold": false,
+   "created": "2026-11-12 14:04",
+   "photos": [
+    "photos/1794474266_66492_0.jpg",
+    "photos/1794474266_66601_1.jpg"
+   ],
+   "name": "16 Pro Max",
+   "brand": "iPhone",
+   "memory": "256 GB",
+   "state": "Ideal",
+   "battery": "89%",
+   "box": "Bor",
+   "warranty": "1 oy",
+   "price": 900,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
   }
  ],
  "branches": [
