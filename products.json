@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:41:38",
+ "updated": "2026-11-12 14:42:32",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -705,6 +705,27 @@
    "box": "Yo‘q",
    "warranty": "1 oy",
    "price": 220,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794379620332"
+  },
+  {
+   "id": 1794476552,
+   "sold": false,
+   "created": "2026-11-12 14:42",
+   "photos": [
+    "photos/1794476552_52431_0.jpg",
+    "photos/1794476552_52532_1.jpg"
+   ],
+   "name": "Iphone 13",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Ideal",
+   "battery": "90%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 335,
    "old": null,
    "sale": "",
    "sale_until": "",
