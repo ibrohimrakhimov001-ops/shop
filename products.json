@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 12:27:25",
+ "updated": "2026-11-12 14:01:52",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -396,6 +396,29 @@
     207
    ],
    "created": "2026-11-11 17:54"
+  },
+  {
+   "id": 1794474112,
+   "sold": false,
+   "created": "2026-11-12 14:01",
+   "photos": [
+    "photos/1794474112_12585_0.jpg",
+    "photos/1794474112_12733_1.jpg",
+    "photos/1794474112_12804_2.jpg",
+    "photos/1794474112_12871_3.jpg"
+   ],
+   "name": "IPhone 17 Pro",
+   "brand": "iPhone",
+   "memory": "256 GB",
+   "state": "Ideal",
+   "battery": "91%",
+   "box": "Bor",
+   "warranty": "1 oy",
+   "price": 950,
+   "old": 970,
+   "sale": "−2%",
+   "sale_until": "",
+   "branch": "1794386923402"
   }
  ],
  "branches": [
