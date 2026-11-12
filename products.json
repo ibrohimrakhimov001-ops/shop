@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 15:09:59",
+ "updated": "2026-11-12 15:30:50",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -889,6 +889,26 @@
    "box": "Yo‘q",
    "warranty": "1 oy",
    "price": 890,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
+  },
+  {
+   "id": 1794479450,
+   "sold": false,
+   "created": "2026-11-12 15:30",
+   "photos": [
+    "photos/1794479450_50860_0.jpg"
+   ],
+   "name": "iPhone 13 Pro Max",
+   "brand": "iPhone",
+   "memory": "128 GB",
+   "state": "Zo‘r",
+   "battery": "95%",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 490,
    "old": null,
    "sale": "",
    "sale_until": "",
