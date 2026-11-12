@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 15:52:57",
+ "updated": "2026-11-12 15:54:24",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1053,6 +1053,26 @@
    "box": "Bor",
    "warranty": "1 oy",
    "price": 290,
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
+  },
+  {
+   "id": 1794480864,
+   "sold": false,
+   "created": "2026-11-12 15:54",
+   "photos": [
+    "photos/1794480864_64195_0.jpg"
+   ],
+   "name": "S23",
+   "brand": "Samsung",
+   "memory": "128 GB",
+   "state": "Ideal",
+   "battery": "",
+   "box": "Yo‘q",
+   "warranty": "1 oy",
+   "price": 325,
    "old": null,
    "sale": "",
    "sale_until": "",
