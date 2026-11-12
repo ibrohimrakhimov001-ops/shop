@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:23:16",
+ "updated": "2026-11-12 14:23:51",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -581,6 +581,25 @@
    "created": "2026-11-12 14:23",
    "channel_msgs": [
     216
+   ]
+  },
+  {
+   "name": "Samsung S22 (Dubay)",
+   "desc": "📱Samsung S22 (Dubay)\n💽Xotira 8/256 GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yo’q\n🔋Batareka 3700mAh \n💰Narxi 220$\n📌Manzil: Qo’qon shahar,\n     Furqat 100(Kappon)\n🛒Nasiya savdo✅\n📞+998912046465\n📞+998910010404",
+   "memory": "8/256 GB",
+   "price": 220,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 1794475428,
+   "photos": [
+    "photos/1794475428_0.jpg"
+   ],
+   "sold": false,
+   "created": "2026-11-12 14:23",
+   "channel_msgs": [
+    217
    ]
   }
  ],
