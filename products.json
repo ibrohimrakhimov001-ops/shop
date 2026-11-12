@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-12 14:25:37",
+ "updated": "2026-11-12 14:26:12",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -660,7 +660,16 @@
    "hours": "9:30 dan 19:00 gacha"
   }
  ],
- "banners": [],
+ "banners": [
+  {
+   "id": 1794475572238,
+   "img": "photos/banner_1794475572238_75572.jpg",
+   "text": true,
+   "title": "17 Pro chegirma narxda",
+   "tag": "",
+   "link": "p:1794474112"
+  }
+ ],
  "rates": {
   "r3": 27.0,
   "r6": 36.0,
