@@ -601,7 +601,7 @@ async function usersPage() {
   bindBu();
   try {
     BU = (await call('/api/users')).users;
-    if (location.hash === '#users' && $('#bul')) { $('#bul').innerHTML = buRows(); $('#bus').innerHTML = buSum(); $('#utb').innerHTML = utabs('users'); bindBu(); }
+    if (location.hash === '#users' && $('#bul')) { $('#bul').innerHTML = buRows(); $('#bus').innerHTML = buSum(); $('#utb').innerHTML = utabs('users'); bindGo(); bindBu(); }
   } catch (e) { if ($('#bul')) $('#bul').innerHTML = `<div class="empty">Xato: ${esc(e.message)}</div>`; }
 }
 const WST = {ok: '🛡 kafolat amalda', wait: '⏳ rozilik kutilmoqda', ended: 'kafolat tugagan'};
