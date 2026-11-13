@@ -37,6 +37,8 @@ input,select{font-size:16px}   /* <16px → телефон приближает 
 .fl{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--mut);min-width:0}
 .fl input,.fl select{height:48px;border-radius:14px;border:1px solid #DDE3DF;background:#fff;padding:0 14px;font-size:16px;font-weight:600;color:var(--ink);width:100%;min-width:0;outline:none}
 .fl select{padding:0 10px}
+.fl textarea{border-radius:14px;border:1px solid #DDE3DF;background:#fff;padding:12px 14px;font:inherit;font-size:15px;font-weight:500;color:var(--ink);width:100%;outline:none;resize:vertical;line-height:1.45}
+.fl textarea:focus{border-color:var(--acc)}
 .fl input:focus,.fl select:focus{border-color:var(--acc)}
 .g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -570,7 +572,7 @@ function contact() {
 }
 
 /* ================= АДМИН ================= */
-const ANAV = [['admin', 'Mahsulotlar'], ['promos', 'Aksiyalar'], ['banners', 'Bannerlar'], ['branches', 'Filiallar'], ['settings', 'Sozlamalar']];
+const ANAV = [['admin', 'Mahsulotlar'], ['warranty', 'Kafolat'], ['promos', 'Aksiyalar'], ['banners', 'Bannerlar'], ['branches', 'Filiallar'], ['settings', 'Sozlamalar']];
 const anav = on => `<nav class="anav" aria-label="Bo‘limlar">${ANAV.map(([k, l]) => `<button data-go="${k}" class="${k === on ? 'on' : ''}">${l}</button>`).join('')}</nav>`;
 const guard = () => { if (!ADMIN) { location.hash = ''; return false; } return true; };
 
@@ -859,6 +861,51 @@ async function saveBranches(list) {
   catch (e) { toast('Xato: ' + e.message, 4000); }
 }
 
+/* --- kafolat --- */
+let WL = null;
+const dmy = t => { const d = new Date(t * 1000); return String(d.getDate()).padStart(2, '0') + '.' + String(d.getMonth() + 1).padStart(2, '0') + '.' + d.getFullYear(); };
+function wst(it) {
+  const over = it.ended || Date.now() / 1000 >= it.end;
+  if (over) return it.agreed ? ['Tugagan', '#5C676B', '#EEF1EF'] : ['Rozi bo‘lmagan', '#B91C1C', '#FDECEC'];
+  return it.agreed ? ['Faol · ' + dmy(it.end) + ' gacha', '#15803D', '#E3F1E8'] : ['Rozilik kutilmoqda', '#B45309', '#FEF3E2'];
+}
+function wRows() {
+  if (!WL) return '<span style="font-size:13px;color:var(--mut);font-weight:600">Yuklanmoqda…</span>';
+  if (!WL.length) return '<div class="empty" style="padding:20px 0">Hali kafolat yuborilmagan</div>';
+  return WL.map(it => { const [t, c, bg] = wst(it); return `<div class="pcard" style="gap:4px">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:15px;font-weight:800;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(it.model)}</span>
+    <span style="flex:none;font-size:11px;font-weight:800;color:${c};background:${bg};padding:4px 8px;border-radius:8px">${t}</span></div>
+    <span style="font-size:13px;font-weight:600">${esc(it.name)} · ID ${esc(it.client)}${it.phone ? ' · +' + esc(it.phone) : ''}</span>
+    <span style="font-size:12px;font-weight:600;color:var(--mut)">IMEI ${esc(it.imei)} · sotib olingan ${esc(it.date)} · yuborilgan ${dmy(it.sent)}</span></div>`; }).join('');
+}
+function warranty() {
+  if (!guard()) return;
+  const today = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  page(`<div class="hdr">${backBtn('admin')}<h2>Kafolat</h2></div>
+  ${anav('warranty')}
+  <div style="display:flex;flex-direction:column;gap:12px;padding:4px 20px 16px">
+    <label class="fl">Mijoz ID yoki telefon raqami<input id="w_c" inputmode="numeric" placeholder="12345 yoki 90 123 45 67" autocomplete="off"></label>
+    <span style="font-size:12px;font-weight:600;color:var(--mut);margin-top:-6px">Mijozda ID bo‘lmasa: botga /id yuborib, raqamini jo‘natsin — bot 5 xonali ID beradi.</span>
+    <label class="fl">Ism<input id="w_n" placeholder="Mijoz ismi" autocomplete="off"></label>
+    <label class="fl">Model<input id="w_m" placeholder="iPhone 13 128GB" autocomplete="off"></label>
+    <label class="fl">IMEI<input id="w_i" inputmode="numeric" placeholder="15 xonali raqam" autocomplete="off"></label>
+    <label class="fl">Sotib olingan sana<input id="w_d" type="date" value="${today}"></label>
+    <button class="btn" id="w_go">🛡 Kafolat yuborish</button>
+    <span class="lbl">Yuborilgan kafolatlar</span>
+    <div class="list" id="wl" style="padding:0">${wRows()}</div>
+  </div>`);
+  const reload = () => call('/api/warranty').then(j => { WL = j.items; if ($('#wl')) $('#wl').innerHTML = wRows(); }).catch(e => toast('Xato: ' + e.message));
+  reload();
+  $('#w_go').onclick = async () => {
+    const b = {client: $('#w_c').value, name: $('#w_n').value, model: $('#w_m').value, imei: $('#w_i').value, date: $('#w_d').value};
+    if (!b.client.trim() || !b.name.trim() || !b.model.trim() || !b.imei.trim()) return toast('Barcha maydonlarni to‘ldiring');
+    const btn = $('#w_go'); btn.disabled = true; btn.textContent = 'Yuborilmoqda…';
+    try { await call('/api/warranty', b); toast('✅ Kafolat mijozga yuborildi'); ['#w_c', '#w_n', '#w_m', '#w_i'].forEach(x => $(x).value = ''); reload(); }
+    catch (e) { toast('Xato: ' + e.message, 5000); }
+    btn.disabled = false; btn.textContent = '🛡 Kafolat yuborish';
+  };
+}
+
 /* --- sozlamalar --- */
 let ADM = null;
 function settings() {
@@ -877,6 +924,9 @@ function settings() {
     <div class="g3">${[3, 6, 12].map(m => `<label class="fl">${m} oy, %<input data-rt="r${m}" inputmode="numeric" value="${R['r' + m]}"></label>`).join('')}</div>
     <span style="font-size:12px;font-weight:700;color:var(--mut)">Ustama · norasmiy</span>
     <div class="g3"><label class="fl">12 oy, %<input data-rt="n12" inputmode="numeric" value="${R.n12}"></label></div>
+    <span class="lbl">Kafolat shartlari</span>
+    <label class="fl">Mijozga yuboriladigan matn<textarea id="s_terms" rows="8" placeholder="Yuklanmoqda…"></textarea></label>
+    <button class="dash" id="s_tsv" style="width:100%">Kafolat shartlarini saqlash</button>
     <span class="lbl">Adminlar</span>
     <div id="adl" style="display:flex;flex-direction:column;gap:8px">${ADM ? '' : '<span style="font-size:13px;color:var(--mut);font-weight:600">Yuklanmoqda…</span>'}</div>
     <div id="adadd"><button class="dash" id="adb" style="width:100%">+ Telegram ID orqali admin qo‘shish</button></div>
@@ -894,6 +944,9 @@ function settings() {
   $('#s_post').onchange = async e => { const v = e.target.checked;
     try { await call('/api/settings', {post: v}); D.post = v; toast(v ? '✅ Kanalga joylash yoqildi' : '⏸ Kanalga joylash o‘chirildi'); }
     catch (er) { e.target.checked = !v; toast('Xato: ' + er.message, 4000); } };
+  call('/api/warranty').then(j => { WL = j.items; if ($('#s_terms') && !$('#s_terms').value) $('#s_terms').value = j.terms; }).catch(() => {});
+  $('#s_tsv').onclick = async () => { const t = $('#s_terms').value.trim(); if (!t) return toast('Matn bo‘sh');
+    try { await call('/api/wterms', {terms: t}); toast('✅ Kafolat shartlari saqlandi'); } catch (e) { toast('Xato: ' + e.message, 4000); } };
   $('#ssv').onclick = async () => {
     const rates = {}; $$('[data-rt]').forEach(el => rates[el.dataset.rt] = +el.value || 0);
     const kurs = +$('#s_kurs').value.replace(/\D/g, '');
@@ -906,7 +959,7 @@ function settings() {
 function route() {
   document.body.classList.remove('kb');
   const h = location.hash.replace(/^#/, '');
-  const S = {catalog, calc: calcPage, sale: sales, contact, admin, promos, banners: bannersAdmin, branches: branchesAdmin, settings, new: () => edit(null)};
+  const S = {catalog, calc: calcPage, sale: sales, contact, admin, promos, banners: bannersAdmin, branches: branchesAdmin, settings, warranty, new: () => edit(null)};
   if (S[h]) return S[h]();
   let m = h.match(/^edit=(\d+)(&d)?/); if (m) return edit(m[1], !!m[2]);
   m = h.match(/p=(\d+)/); m ? product(m[1]) : home();
