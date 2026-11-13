@@ -85,7 +85,8 @@ header.a .brand{font-size:clamp(19px,5.4vw,32px)}header.a .hr{gap:6px}header.a .
   padding:6px 6px 6px 14px;border-radius:20px;box-shadow:0 6px 16px -6px rgba(0,0,0,.35)}
 .banner .more i{font-style:normal;width:22px;height:22px;border-radius:50%;background:#15803D;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}
 .banner img{position:absolute;right:0;top:0;width:52%;height:100%;object-fit:cover;object-position:30% center;z-index:0;transform-origin:55% 50%;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.04) 8%,rgba(0,0,0,.14) 16%,rgba(0,0,0,.3) 24%,rgba(0,0,0,.5) 32%,rgba(0,0,0,.7) 40%,rgba(0,0,0,.86) 48%,rgba(0,0,0,.96) 56%,#000 64%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.04) 8%,rgba(0,0,0,.14) 16%,rgba(0,0,0,.3) 24%,rgba(0,0,0,.5) 32%,rgba(0,0,0,.7) 40%,rgba(0,0,0,.86) 48%,rgba(0,0,0,.96) 56%,#000 64%)}
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.08) 10%,rgba(0,0,0,.25) 20%,rgba(0,0,0,.5) 30%,rgba(0,0,0,.75) 40%,rgba(0,0,0,.92) 50%,#000 60%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.08) 10%,rgba(0,0,0,.25) 20%,rgba(0,0,0,.5) 30%,rgba(0,0,0,.75) 40%,rgba(0,0,0,.92) 50%,#000 60%)}
+.banner:has(img:not(.full))::before{content:"";position:absolute;inset:0;background:inherit;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,#000 0,#000 44%,rgba(0,0,0,.8) 50%,rgba(0,0,0,.55) 57%,rgba(0,0,0,.32) 64%,rgba(0,0,0,.14) 71%,rgba(0,0,0,.04) 78%,transparent 86%);mask-image:linear-gradient(90deg,#000 0,#000 44%,rgba(0,0,0,.8) 50%,rgba(0,0,0,.55) 57%,rgba(0,0,0,.32) 64%,rgba(0,0,0,.14) 71%,rgba(0,0,0,.04) 78%,transparent 86%)}
 .banner.on img{animation:kb 7s ease-out forwards}
 @keyframes kb{from{transform:scale(1)}to{transform:scale(1.09)}}
 .banner img.full{width:100%;-webkit-mask-image:none;mask-image:none}
@@ -408,7 +409,7 @@ function home() {
     .filter(p => cat === 'all' || (cat === 'sale' ? onSale(p) : brandOf(p) === cat))
     .filter(p => !q || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(q))
     .filter(p => !brf || String(p.branch) === String(brf))
-    .sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (eff(a).price || 1e9) - (eff(b).price || 1e9) : sort === 'exp' ? (eff(b).price || 0) - (eff(a).price || 0) : b.id - a.id));
+    .sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (eff(a).price || 1e9) - (eff(b).price || 1e9) : sort === 'exp' ? (eff(b).price || 0) - (eff(a).price || 0) : newer(a, b)));
   const brands = [...new Set(D.products.filter(p => !p.sold).map(brandOf))];
   const B = banners(); if (bi >= B.length) bi = 0;
   page(`
@@ -453,6 +454,8 @@ function home() {
   $$('[data-b]').forEach(el => el.onclick = () => slide(+el.dataset.b));
   dots();
 }
+// новые сверху — по дате добавления (у части товаров id не по времени)
+const newer = (a, b) => String(b.created || '').localeCompare(String(a.created || '')) || b.id - a.id;
 let lastTouch = 0;
 function dots() {
   $$('[data-b]').forEach((el, k) => { el.classList.remove('on'); if (k === bi) { el.offsetWidth; el.classList.add('on'); } });
@@ -593,7 +596,7 @@ const guard = () => { if (!ADMIN) { location.hash = ''; return false; } return t
 
 let aq = '';
 function adminRows() {
-  const list = [...D.products].filter(p => !aq || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(aq)).sort((a, b) => (!!a.sold - !!b.sold) || b.id - a.id);
+  const list = [...D.products].filter(p => !aq || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(aq)).sort((a, b) => (!!a.sold - !!b.sold) || newer(a, b));
   const inBr = p => !abr || (abr === 'none' ? !brOf(p.branch) : String(p.branch) === abr);
   const items = list.filter(inBr), act = items.filter(p => !p.sold), sold = items.filter(p => p.sold);
   if (!items.length) return `<div class="empty">${aq ? 'Hech narsa topilmadi' : 'Bu filialda mahsulot yo‘q'}</div>`;
