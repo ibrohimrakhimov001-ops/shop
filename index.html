@@ -195,7 +195,8 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .cl .ln .tgl{background:#E0F2FE;color:#0369A1}.cl .ln .del{background:#FDECEC;color:#B91C1C}
 .cl .by{font-size:13px;font-weight:600;padding:6px 0 0;color:var(--ink)}.cl .by span{color:var(--mut);font-weight:600}
 .cl .nt{font-size:12px;color:var(--mut);margin-top:6px}
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.seg button{height:52px;border-radius:14px;border:2px solid #DDE3DF;background:#fff;font:inherit;font-size:13px;font-weight:800;color:var(--ink)}
+.bdg{font-size:11px;font-weight:800;border-radius:8px;padding:3px 7px;background:var(--soft);color:#15803D}.bdg.r{background:#FDECEC;color:#B91C1C}.bdg.b{background:#E0F2FE;color:#0369A1}
+.seg{gap:8px}.seg button{height:52px;border-radius:14px;border:2px solid #DDE3DF;background:#fff;font:inherit;font-size:13px;font-weight:800;color:var(--ink)}
 .seg button.on{border-color:#15803D;background:var(--soft);color:#15803D}
 .prg{height:10px;border-radius:6px;background:var(--soft);overflow:hidden;margin-top:8px}.prg i{display:block;height:100%;background:#15803D;transition:width .4s}
 .btn2{height:52px;border-radius:16px;border:2px solid #15803D;background:#fff;color:#15803D;font:inherit;font-weight:800;font-size:15px;width:100%}
@@ -555,7 +556,54 @@ async function statsPage() {
   catch (e) { if ($('#stb')) $('#stb').innerHTML = `<div class="empty">Xato: ${esc(e.message)}</div>`; }
 }
 /* ---------- Mijozlar (клиентская база покупателей) ---------- */
-let CL = null, clq = '', clAdd = false;
+let CL = null, clq = '', clAdd = false, BU = null, buq = '';
+const utabs = cur => [['clients', 'Xaridorlar', CL ? CL.length : '…'], ['users', 'Bot a’zolari', BU ? BU.length : '…']].map(([k, l, n]) => `<button data-go="${k}" class="${cur === k ? 'on' : ''}">${l} · ${n}</button>`).join('');
+const fdt = t => { const d = new Date(t * 1000); return d.toLocaleDateString('ru-RU') + ' ' + d.toTimeString().slice(0, 5); };
+function buRows() {
+  const q = buq.toLowerCase();
+  const a = (BU || []).filter(u => !q || [u.n, u.u, u.id].join(' ').toLowerCase().includes(q));
+  if (!a.length) return `<div class="empty">${BU && BU.length ? 'Topilmadi' : 'Hozircha hech kim yo‘q'}</div>`;
+  return a.map(u => `<div class="cl"><div class="top"><b>${esc(u.n || 'Ismsiz')}</b>${u.admin ? '<span class="bdg b">admin</span>' : ''}${u.buyer ? '<span class="bdg">xaridor</span>' : ''}${u.off ? '<span class="bdg r">bloklagan</span>' : ''}</div>
+    <div class="by"><span>Qo‘shildi: ${fdt(u.t)} · ID ${u.id}</span></div>
+    <div class="ln">${u.u ? `<a class="tgl" href="https://t.me/${esc(u.u)}" data-tl>✈️ @${esc(u.u)}</a>` : ''}${u.off ? '' : `<button class="tgl" data-um="${u.id}">✉️ Xabar</button>`}</div>
+    <div id="um${u.id}"></div></div>`).join('');
+}
+function bindBu() {
+  $$('[data-tl]').forEach(el => el.onclick = e => { if (tg && tg.openTelegramLink) { e.preventDefault(); tg.openTelegramLink(el.href); } });
+  $$('[data-um]').forEach(el => el.onclick = () => {
+    const id = el.dataset.um, box = $('#um' + id);
+    if (box.innerHTML) return box.innerHTML = '';
+    box.innerHTML = `<label class="fl" style="margin-top:10px"><textarea id="umt${id}" rows="3" placeholder="Xabar matni"></textarea></label><button class="btn" style="height:46px;margin-top:8px" id="ums${id}">Yuborish</button>`;
+    $('#umt' + id).focus();
+    $('#ums' + id).onclick = async e => {
+      const t = $('#umt' + id).value.trim(); if (!t) return toast('Matn yozing');
+      e.target.disabled = true;
+      try { await call('/api/clients', {msg: {uid: +id, text: t}}); box.innerHTML = ''; toast('✅ Yuborildi'); }
+      catch (er) { e.target.disabled = false; toast('Xato: ' + er.message, 4000); }
+    };
+  });
+}
+function buSum() {
+  if (!BU) return '';
+  const now = Date.now() / 1000, n = d => BU.filter(u => now - u.t < d * 86400).length;
+  return kp([['Jami', nf(BU.length)], ['Bugun', nf(n(1)), '#15803D'], ['7 kunda', nf(n(7))], ['Bloklagan', nf(BU.filter(u => u.off).length), '#B91C1C']]);
+}
+async function usersPage() {
+  if (!guard()) return;
+  page(`<div class="hdr">${backBtn('admin')}<div style="display:flex;flex-direction:column;flex:1"><span class="sub2">Admin</span><h2>Mijozlar</h2></div></div>
+  <div class="seg" style="margin:0 20px 10px" id="utb">${utabs('users')}</div>
+  <div style="padding:0 20px" id="bus">${buSum()}</div>
+  <div class="mut2" style="margin:8px 20px 0">Botga yozgan yoki do‘konni ochgan hamma (13.11.2026 dan beri)</div>
+  <div class="search" style="margin:10px 20px 0"><label style="height:48px;border-width:1px;box-shadow:none;border-color:#DDE3DF">${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#15803D', 20, 2.4)}
+    <input id="buq" type="search" aria-label="Qidirish" placeholder="Ism, @username, ID..." value="${esc(buq)}"></label></div>
+  <div id="bul" style="padding:0 20px 120px">${BU ? buRows() : '<div class="empty">Yuklanmoqda…</div>'}</div>`);
+  $('#buq').oninput = e => { buq = e.target.value.trim(); $('#bul').innerHTML = buRows(); bindBu(); };
+  bindBu();
+  try {
+    BU = (await call('/api/users')).users;
+    if (location.hash === '#users' && $('#bul')) { $('#bul').innerHTML = buRows(); $('#bus').innerHTML = buSum(); $('#utb').innerHTML = utabs('users'); bindBu(); }
+  } catch (e) { if ($('#bul')) $('#bul').innerHTML = `<div class="empty">Xato: ${esc(e.message)}</div>`; }
+}
 const WST = {ok: '🛡 kafolat amalda', wait: '⏳ rozilik kutilmoqda', ended: 'kafolat tugagan'};
 function clRows() {
   const q = clq.toLowerCase();
@@ -591,6 +639,7 @@ function bindCl() {
 async function clientsPage() {
   if (!guard()) return;
   page(`<div class="hdr">${backBtn('admin')}<div style="display:flex;flex-direction:column;flex:1"><span class="sub2">Admin</span><h2>Mijozlar</h2></div><span class="id" id="clc" style="font-size:13px;font-weight:800;color:var(--mut)">${CL ? CL.length : ''}</span></div>
+  <div class="seg" style="margin:0 20px 10px">${utabs('clients')}</div>
   <div style="padding:0 20px;display:grid;grid-template-columns:1fr auto;gap:8px">
     <button class="btn" id="cla" style="height:48px;border-radius:14px">${clAdd ? '× Yopish' : '+ Mijoz qo‘shish'}</button>
     <button class="btn2" id="clx" style="height:48px;border-radius:14px;width:auto;padding:0 14px">📄 Excel</button></div>
@@ -1220,7 +1269,7 @@ function route() {
   document.body.classList.remove('kb');
   const h = location.hash.replace(/^#/, '');
   if (h === 'calc') ev('calc');
-  const S = {stats: statsPage, clients: clientsPage, bcast: bcastPage, catalog, calc: calcPage, sale: sales, contact, admin, promos, banners: bannersAdmin, branches: branchesAdmin, settings, warranty, new: () => edit(null)};
+  const S = {users: usersPage, stats: statsPage, clients: clientsPage, bcast: bcastPage, catalog, calc: calcPage, sale: sales, contact, admin, promos, banners: bannersAdmin, branches: branchesAdmin, settings, warranty, new: () => edit(null)};
   if (S[h]) return S[h]();
   let m = h.match(/^edit=(\d+)(&d)?/); if (m) return edit(m[1], !!m[2]);
   m = h.match(/p=(\d+)/); m ? product(m[1]) : home();
