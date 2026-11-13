@@ -877,12 +877,12 @@ function wRows() {
   if (!WL) return '<span style="font-size:13px;color:var(--mut);font-weight:600">Yuklanmoqda…</span>';
   const q = WQ.trim().toLowerCase(), qd = q.replace(/\D/g, '');
   const list = !q ? WL : WL.filter(it => (it.name + ' ' + it.model).toLowerCase().includes(q)
-    || (qd.length >= 3 && (String(it.imei).includes(qd) || String(it.client).includes(qd) || String(it.phone || '').includes(qd))));
+    || (qd.length >= 3 && (String(it.imei).includes(qd) || String(it.no || it.client).includes(qd) || String(it.phone || '').includes(qd))));
   if (!list.length) return `<div class="empty" style="padding:20px 0">${q ? 'Hech narsa topilmadi' : 'Amaldagi kafolat yo‘q'}</div>`;
   return list.map(it => { const [t, c, bg] = wst(it); return `<div class="pcard" style="gap:4px">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:15px;font-weight:800;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(it.model)}</span>
     <span style="flex:none;font-size:11px;font-weight:800;color:${c};background:${bg};padding:4px 8px;border-radius:8px">${t}</span></div>
-    <span style="font-size:13px;font-weight:600">${esc(it.name)} · ID ${esc(it.client)}${it.phone ? ' · +' + esc(it.phone) : ''}</span>
+    <span style="font-size:13px;font-weight:600">${esc(it.name)} · № ${esc(it.no || it.client)}${it.phone ? ' · +' + esc(it.phone) : ''}</span>
     <span style="font-size:12px;font-weight:600;color:var(--mut)">IMEI ${esc(it.imei)} · sotib olingan ${esc(it.date)} · yuborilgan ${dmy(it.sent)}</span>
     <div class="wacts"><button data-we="${it.wid}">Tahrirlash</button>${it.ended || Date.now() / 1000 >= it.end ? '' : `<button data-wt="${it.wid}">Hozir tugatish</button>`}<button class="d" data-wd="${it.wid}">O‘chirish</button></div></div>`; }).join('');
 }
@@ -902,7 +902,7 @@ function warranty() {
     <button class="dash" id="w_cancel" style="width:100%;display:none">Tahrirlashni bekor qilish</button>
     <span class="lbl">Amaldagi kafolatlar</span>
     <div class="search" style="margin:0"><label style="height:48px">${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#1B2326', 20, 2.2)}
-      <input id="w_q" type="search" placeholder="Ism, model, IMEI, ID yoki telefon" aria-label="Kafolatni qidirish" autocomplete="off"></label></div>
+      <input id="w_q" type="search" placeholder="Ism, model, IMEI, talon № yoki telefon" aria-label="Kafolatni qidirish" autocomplete="off"></label></div>
     <div class="list" id="wl" style="padding:0">${wRows()}</div>
   </div>`);
   let ED = 0;   // wid редактируемой гарантии
