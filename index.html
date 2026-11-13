@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
 <style>
+html{scrollbar-width:none}html::-webkit-scrollbar,body::-webkit-scrollbar{display:none}
 :root{--acc:#15803D;--acc2:#166534;--ink:#1B2326;--mut:#5C676B;--line:#E5EAE7;--soft:#F2F5F3;--mint:#E3F1E8;--red:#DC2626;--grad:linear-gradient(135deg,#178A45,#14532D)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:#fff}
@@ -253,7 +254,7 @@ const DEF_BANNERS = [
 const BG = ['linear-gradient(135deg,#22A55A,#14532D)', 'linear-gradient(135deg,#178A45,#0B3D24)', 'linear-gradient(135deg,#15803D,#052E16)'];
 
 let D = {products: [], kurs: 12800}, ADMIN = false, APIURL = '';
-let cat = 'all', q = '', bi = 0, brf = '', sort = 'new', showSort = false;
+let cat = 'all', q = '', bi = 0, brf = '', sort = 'mix', showSort = false;
 let term = 12, rasmiy = false, down = 0, warn = 0, lastP = null;
 
 const $ = s => document.querySelector(s);
@@ -409,7 +410,7 @@ function home() {
     .filter(p => cat === 'all' || (cat === 'sale' ? onSale(p) : brandOf(p) === cat))
     .filter(p => !q || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(q))
     .filter(p => !brf || String(p.branch) === String(brf))
-    .sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (eff(a).price || 1e9) - (eff(b).price || 1e9) : sort === 'exp' ? (eff(b).price || 0) - (eff(a).price || 0) : newer(a, b)));
+    .sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (eff(a).price || 1e9) - (eff(b).price || 1e9) : sort === 'exp' ? (eff(b).price || 0) - (eff(a).price || 0) : sort === 'mix' ? mix(a) - mix(b) : newer(a, b)));
   const brands = [...new Set(D.products.filter(p => !p.sold).map(brandOf))];
   const B = banners(); if (bi >= B.length) bi = 0;
   page(`
@@ -422,7 +423,7 @@ function home() {
   <div class="search"><label>${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#1B2326', 22, 2.2)}
     <input id="q" type="search" enterkeyhint="search" aria-label="Qidirish" placeholder="iPhone 13, Samsung A55..." value="${esc(q)}"></label>
     <button class="fbtn" id="fb" aria-label="Saralash" aria-expanded="${showSort}">${svg('<path d="M4 6h16M4 12h16M4 18h16"></path><circle cx="9" cy="6" r="2.2" fill="#15803D"></circle><circle cx="15" cy="12" r="2.2" fill="#15803D"></circle><circle cx="9" cy="18" r="2.2" fill="#15803D"></circle>', '#fff', 24, 2)}</button></div>
-  ${showSort ? `<div class="sortrow">${[['new', 'Yangilari'], ['cheap', 'Arzonroq'], ['exp', 'Qimmatroq']].map(([k, l]) => `<button data-s="${k}" class="${sort === k ? 'on' : ''}">${l}</button>`).join('')}</div>` : ''}
+  ${showSort ? `<div class="sortrow">${[['mix', 'Tavsiya'], ['new', 'Yangilari'], ['cheap', 'Arzonroq'], ['exp', 'Qimmatroq']].map(([k, l]) => `<button data-s="${k}" class="${sort === k ? 'on' : ''}">${l}</button>`).join('')}</div>` : ''}
   <section aria-label="Bannerlar">
     <div class="vp" id="vp"><div class="slides" id="slides">${B.map((b, k) => `<button class="banner" data-bl="${esc(b.link || '')}" style="background:${BG[k % 3]}">
       ${b.img ? `<img src="${src(b.img)}" alt="" class="${b.text === false ? 'full' : ''}">` : svg(P.dev, '#fff', 150, 1.2).replace('<svg', '<svg class="deco"')}
@@ -456,6 +457,16 @@ function home() {
 }
 // новые сверху — по дате добавления (у части товаров id не по времени)
 const newer = (a, b) => String(b.created || '').localeCompare(String(a.created || '')) || b.id - a.id;
+// «Tavsiya»: новые (2 дня) сверху, дальше — кого меньше смотрели; похожие перемешиваются при каждом открытии
+const SEED = Math.random() * 1e9;
+const rnd = id => { const x = Math.sin((+id % 1e7) * 12.9898 + SEED) * 43758.5453; return x - Math.floor(x); };
+const ageH = p => (Date.now() - new Date(String(p.created || '').replace(' ', 'T')).getTime()) / 36e5;
+function mix(p) {
+  const h = ageH(p);
+  if (h >= 0 && h < 48) return -1e6 + h;                       // свежие — первыми, по дате
+  const v = ((D.views || {})[p.id] || 0) + 1;
+  return v * (0.6 + 0.8 * rnd(p.id));                          // меньше просмотров — выше
+}
 let lastTouch = 0;
 function dots() {
   $$('[data-b]').forEach((el, k) => { el.classList.remove('on'); if (k === bi) { el.offsetWidth; el.classList.add('on'); } });
@@ -479,7 +490,7 @@ function monthly(p, m, r = rasmiy, d = down) {
 function product(id) {
   const p = D.products.find(x => String(x.id) === String(id));
   if (!p) { location.hash = ''; return; }
-  if (lastP !== p.id) { lastP = p.id; down = 0; warn = 0; }
+  if (lastP !== p.id) { lastP = p.id; down = 0; warn = 0; call('/api/view', {id: p.id}, false).catch(() => {}); }
   const e = eff(p), br = brOf(p.branch) || (BR().length === 1 ? BR()[0] : null);
   const tgU = (br && br.tg) || D.tg || '';
   const photos = (p.photos || []).map((_, i) => `<div class="pv"><img class="lo" src="${th(p, i)}" alt=""><img class="hi" src="${img(p, i)}" alt="${esc(p.name)}" onload="this.classList.add('ok')"></div>`).join('') || `<div>${phoneSvg}</div>`;
