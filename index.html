@@ -183,6 +183,22 @@ h1{margin:0;font-size:26px;font-weight:800;line-height:1.15}
 .tiles .tl{margin-bottom:auto;display:flex;color:var(--ink,#1B2326)}.lg{flex:none;display:block}
 .tiles b{font-size:17px;font-weight:800}.tiles span{font-size:12px;font-weight:600;color:var(--mut)}
 /* админ */
+.strow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 20px 12px}
+.strow .stbtn{margin:0;width:100%;flex-direction:column;align-items:flex-start;gap:6px;padding:12px;font-size:14px}
+.strow .stbtn.b2{background:linear-gradient(135deg,#2563EB,#1D4ED8);box-shadow:0 8px 20px -10px rgba(29,78,216,.6)}
+.strow .stbtn.b3{background:linear-gradient(135deg,#F59E0B,#D97706);box-shadow:0 8px 20px -10px rgba(217,119,6,.6)}
+.cl{background:#fff;border-radius:18px;padding:14px 16px;margin-top:10px;box-shadow:0 4px 14px rgba(21,128,61,.06);border:1px solid #E6EEE9}
+.cl .top{display:flex;align-items:center;gap:8px}.cl .top b{font-size:16px;font-weight:800;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cl .id{font-size:11px;font-weight:700;color:var(--mut);background:var(--soft);border-radius:8px;padding:3px 7px}
+.cl .ln{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.cl .ln a,.cl .ln button{display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 12px;border-radius:10px;border:none;background:var(--soft);color:#15803D;font:inherit;font-size:13px;font-weight:700;text-decoration:none}
+.cl .ln .tgl{background:#E0F2FE;color:#0369A1}.cl .ln .del{background:#FDECEC;color:#B91C1C}
+.cl .by{font-size:13px;font-weight:600;padding:6px 0 0;color:var(--ink)}.cl .by span{color:var(--mut);font-weight:600}
+.cl .nt{font-size:12px;color:var(--mut);margin-top:6px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.seg button{height:52px;border-radius:14px;border:2px solid #DDE3DF;background:#fff;font:inherit;font-size:13px;font-weight:800;color:var(--ink)}
+.seg button.on{border-color:#15803D;background:var(--soft);color:#15803D}
+.prg{height:10px;border-radius:6px;background:var(--soft);overflow:hidden;margin-top:8px}.prg i{display:block;height:100%;background:#15803D;transition:width .4s}
+.btn2{height:52px;border-radius:16px;border:2px solid #15803D;background:#fff;color:#15803D;font:inherit;font-weight:800;font-size:15px;width:100%}
 .stbtn{display:flex;align-items:center;gap:10px;margin:0 20px 12px;width:calc(100% - 40px);padding:14px 16px;border:none;border-radius:16px;background:linear-gradient(135deg,#22A55A,#15803D);color:#fff;font:inherit;font-size:16px;font-weight:800;box-shadow:0 8px 20px -10px rgba(21,128,61,.6);text-align:left}
 .stbtn span{margin-left:auto;font-size:22px;opacity:.9}
 .sts{background:#fff;border-radius:18px;padding:14px 16px;margin-top:12px;box-shadow:0 4px 14px rgba(21,128,61,.06);border:1px solid #E6EEE9}
@@ -416,7 +432,7 @@ function ev(k, o = {}) {
 }
 const curPid = () => { const m = location.hash.match(/p=(\d+)/); return m ? m[1] : ''; };
 document.addEventListener('click', e => {
-  const a = e.target.closest('a[href^="tel:"]'); if (a) return ev('call', {pid: curPid(), ph: a.getAttribute('href').slice(4)});
+  const a = e.target.closest('a[href^="tel:"]'); if (a && a.closest('[data-nost]')) return; if (a) return ev('call', {pid: curPid(), ph: a.getAttribute('href').slice(4)});
   const t = e.target.closest('#tgb,[data-tgu]'); if (t) return ev('tg', {pid: curPid(), u: t.dataset.tgu || ''});
   const b = e.target.closest('[data-bl]'); if (b) return ev('banner', {t: ((b.querySelector('.t') || {}).textContent || b.dataset.bl || 'Banner').trim()});
   if (e.target.closest('.go')) ev('calc');
@@ -537,6 +553,122 @@ async function statsPage() {
   $$('[data-sp]').forEach(el => el.onclick = () => { SP = +el.dataset.sp; statsPage(); });
   try { STD = await call('/api/stats?d=' + SP); if (location.hash === '#stats' && STD.days === SP) $('#stb').innerHTML = statsBody(STD); }
   catch (e) { if ($('#stb')) $('#stb').innerHTML = `<div class="empty">Xato: ${esc(e.message)}</div>`; }
+}
+/* ---------- Mijozlar (клиентская база покупателей) ---------- */
+let CL = null, clq = '', clAdd = false;
+const WST = {ok: '🛡 kafolat amalda', wait: '⏳ rozilik kutilmoqda', ended: 'kafolat tugagan'};
+function clRows() {
+  const q = clq.toLowerCase();
+  const a = (CL || []).filter(c => !q || [c.name, c.phone, c.u, c.cid, ...c.buys.map(b => b.model + ' ' + (b.imei || ''))].join(' ').toLowerCase().includes(q));
+  if (!a.length) return `<div class="empty">${CL && CL.length ? 'Topilmadi' : 'Hozircha mijoz yo‘q. Kafolat berilgan xaridorlar shu yerga avtomatik tushadi.'}</div>`;
+  return a.map(c => `<div class="cl" data-nost><div class="top"><b>${esc(c.name || 'Ismsiz')}</b><span class="id">#${c.cid}</span></div>
+    ${c.buys.map(b => `<div class="by">📱 ${esc(b.model || '')}${b.price ? ' · ' + esc(b.price) + '$' : ''} <span>${esc(b.date || '')}${b.war ? ' · ' + WST[b.war] : ''}</span></div>`).join('')}
+    ${c.note ? `<div class="nt">📝 ${esc(c.note)}</div>` : ''}
+    <div class="ln">${c.phone ? `<a href="tel:+${esc(c.phone)}">📞 +${esc(c.phone)}</a>` : ''}
+      ${c.u ? `<a class="tgl" href="https://t.me/${esc(c.u)}" data-tl>✈️ @${esc(c.u)}</a>` : ''}
+      ${c.tg ? `<button class="tgl" data-cm="${c.cid}">✉️ Xabar</button>` : ''}
+      ${c.buys.some(b => b.war) ? '' : `<button class="del" data-cd="${c.cid}" aria-label="O‘chirish">${svg(P.del, '#B91C1C', 15)}</button>`}</div>
+    <div id="cm${c.cid}"></div></div>`).join('');
+}
+function bindCl() {
+  $$('[data-tl]').forEach(el => el.onclick = e => { if (tg && tg.openTelegramLink) { e.preventDefault(); tg.openTelegramLink(el.href); } });
+  $$('[data-cm]').forEach(el => el.onclick = () => {
+    const id = el.dataset.cm, box = $('#cm' + id);
+    if (box.innerHTML) return box.innerHTML = '';
+    box.innerHTML = `<label class="fl" style="margin-top:10px"><textarea id="cmt${id}" rows="3" placeholder="Xabar matni"></textarea></label><button class="btn" style="height:46px;margin-top:8px" id="cms${id}">Yuborish</button>`;
+    $('#cmt' + id).focus();
+    $('#cms' + id).onclick = async e => {
+      const t = $('#cmt' + id).value.trim(); if (!t) return toast('Matn yozing');
+      e.target.disabled = true;
+      try { await call('/api/clients', {msg: {cid: id, text: t}}); box.innerHTML = ''; toast('✅ Yuborildi'); }
+      catch (er) { e.target.disabled = false; toast('Xato: ' + er.message, 4000); }
+    };
+  });
+  $$('[data-cd]').forEach(el => el.onclick = () => confirmDo('Mijoz bazadan o‘chirilsinmi?', async () => {
+    try { CL = (await call('/api/clients', {del: el.dataset.cd})).clients; $('#cll').innerHTML = clRows(); bindCl(); } catch (e) { toast('Xato: ' + e.message, 4000); }
+  }));
+}
+async function clientsPage() {
+  if (!guard()) return;
+  page(`<div class="hdr">${backBtn('admin')}<div style="display:flex;flex-direction:column;flex:1"><span class="sub2">Admin</span><h2>Mijozlar</h2></div><span class="id" id="clc" style="font-size:13px;font-weight:800;color:var(--mut)">${CL ? CL.length : ''}</span></div>
+  <div style="padding:0 20px;display:grid;grid-template-columns:1fr auto;gap:8px">
+    <button class="btn" id="cla" style="height:48px;border-radius:14px">${clAdd ? '× Yopish' : '+ Mijoz qo‘shish'}</button>
+    <button class="btn2" id="clx" style="height:48px;border-radius:14px;width:auto;padding:0 14px">📄 Excel</button></div>
+  ${clAdd ? `<section class="newbox solid" style="margin:12px 20px 0"><h3>Yangi xaridor</h3>
+    <label class="fl">Ism<input id="ca_n" placeholder="Aziz"></label>
+    <label class="fl">Telefon<input id="ca_p" inputmode="tel" placeholder="+998 90 123 45 67"></label>
+    <label class="fl">Telegram · ixtiyoriy<input id="ca_u" placeholder="@username"></label>
+    <label class="fl">Telefon modeli<input id="ca_m" list="ca_ml" placeholder="iPhone 13 128GB"><datalist id="ca_ml">${(D.products || []).map(p => `<option value="${esc((p.name + ' ' + (p.memory || '')).trim())}">`).join('')}</datalist></label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><label class="fl">Narx $ · ixtiyoriy<input id="ca_pr" inputmode="numeric" placeholder="350"></label><label class="fl">Sana<input id="ca_d" type="date" value="${new Date().toISOString().slice(0, 10)}"></label></div>
+    <label class="fl">Izoh · ixtiyoriy<input id="ca_no" placeholder="Muddatli to‘lov, 3 oy"></label>
+    <button class="btn" id="ca_s">Saqlash</button></section>` : ''}
+  <div class="search" style="margin:12px 20px 0"><label style="height:48px;border-width:1px;box-shadow:none;border-color:#DDE3DF">${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#15803D', 20, 2.4)}
+    <input id="clq" type="search" aria-label="Mijoz qidirish" placeholder="Ism, telefon, model, IMEI..." value="${esc(clq)}"></label></div>
+  <div id="cll" style="padding:0 20px 120px">${CL ? clRows() : '<div class="empty">Yuklanmoqda…</div>'}</div>`);
+  $('#cla').onclick = () => { clAdd = !clAdd; clientsPage(); };
+  $('#clq').oninput = e => { clq = e.target.value.trim(); $('#cll').innerHTML = clRows(); bindCl(); };
+  $('#clx').onclick = async e => { e.target.disabled = true; try { await call('/api/clients', {csv: 1}); toast('📄 Fayl botga yuborildi'); } catch (er) { toast('Xato: ' + er.message, 4000); } e.target.disabled = false; };
+  if ($('#ca_s')) $('#ca_s').onclick = async e => {
+    const v = id => $(id).value.trim(), d = v('#ca_d').split('-').reverse().join('.');
+    e.target.disabled = true;
+    try { CL = (await call('/api/clients', {add: {name: v('#ca_n'), phone: v('#ca_p'), u: v('#ca_u'), model: v('#ca_m'), price: v('#ca_pr'), date: v('#ca_d') ? d : '', note: v('#ca_no')}})).clients; clAdd = false; toast('✅ Saqlandi'); clientsPage(); }
+    catch (er) { e.target.disabled = false; toast('Xato: ' + er.message, 4000); }
+  };
+  bindCl();
+  try { CL = (await call('/api/clients')).clients; if (location.hash === '#clients' && $('#cll')) { $('#cll').innerHTML = clRows(); bindCl(); $('#clc').textContent = CL.length; } }
+  catch (e) { if ($('#cll')) $('#cll').innerHTML = `<div class="empty">Xato: ${esc(e.message)}</div>`; }
+}
+
+/* ---------- Xabar yuborish (рассылка) ---------- */
+let BCF = {to: 'all', text: '', photo: '', btn: true}, BCS = null, bcT = 0;
+function bcStatus() {
+  if (!BCS || !BCS.total) return '';
+  const done = BCS.ok + BCS.fail, p = Math.round(done * 100 / BCS.total);
+  return `<section class="sts"><h3>${BCS.run ? '📤 Yuborilmoqda…' : '✅ Oxirgi xabar'}</h3><div class="kp"><div><b style="color:#15803D">${BCS.ok}</b><span>yetib bordi</span></div><div><b style="color:${BCS.fail ? '#B91C1C' : ''}">${BCS.fail}</b><span>yetmadi (botni bloklagan)</span></div></div>
+    ${BCS.run ? `<div class="prg"><i style="width:${p}%"></i></div><div class="mut2">${done} / ${BCS.total}</div>` : ''}</section>`;
+}
+async function bcPoll() {
+  clearTimeout(bcT);
+  try { BCS = await call('/api/broadcast'); } catch (e) { return; }
+  if (location.hash !== '#bcast') return;
+  if ($('#bcs')) $('#bcs').innerHTML = bcStatus();
+  if ($('#bto')) $('#bto').innerHTML = toBtns();
+  bindTo();
+  if (BCS.run) bcT = setTimeout(bcPoll, 2000);
+}
+const toBtns = () => [['all', 'Hammaga', BCS ? BCS.users : '…'], ['buyers', 'Xaridorlarga', BCS ? BCS.buyers : '…']].map(([k, l, n]) => `<button data-to="${k}" class="${BCF.to === k ? 'on' : ''}">${l} · ${n}</button>`).join('');
+function bindTo() { $$('[data-to]').forEach(el => el.onclick = () => { BCF.to = el.dataset.to; $('#bto').innerHTML = toBtns(); bindTo(); }); }
+function bcastPage() {
+  if (!guard()) return;
+  page(`<div class="hdr">${backBtn('admin')}<div style="display:flex;flex-direction:column;flex:1"><span class="sub2">Admin</span><h2>Xabar yuborish</h2></div></div>
+  <div style="padding:0 20px 120px">
+    <div class="mut2" style="margin:0 0 8px">Xabar bot orqali Telegram’ga boradi. Kimga:</div>
+    <div class="seg" id="bto">${toBtns()}</div>
+    <section class="newbox solid" style="margin:12px 0 0">
+      <label class="upl">${BCF.photo ? `<img src="${BCF.photo}" alt="">` : `${svg('<rect x="3" y="4" width="18" height="16" rx="3"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-9 9"></path>', '#15803D', 30)}<span style="font-size:14px;font-weight:800">Rasm · ixtiyoriy</span>`}<input id="bcf" type="file" accept="image/*" hidden></label>
+      ${BCF.photo ? '<button class="delbtn" id="bcfx" style="margin-top:0">Rasmni olib tashlash</button>' : ''}
+      <label class="fl">Matn<textarea id="bct" rows="6" placeholder="Assalomu alaykum! Do‘konimizga yangi telefonlar keldi…">${esc(BCF.text)}</textarea></label>
+      <label class="chk">«Do‘konni ochish» tugmasi<input type="checkbox" id="bcb" ${BCF.btn ? 'checked' : ''}></label>
+      <button class="btn2" id="bctest">Avval o‘zimga sinab ko‘rish</button>
+      <button class="btn" id="bcgo">📨 Yuborish</button>
+    </section>
+    <div id="bcs">${bcStatus()}</div></div>`);
+  const keep = () => { BCF.text = $('#bct').value; BCF.btn = $('#bcb').checked; };
+  bindTo();
+  $('#bcf').onchange = async e => { keep(); if (e.target.files[0]) BCF.photo = await shrink(e.target.files[0], 1280); bcastPage(); };
+  if ($('#bcfx')) $('#bcfx').onclick = () => { keep(); BCF.photo = ''; bcastPage(); };
+  const send = async (test, el) => {
+    keep(); if (!BCF.text.trim() && !BCF.photo) return toast('Matn yoki rasm qo‘shing');
+    el.disabled = true;
+    try {
+      const r = await call('/api/broadcast', {to: BCF.to, text: BCF.text, photo: BCF.photo, btn: BCF.btn, test: test ? 1 : 0});
+      if (test) toast('✅ Botda tekshiring'); else { toast(`📤 ${r.total} kishiga yuborilmoqda`); BCF.text = ''; BCF.photo = ''; $('#bct').value = ''; bcPoll(); }
+    } catch (e) { toast('Xato: ' + e.message, 4000); }
+    el.disabled = false;
+  };
+  $('#bctest').onclick = e => send(true, e.target);
+  $('#bcgo').onclick = e => { keep(); const n = BCS ? (BCF.to === 'buyers' ? BCS.buyers : BCS.users) : '?'; confirmDo(`Xabar ${n} kishiga yuborilsinmi?`, () => send(false, e.target)); };
+  bcPoll();
 }
 let lastTouch = 0;
 function dots() {
@@ -720,7 +852,9 @@ function admin() {
   if (!guard()) return;
   page(`
   <div class="hdr">${backBtn('', 1)}<div style="display:flex;flex-direction:column;flex:1"><span class="sub2">Admin rejimi</span><h2>Boshqaruv</h2></div></div>
-  <button class="stbtn" data-go="stats">${svg('<path d="M4 20V11M10 20V5M16 20v-7M21 20H3"></path>', '#fff', 22, 2.4)}Statistika<span>›</span></button>
+  <div class="strow"><button class="stbtn" data-go="stats">${svg('<path d="M4 20V11M10 20V5M16 20v-7M21 20H3"></path>', '#fff', 22, 2.4)}Statistika</button>
+    <button class="stbtn b2" data-go="clients">${svg('<circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c1.9.7 3.1 2.4 3.5 5.2"></path>', '#fff', 22, 2.2)}Mijozlar</button>
+    <button class="stbtn b3" data-go="bcast">${svg('<path d="M3 11v3a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"></path>', '#fff', 22, 2.2)}Xabar</button></div>
   <div class="stats"><div style="background:var(--soft)"><b>${D.products.filter(p => !p.sold).length}</b><span style="color:var(--mut)">mahsulot</span></div>
     <div style="background:#FDECEC"><b style="color:#B91C1C">${D.products.filter(p => !p.sold && onSale(p)).length}</b><span style="color:#B91C1C">chegirmada</span></div>
     <div style="background:var(--mint)"><b style="color:#166534">${banners().length}</b><span style="color:#166534">banner</span></div></div>
@@ -1086,7 +1220,7 @@ function route() {
   document.body.classList.remove('kb');
   const h = location.hash.replace(/^#/, '');
   if (h === 'calc') ev('calc');
-  const S = {stats: statsPage, catalog, calc: calcPage, sale: sales, contact, admin, promos, banners: bannersAdmin, branches: branchesAdmin, settings, warranty, new: () => edit(null)};
+  const S = {stats: statsPage, clients: clientsPage, bcast: bcastPage, catalog, calc: calcPage, sale: sales, contact, admin, promos, banners: bannersAdmin, branches: branchesAdmin, settings, warranty, new: () => edit(null)};
   if (S[h]) return S[h]();
   let m = h.match(/^edit=(\d+)(&d)?/); if (m) return edit(m[1], !!m[2]);
   m = h.match(/p=(\d+)/); m ? product(m[1]) : home();
