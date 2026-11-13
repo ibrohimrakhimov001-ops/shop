@@ -457,13 +457,13 @@ function home() {
 }
 // новые сверху — по дате добавления (у части товаров id не по времени)
 const newer = (a, b) => String(b.created || '').localeCompare(String(a.created || '')) || b.id - a.id;
-// «Tavsiya»: новые (2 дня) сверху, дальше — кого меньше смотрели; похожие перемешиваются при каждом открытии
+// «Tavsiya»: новые (сутки) сверху, дальше — кого меньше смотрели; похожие перемешиваются при каждом открытии
 const SEED = Math.random() * 1e9;
 const rnd = id => { const x = Math.sin((+id % 1e7) * 12.9898 + SEED) * 43758.5453; return x - Math.floor(x); };
 const ageH = p => (Date.now() - new Date(String(p.created || '').replace(' ', 'T')).getTime()) / 36e5;
 function mix(p) {
   const h = ageH(p);
-  if (h >= 0 && h < 48) return -1e6 + h;                       // свежие — первыми, по дате
+  if (h >= 0 && h < 24) return -1e6 + h;                       // свежие (сутки) — первыми, по дате
   const v = ((D.views || {})[p.id] || 0) + 1;
   return v * (0.6 + 0.8 * rnd(p.id));                          // меньше просмотров — выше
 }
