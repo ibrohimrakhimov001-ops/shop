@@ -872,10 +872,14 @@ function wst(it) {
   if (over) return it.agreed ? ['Tugagan', '#5C676B', '#EEF1EF'] : ['Rozi bo‘lmagan', '#B91C1C', '#FDECEC'];
   return it.agreed ? ['Faol · ' + dmy(it.end) + ' gacha', '#15803D', '#E3F1E8'] : ['Rozilik kutilmoqda', '#B45309', '#FEF3E2'];
 }
+let WQ = '';
 function wRows() {
   if (!WL) return '<span style="font-size:13px;color:var(--mut);font-weight:600">Yuklanmoqda…</span>';
-  if (!WL.length) return '<div class="empty" style="padding:20px 0">Hali kafolat yuborilmagan</div>';
-  return WL.map(it => { const [t, c, bg] = wst(it); return `<div class="pcard" style="gap:4px">
+  const q = WQ.trim().toLowerCase(), qd = q.replace(/\D/g, '');
+  const list = !q ? WL : WL.filter(it => (it.name + ' ' + it.model).toLowerCase().includes(q)
+    || (qd.length >= 3 && (String(it.imei).includes(qd) || String(it.client).includes(qd) || String(it.phone || '').includes(qd))));
+  if (!list.length) return `<div class="empty" style="padding:20px 0">${q ? 'Hech narsa topilmadi' : 'Amaldagi kafolat yo‘q'}</div>`;
+  return list.map(it => { const [t, c, bg] = wst(it); return `<div class="pcard" style="gap:4px">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:15px;font-weight:800;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(it.model)}</span>
     <span style="flex:none;font-size:11px;font-weight:800;color:${c};background:${bg};padding:4px 8px;border-radius:8px">${t}</span></div>
     <span style="font-size:13px;font-weight:600">${esc(it.name)} · ID ${esc(it.client)}${it.phone ? ' · +' + esc(it.phone) : ''}</span>
@@ -896,7 +900,9 @@ function warranty() {
     <label class="fl">Sotib olingan sana<input id="w_d" type="date" value="${today}"></label>
     <button class="btn" id="w_go">🛡 Kafolat yuborish</button>
     <button class="dash" id="w_cancel" style="width:100%;display:none">Tahrirlashni bekor qilish</button>
-    <span class="lbl">Yuborilgan kafolatlar</span>
+    <span class="lbl">Amaldagi kafolatlar</span>
+    <div class="search" style="margin:0"><label style="height:48px">${svg('<circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path>', '#1B2326', 20, 2.2)}
+      <input id="w_q" type="search" placeholder="Ism, model, IMEI, ID yoki telefon" aria-label="Kafolatni qidirish" autocomplete="off"></label></div>
     <div class="list" id="wl" style="padding:0">${wRows()}</div>
   </div>`);
   let ED = 0;   // wid редактируемой гарантии
@@ -909,11 +915,12 @@ function warranty() {
       ED = it.wid; $('#w_c').value = it.client; $('#w_c').disabled = true; $('#w_n').value = it.name; $('#w_m').value = it.model; $('#w_i').value = it.imei;
       const [d, m, y] = (it.date || '').split('.'); $('#w_d').value = y ? `${y}-${m}-${d}` : today;
       go.textContent = '💾 O‘zgarishni saqlash'; cancel.style.display = ''; window.scrollTo({top: 0, behavior: 'smooth'}); });
-    $$('[data-wt]').forEach(el => el.onclick = () => confirmDo('Kafolat hozir tugatilsinmi? Mijozga tugash haqida xabar boradi.', () => act('/api/wend', +el.dataset.wt, '⌛️ Kafolat tugatildi')));
+    $$('[data-wt]').forEach(el => el.onclick = () => confirmDo('Kafolat hozir tugatilsinmi? Mijozga tugash haqida xabar boradi.', () => act('/api/wend', +el.dataset.wt, '⌛️ Kafolat tugatildi va o‘chirildi')));
     $$('[data-wd]').forEach(el => el.onclick = () => confirmDo('Kafolat o‘chirilsinmi? Mijozga bekor qilingani haqida xabar boradi.', () => act('/api/wdel', +el.dataset.wd, '🗑 Kafolat o‘chirildi')));
   };
   const reload = () => call('/api/warranty').then(j => { WL = j.items; if ($('#wl')) { $('#wl').innerHTML = wRows(); bindW(); } }).catch(e => toast('Xato: ' + e.message));
   reload();
+  WQ = ''; $('#w_q').oninput = e => { WQ = e.target.value; $('#wl').innerHTML = wRows(); bindW(); };
   cancel.onclick = resetForm;
   go.onclick = async () => {
     const b = {client: $('#w_c').value, name: $('#w_n').value, model: $('#w_m').value, imei: $('#w_i').value, date: $('#w_d').value};
