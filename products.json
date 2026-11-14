@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14 11:52:27",
+ "updated": "2026-11-14 11:53:41",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1238,7 +1238,16 @@
    "channel_msgs": [
     7657
    ],
-   "created": "2026-11-14 11:52"
+   "created": "2026-11-14 11:52",
+   "brand": "Boshqa",
+   "state": "Yangi",
+   "battery": "",
+   "box": "Bor",
+   "warranty": "1 oy",
+   "old": null,
+   "sale": "",
+   "sale_until": "",
+   "branch": "1794386923402"
   }
  ],
  "branches": [
