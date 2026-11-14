@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14 11:53:41",
+ "updated": "2026-11-14 15:43:32",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1248,6 +1248,26 @@
    "sale": "",
    "sale_until": "",
    "branch": "1794386923402"
+  },
+  {
+   "name": "Samsung A07s",
+   "desc": "📱Samsung A07s\n💽Xotira 4/128 GB\n☑️Holati yangi 🆕\n☑️Kafolat 1 yil\n📦Karopkasi bor\n🔋Batareka 5000mAh\n💰Naqtga 170$🔥\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "4/128 GB",
+   "price": 170,
+   "state": "Yangi",
+   "box": "Bor",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 4653010564,
+   "photos": [
+    "photos/4653010564_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7659
+   ],
+   "created": "2026-11-14 15:43"
   }
  ],
  "branches": [
