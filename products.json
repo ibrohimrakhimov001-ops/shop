@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14 10:33:38",
+ "updated": "2026-11-14 10:43:42",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1161,6 +1161,27 @@
     7647
    ],
    "created": "2026-11-14 10:26"
+  },
+  {
+   "name": "IPhone 14",
+   "desc": "📱IPhone 14 \n💽Xotira 128GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi bor\n🔋Batareka 90%\n💰Narxi 380$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998912046465\n📞+998910010404",
+   "memory": "128 GB",
+   "battery": "90%",
+   "price": 380,
+   "state": "Ideal",
+   "box": "Bor",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 4635021087,
+   "photos": [
+    "photos/4635021087_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7648
+   ],
+   "created": "2026-11-14 10:43"
   }
  ],
  "branches": [
