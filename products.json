@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-13 18:53:36",
+ "updated": "2026-11-14 10:26:33",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1162,6 +1162,27 @@
    "sale": "",
    "sale_until": "",
    "branch": "1794379620332"
+  },
+  {
+   "name": "IPhone 14 Pro",
+   "desc": "📱IPhone 14 Pro\n💽Xotira 128GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yuq\n🔋Batareka 85%\n💰Narxi 520$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998912046465\n📞+998910010404",
+   "memory": "128 GB",
+   "battery": "85%",
+   "price": 520,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 4633991674,
+   "photos": [
+    "photos/4633991674_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7647
+   ],
+   "created": "2026-11-14 10:26"
   }
  ],
  "branches": [
