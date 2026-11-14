@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14 10:48:46",
+ "updated": "2026-11-14 10:53:55",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1191,13 +1191,11 @@
    "price": 480,
    "state": "Ideal",
    "box": "Yo'q",
-   "branch": 1794379620332,
+   "branch": "1794379620332",
    "warranty": "1 oy",
    "id": 4635292184,
    "photos": [
-    "photos/4635292184_0.jpg",
-    "photos/4635292184_1.jpg",
-    "photos/4635292184_2.jpg"
+    "photos/4635292184_35207_0.jpg"
    ],
    "sold": false,
    "imported": true,
@@ -1207,7 +1205,11 @@
     7650,
     7652
    ],
-   "created": "2026-11-14 10:48"
+   "created": "2026-11-14 10:48",
+   "brand": "iPhone",
+   "old": null,
+   "sale": "",
+   "sale_until": ""
   },
   {
    "name": "IPhone 13 Pro Max",
