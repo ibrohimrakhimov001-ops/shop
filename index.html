@@ -111,6 +111,11 @@ header.a .brand{font-size:clamp(19px,5.4vw,32px)}header.a .hr{gap:6px}header.a .
 .ph{position:relative;height:128px;border-radius:12px;background:linear-gradient(160deg,#F2F8F4,#DCEFE2);overflow:hidden;display:flex;align-items:center;justify-content:center}
 .ph img{width:100%;height:100%;object-fit:cover}
 .badge{position:absolute;top:8px;left:8px;background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:3px 7px;border-radius:6px}
+/* блик по бейджу акции: пробегает раз в ~3.6 с, остальное время бейдж спокоен */
+.badge{overflow:hidden;box-shadow:0 2px 8px -2px rgba(220,38,38,.55)}
+.badge::after{content:"";position:absolute;top:0;bottom:0;left:0;width:70%;background:linear-gradient(105deg,transparent 0%,rgba(255,255,255,.95) 50%,transparent 100%);transform:translateX(-160%) skewX(-18deg);animation:shine 3.6s ease-in-out infinite;animation-delay:var(--d,0s);pointer-events:none}
+@keyframes shine{0%,62%{transform:translateX(-160%) skewX(-18deg)}82%,100%{transform:translateX(260%) skewX(-18deg)}}
+@media (prefers-reduced-motion:reduce){.badge::after{animation:none;display:none}}
 .card .n{font-size:14px;font-weight:700;line-height:1.2}
 .card .s{font-size:12px;color:var(--mut);font-weight:600}
 .card .br{font-size:11px;color:var(--acc2);font-weight:700}
@@ -499,7 +504,7 @@ function card(p) {
   const e = eff(p), spec = [p.memory, p.state, p.battery].filter(Boolean).join(' · ');
   return `<button class="card ${p.sold ? 'sold' : ''}" data-p="${p.id}">
     <div class="ph">${img(p) ? `<img loading="lazy" src="${th(p)}" data-full="${img(p)}" alt="${esc(p.name)}">` : phoneSvg}
-      ${e.sale && !p.sold ? `<span class="badge">${esc(e.sale)}</span>` : ''}${/^yangi/i.test(p.state || '') && !p.sold ? '<span class="newtag">Yangi</span>' : ''}${p.sold ? '<span class="soldtag">SOTILDI</span>' : ''}</div>
+      ${e.sale && !p.sold ? `<span class="badge" style="--d:${(p.id % 6) * 0.6}s">${esc(e.sale)}</span>` : ''}${/^yangi/i.test(p.state || '') && !p.sold ? '<span class="newtag">Yangi</span>' : ''}${p.sold ? '<span class="soldtag">SOTILDI</span>' : ''}</div>
     <span class="n">${esc(p.name)}</span><span class="s">${esc(spec)}</span>${brName(p.branch) ? `<span class="br">${esc(brName(p.branch))}</span>` : ''}
     <span class="pr"><span class="p" style="color:${e.sale ? '#DC2626' : '#1B2326'}">${e.price ? e.price + '$' : 'Narx so‘rang'}</span>${e.old ? `<span class="old">${e.old}$</span>` : ''}</span>
   </button>`;
