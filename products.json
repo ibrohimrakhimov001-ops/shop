@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14 11:28:31",
+ "updated": "2026-11-14 11:52:27",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1223,6 +1223,22 @@
     7656
    ],
    "created": "2026-11-14 11:28"
+  },
+  {
+   "name": "18 Pro Max 1sim+esim✅",
+   "desc": "18 Pro Max 1sim+esim✅\nBlack 256GB 1830$🔥",
+   "memory": "256 GB",
+   "price": 1830,
+   "id": 4639145807,
+   "photos": [
+    "photos/4639145807_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7657
+   ],
+   "created": "2026-11-14 11:52"
   }
  ],
  "branches": [
