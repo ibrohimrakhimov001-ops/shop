@@ -351,6 +351,55 @@ const LOGOS = {
 // однотонный логотип бренда (цвет = цвет текста); k — масштаб
 const logo = (b, k = 1) => { const L = LOGOS[b]; return L ? `<svg class="lg" width="${L.w * k}" height="${L.h * k}" viewBox="${L.vb}" fill="currentColor" aria-hidden="true"><path d="${L.d}"/></svg>` : ''; };
 const brandBtn = b => LOGOS[b] && LOGOS[b].word ? logo(b) : logo(b) + esc(b);
+/* ---------- умный поиск: «ip 16 pm», «айфон 14 про», «samsng s24», «16promax» ---------- */
+const RU = {айфон: 'iphone', айфоне: 'iphone', ифон: 'iphone', эпл: 'iphone', самсунг: 'samsung', самсунк: 'samsung', галакси: 'samsung', редми: 'redmi', ксиоми: 'xiaomi', сяоми: 'xiaomi', ксяоми: 'xiaomi', поко: 'poco', хонор: 'honor', хуавей: 'huawei',
+  про: 'pro', макс: 'max', мини: 'mini', ультра: 'ultra', плюс: 'plus', нот: 'note', ноут: 'note', гб: 'gb', тб: 'tb'};
+const AL = {ip: 'iphone', i: 'iphone', ifon: 'iphone', iphon: 'iphone', ipon: 'iphone', ipone: 'iphone', aifon: 'iphone', ayfon: 'iphone', ayfoni: 'iphone', apple: 'iphone', iph: 'iphone', aypon: 'iphone',
+  sam: 'samsung', samsun: 'samsung', samsng: 'samsung', galaxy: 'samsung', gal: 'samsung', xiomi: 'xiaomi', mi: 'xiaomi', xiaomi: 'xiaomi', pm: 'pro max', promax: 'pro max', prom: 'pro max', ul: 'ultra', ultr: 'ultra', nout: 'note', not: 'note'};
+const DROP = new Set(['gb', 'tb', 'g', 'sim', 'telefon', 'tel', 'phone', 'dubay', 'yangi']);
+function toks(str) {
+  let t = String(str || '').toLowerCase().replace(/[ʻʼ‘’`']/g, '').replace(/\+/g, ' plus ')
+    .replace(/[а-яё]+/g, w => RU[w] || w)
+    .replace(/(\d)([a-z])/g, '$1 $2').replace(/([a-z])(\d)/g, '$1 $2');
+  return t.split(/[^a-z0-9а-яё]+/).flatMap(w => (AL[w] || w).split(' ')).filter(w => w && !DROP.has(w));
+}
+function lev(a, b) {
+  if (Math.abs(a.length - b.length) > 1) return 2;
+  const d = Array.from({length: a.length + 1}, (_, i) => [i]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) for (let j = 1; j <= b.length; j++)
+    d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  return d[a.length][b.length];
+}
+const tokOk = (qt, ht) => /^\d+$/.test(qt) ? ht === qt : ht.startsWith(qt) || (qt.length >= 4 && (lev(qt, ht) <= 1 || lev(qt, ht.slice(0, qt.length)) <= 1));
+const HAY = new Map();
+function hay(p) {
+  const k = p.id + '|' + p.name + '|' + p.memory;
+  if (!HAY.has(k)) {
+    let b = brandOf(p).toLowerCase(); const n = String(p.name || '').trim().toLowerCase();
+    if (b === 'boshqa') b = /^\d{1,2}\b/.test(n) ? 'iphone' : /^[sa]\s?\d{2}/.test(n) ? 'samsung' : /^(honor)/.test(n) ? 'honor' : '';
+    HAY.set(k, toks(`${p.name} ${p.memory || ''} ${b} ${/redmi|poco/.test(n) ? 'xiaomi' : ''}`));
+  }
+  return HAY.get(k);
+}
+/* 0 — не подходит; чем больше — тем точнее. strict=false: модельные цифры обязательны, остальное можно не угадать */
+function smatch(p, qs, strict = true) {
+  const Q = toks(qs); if (!Q.length) return 1;
+  const H = hay(p); let hit = 0;
+  for (const qt of Q) {
+    const ok = H.some(ht => tokOk(qt, ht));
+    if (ok) hit++; else if (strict || /^\d+$/.test(qt)) return 0;
+  }
+  if (!strict && hit * 2 < Q.length) return 0;
+  return hit * 100 - H.length;   // меньше лишних слов — выше (16 Pro раньше 16 Pro Max)
+}
+function sfilter(arr, qs) {
+  if (!qs) return {list: arr, fuzzy: false};
+  let r = arr.map(p => [p, smatch(p, qs)]).filter(x => x[1]);
+  let fuzzy = false;
+  if (!r.length) { r = arr.map(p => [p, smatch(p, qs, false)]).filter(x => x[1]); fuzzy = r.length > 0; }
+  return {list: r.sort((a, b) => b[1] - a[1]).map(x => x[0]), fuzzy, rel: true};
+}
 function brandOf(p) {
   if (p.brand) return p.brand;
   const n = (p.name || '').toLowerCase();
@@ -458,11 +507,10 @@ function card(p) {
 function bindCards() { $$('[data-p]').forEach(el => el.onclick = () => { location.hash = 'p=' + el.dataset.p; }); }
 
 function home() {
-  const list = D.products.filter(p => !p.sold)
-    .filter(p => cat === 'all' || (cat === 'sale' ? onSale(p) : brandOf(p) === cat))
-    .filter(p => !q || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(q))
-    .filter(p => !brf || String(p.branch) === String(brf))
-    .sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (eff(a).price || 1e9) - (eff(b).price || 1e9) : sort === 'exp' ? (eff(b).price || 0) - (eff(a).price || 0) : sort === 'mix' ? mix(a) - mix(b) : newer(a, b)));
+  const SF = sfilter(D.products.filter(p => !p.sold)
+    .filter(p => q || cat === 'all' || (cat === 'sale' ? onSale(p) : brandOf(p) === cat))
+    .filter(p => !brf || String(p.branch) === String(brf)), q.trim());
+  const list = q.trim() ? SF.list : SF.list.sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (eff(a).price || 1e9) - (eff(b).price || 1e9) : sort === 'exp' ? (eff(b).price || 0) - (eff(a).price || 0) : sort === 'mix' ? mix(a) - mix(b) : newer(a, b)));
   const brands = [...new Set(D.products.filter(p => !p.sold).map(brandOf))];
   const B = banners(); if (bi >= B.length) bi = 0;
   page(`
@@ -487,7 +535,7 @@ function home() {
     ${D.products.some(p => !p.sold && onSale(p)) ? `<button data-c="sale" class="sale ${cat === 'sale' ? 'on' : ''}">% Aksiya</button>` : ''}
     ${brands.map(x => `<button data-c="${x}" aria-label="${esc(x)}" class="${cat === x ? 'on' : ''}">${brandBtn(x)}</button>`).join('')}
   </nav>
-  <div class="grid">${list.length ? list.map(card).join('') : '<div class="empty">Hozircha telefonlar yo‘q</div>'}</div>
+  ${SF.fuzzy ? '<div class="mut2" style="margin:0 20px 8px">Aniq mos kelmadi — o‘xshash telefonlar:</div>' : ''}<div class="grid">${list.length ? list.map(card).join('') : `<div class="empty">${q.trim() ? 'Topilmadi. Boshqacha yozib ko‘ring, masalan: 14 pro' : 'Hozircha telefonlar yo‘q'}</div>`}</div>
   ${tabbar('')}`);
   bindCards();
   $('#fb').onclick = () => { showSort = !showSort; home(); };
@@ -859,7 +907,7 @@ const guard = () => { if (!ADMIN) { location.hash = ''; return false; } return t
 
 let aq = '';
 function adminRows() {
-  const list = [...D.products].filter(p => !aq || (p.name + ' ' + (p.memory || '')).toLowerCase().includes(aq)).sort((a, b) => (!!a.sold - !!b.sold) || newer(a, b));
+  const list = aq ? sfilter([...D.products], aq).list : [...D.products].sort((a, b) => (!!a.sold - !!b.sold) || newer(a, b));
   const inBr = p => !abr || (abr === 'none' ? !brOf(p.branch) : String(p.branch) === abr);
   const items = list.filter(inBr), act = items.filter(p => !p.sold), sold = items.filter(p => p.sold);
   if (!items.length) return `<div class="empty">${aq ? 'Hech narsa topilmadi' : 'Bu filialda mahsulot yo‘q'}</div>`;
