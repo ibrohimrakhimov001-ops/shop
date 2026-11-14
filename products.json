@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-14 15:43:32",
+ "updated": "2026-11-14 15:45:17",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1268,6 +1268,27 @@
     7659
    ],
    "created": "2026-11-14 15:43"
+  },
+  {
+   "name": "IPhone 13 mini",
+   "desc": "📱IPhone 13 mini\n💽Xotira 128 GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yo’q\n🔋Batareka 88%\n💰Naqtga 280$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "128 GB",
+   "battery": "88%",
+   "price": 280,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 4653114815,
+   "photos": [
+    "photos/4653114815_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7660
+   ],
+   "created": "2026-11-14 15:45"
   }
  ],
  "branches": [
