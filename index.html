@@ -506,11 +506,15 @@ function card(p) {
 }
 function bindCards() { $$('[data-p]').forEach(el => el.onclick = () => { location.hash = 'p=' + el.dataset.p; }); }
 
-function home() {
+/* список результатов — при наборе обновляем только его, поле ввода не трогаем (клавиатура не сбрасывается) */
+function homeRes() {
   const SF = sfilter(D.products.filter(p => !p.sold)
     .filter(p => q || cat === 'all' || (cat === 'sale' ? onSale(p) : brandOf(p) === cat))
     .filter(p => !brf || String(p.branch) === String(brf)), q.trim());
   const list = q.trim() ? SF.list : SF.list.sort((a, b) => (!!a.sold - !!b.sold) || (sort === 'cheap' ? (eff(a).price || 1e9) - (eff(b).price || 1e9) : sort === 'exp' ? (eff(b).price || 0) - (eff(a).price || 0) : sort === 'mix' ? mix(a) - mix(b) : newer(a, b)));
+  return `${SF.fuzzy ? '<div class="mut2" style="margin:0 20px 8px">Aniq mos kelmadi — o‘xshash telefonlar:</div>' : ''}<div class="grid">${list.length ? list.map(card).join('') : `<div class="empty">${q.trim() ? 'Topilmadi. Boshqacha yozib ko‘ring, masalan: 14 pro' : 'Hozircha telefonlar yo‘q'}</div>`}</div>`;
+}
+function home() {
   const brands = [...new Set(D.products.filter(p => !p.sold).map(brandOf))];
   const B = banners(); if (bi >= B.length) bi = 0;
   page(`
@@ -535,7 +539,7 @@ function home() {
     ${D.products.some(p => !p.sold && onSale(p)) ? `<button data-c="sale" class="sale ${cat === 'sale' ? 'on' : ''}">% Aksiya</button>` : ''}
     ${brands.map(x => `<button data-c="${x}" aria-label="${esc(x)}" class="${cat === x ? 'on' : ''}">${brandBtn(x)}</button>`).join('')}
   </nav>
-  ${SF.fuzzy ? '<div class="mut2" style="margin:0 20px 8px">Aniq mos kelmadi — o‘xshash telefonlar:</div>' : ''}<div class="grid">${list.length ? list.map(card).join('') : `<div class="empty">${q.trim() ? 'Topilmadi. Boshqacha yozib ko‘ring, masalan: 14 pro' : 'Hozircha telefonlar yo‘q'}</div>`}</div>
+  <div id="hres">${homeRes()}</div>
   ${tabbar('')}`);
   bindCards();
   $('#fb').onclick = () => { showSort = !showSort; home(); };
@@ -544,7 +548,7 @@ function home() {
   if ($('#brf')) $('#brf').onchange = e => { brf = e.target.value; home(); };
   $$('[data-bl]').forEach(el => el.onclick = () => { const l = el.dataset.bl; if (l.startsWith('p:')) location.hash = 'p=' + l.slice(2); else if (l) location.hash = l; });
   const qi = $('#q');
-  qi.oninput = e => { q = e.target.value.toLowerCase(); const pos = qi.selectionStart; home(); const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); };
+  qi.oninput = e => { q = e.target.value.toLowerCase(); $('#hres').innerHTML = homeRes(); bindCards(); };
   // карусель
   const sl = $('#slides'), vp = $('#vp');
   sl.style.transition = 'none'; sl.style.transform = `translateX(${-bi * 100}%)`; sl.offsetWidth; sl.style.transition = '';
