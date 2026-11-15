@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15 15:16:19",
+ "updated": "2026-11-15 21:03:55",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1481,18 +1481,18 @@
    "link": "p:1794474112"
   },
   {
-   "id": 1794477975598,
-   "img": "photos/banner_1794477975598_77975.jpg",
-   "text": true,
-   "title": "Ishonch bilan oson nasiyaga oling",
-   "tag": "",
-   "link": ""
-  },
-  {
    "id": 1794671915106,
    "img": "photos/banner_1794671915106_71915.jpg",
    "text": true,
    "title": "18 Pro Max sotuv xiti🔥",
+   "tag": "",
+   "link": ""
+  },
+  {
+   "id": 1794477975598,
+   "img": "photos/banner_1794477975598_77975.jpg",
+   "text": true,
+   "title": "Ishonch bilan oson nasiyaga oling",
    "tag": "",
    "link": ""
   }
