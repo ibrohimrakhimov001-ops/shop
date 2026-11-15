@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15 21:04:01",
+ "updated": "2026-11-15 21:04:10",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1473,20 +1473,20 @@
  ],
  "banners": [
   {
-   "id": 1794671915106,
-   "img": "photos/banner_1794671915106_71915.jpg",
-   "text": true,
-   "title": "18 Pro Max sotuv xiti🔥",
-   "tag": "",
-   "link": ""
-  },
-  {
    "id": 1794475572238,
    "img": "photos/banner_1794475572238_75572.jpg",
    "text": true,
    "title": "17 Pro chegirma narxda",
    "tag": "",
    "link": "p:1794474112"
+  },
+  {
+   "id": 1794671915106,
+   "img": "photos/banner_1794671915106_71915.jpg",
+   "text": true,
+   "title": "18 Pro Max sotuv xiti🔥",
+   "tag": "",
+   "link": ""
   },
   {
    "id": 1794477975598,
