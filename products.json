@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15 12:41:56",
+ "updated": "2026-11-15 12:42:20",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1332,18 +1332,22 @@
    "price": 750,
    "state": "Ideal",
    "box": "Yo'q",
-   "branch": 1794379620332,
+   "branch": "1794379620332",
    "warranty": "1 oy",
    "id": 4728514444,
    "photos": [
-    "photos/4728514444_0.jpg"
+    "photos/4728514444_40422_0.jpg"
    ],
    "sold": false,
    "imported": true,
    "channel_msgs": [
     7666
    ],
-   "created": "2026-11-15 12:41"
+   "created": "2026-11-15 12:41",
+   "brand": "iPhone",
+   "old": null,
+   "sale": "",
+   "sale_until": ""
   }
  ],
  "branches": [
