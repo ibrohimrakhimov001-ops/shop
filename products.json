@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15 13:49:17",
+ "updated": "2026-11-15 15:16:19",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1431,6 +1431,26 @@
     7671
    ],
    "created": "2026-11-15 13:42"
+  },
+  {
+   "name": "Samsung S23 Plus",
+   "desc": "📱Samsung S23 Plus\n💽Xotira 8/256 GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yo’q\n🔋Batareka 4700mAh\n💰Narxi 350$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "8/256 GB",
+   "price": 350,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 4737778481,
+   "photos": [
+    "photos/4737778481_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7672
+   ],
+   "created": "2026-11-15 15:16"
   }
  ],
  "branches": [
