@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15 13:33:22",
+ "updated": "2026-11-15 13:33:38",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1388,6 +1388,27 @@
    "imported": true,
    "channel_msgs": [
     7668
+   ],
+   "created": "2026-11-15 13:33"
+  },
+  {
+   "name": "IPhone 13 Pro Max",
+   "desc": "📱IPhone 13 Pro Max\n💽Xotira 128 GB \n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yuq\n🔋Batareka 93%\n💰Naqtga 530$\n📌Manzil: Qöqon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "128 GB",
+   "battery": "93%",
+   "price": 530,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 4731617060,
+   "photos": [
+    "photos/4731617060_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7669
    ],
    "created": "2026-11-15 13:33"
   }
