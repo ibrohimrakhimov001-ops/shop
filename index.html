@@ -726,7 +726,7 @@ async function clientsPage() {
 }
 
 /* ---------- Xabar yuborish (рассылка) ---------- */
-let BCF = {to: 'all', text: '', photo: '', btn: true}, BCS = null, bcT = 0;
+let BCF = {to: 'all', text: '', photo: '', btn: true, bt: '', bu: ''}, BCS = null, bcT = 0;
 function bcStatus() {
   if (!BCS || !BCS.total) return '';
   const done = BCS.ok + BCS.fail, p = Math.round(done * 100 / BCS.total);
@@ -742,8 +742,8 @@ async function bcPoll() {
   bindTo();
   if (BCS.run) bcT = setTimeout(bcPoll, 2000);
 }
-const toBtns = () => [['all', 'Hammaga', BCS ? BCS.users : '…'], ['buyers', 'Xaridorlarga', BCS ? BCS.buyers : '…']].map(([k, l, n]) => `<button data-to="${k}" class="${BCF.to === k ? 'on' : ''}">${l} · ${n}</button>`).join('');
-function bindTo() { $$('[data-to]').forEach(el => el.onclick = () => { BCF.to = el.dataset.to; $('#bto').innerHTML = toBtns(); bindTo(); }); }
+const toBtns = () => [['all', 'Hammaga', BCS ? BCS.users : '…'], ['buyers', 'Xaridorlarga', BCS ? BCS.buyers : '…'], ['channel', 'Kanalga', '📢']].map(([k, l, n]) => `<button data-to="${k}" class="${BCF.to === k ? 'on' : ''}">${l} · ${n}</button>`).join('');
+function bindTo() { $$('[data-to]').forEach(el => el.onclick = () => { if ($('#bct')) { BCF.text = $('#bct').value; BCF.btn = $('#bcb').checked; if ($('#bcbt')) { BCF.bt = $('#bcbt').value; BCF.bu = $('#bcbu').value; } } BCF.to = el.dataset.to; bcastPage(); }); }
 function bcastPage() {
   if (!guard()) return;
   page(`<div class="hdr">${backBtn('admin')}<div style="display:flex;flex-direction:column;flex:1"><span class="sub2">Admin</span><h2>Xabar yuborish</h2></div></div>
@@ -754,12 +754,15 @@ function bcastPage() {
       <label class="upl">${BCF.photo ? `<img src="${BCF.photo}" alt="">` : `${svg('<rect x="3" y="4" width="18" height="16" rx="3"></rect><circle cx="9" cy="10" r="2"></circle><path d="M21 16l-5-5-9 9"></path>', '#15803D', 30)}<span style="font-size:14px;font-weight:800">Rasm · ixtiyoriy</span>`}<input id="bcf" type="file" accept="image/*" hidden></label>
       ${BCF.photo ? '<button class="delbtn" id="bcfx" style="margin-top:0">Rasmni olib tashlash</button>' : ''}
       <label class="fl">Matn<textarea id="bct" rows="6" placeholder="Assalomu alaykum! Do‘konimizga yangi telefonlar keldi…">${esc(BCF.text)}</textarea></label>
-      <label class="chk">«Do‘konni ochish» tugmasi<input type="checkbox" id="bcb" ${BCF.btn ? 'checked' : ''}></label>
+      <label class="chk">Tugma qo‘shish<input type="checkbox" id="bcb" ${BCF.btn ? 'checked' : ''}></label>
+      ${BCF.btn ? `<label class="fl">Tugma matni<input id="bcbt" maxlength="60" placeholder="🛒 Do‘konni ochish" value="${esc(BCF.bt)}"></label>
+      <label class="fl">Havola · ixtiyoriy<input id="bcbu" inputmode="url" autocapitalize="off" placeholder="Bo‘sh qolsa — do‘kon ochiladi" value="${esc(BCF.bu)}"></label>` : ''}
       <button class="btn2" id="bctest">Avval o‘zimga sinab ko‘rish</button>
       <button class="btn" id="bcgo">📨 Yuborish</button>
     </section>
     <div id="bcs">${bcStatus()}</div></div>`);
-  const keep = () => { BCF.text = $('#bct').value; BCF.btn = $('#bcb').checked; };
+  const keep = () => { BCF.text = $('#bct').value; BCF.btn = $('#bcb').checked; if ($('#bcbt')) { BCF.bt = $('#bcbt').value; BCF.bu = $('#bcbu').value; } };
+  $('#bcb').onchange = () => { keep(); bcastPage(); };
   bindTo();
   $('#bcf').onchange = async e => { keep(); if (e.target.files[0]) BCF.photo = await shrink(e.target.files[0], 1280); bcastPage(); };
   if ($('#bcfx')) $('#bcfx').onclick = () => { keep(); BCF.photo = ''; bcastPage(); };
@@ -767,13 +770,13 @@ function bcastPage() {
     keep(); if (!BCF.text.trim() && !BCF.photo) return toast('Matn yoki rasm qo‘shing');
     el.disabled = true;
     try {
-      const r = await call('/api/broadcast', {to: BCF.to, text: BCF.text, photo: BCF.photo, btn: BCF.btn, test: test ? 1 : 0});
-      if (test) toast('✅ Botda tekshiring'); else { toast(`📤 ${r.total} kishiga yuborilmoqda`); BCF.text = ''; BCF.photo = ''; $('#bct').value = ''; bcPoll(); }
+      const r = await call('/api/broadcast', {to: BCF.to, text: BCF.text, photo: BCF.photo, btn: BCF.btn ? {t: BCF.bt, u: BCF.bu} : false, test: test ? 1 : 0});
+      if (test) toast('✅ Botda tekshiring'); else { toast(r.channel ? '📢 Kanalga yuborildi' : `📤 ${r.total} kishiga yuborilmoqda`); BCF.text = ''; BCF.photo = ''; $('#bct').value = ''; bcPoll(); }
     } catch (e) { toast('Xato: ' + e.message, 4000); }
     el.disabled = false;
   };
   $('#bctest').onclick = e => send(true, e.target);
-  $('#bcgo').onclick = e => { keep(); const n = BCS ? (BCF.to === 'buyers' ? BCS.buyers : BCS.users) : '?'; confirmDo(`Xabar ${n} kishiga yuborilsinmi?`, () => send(false, e.target)); };
+  $('#bcgo').onclick = e => { keep(); const n = BCS ? (BCF.to === 'buyers' ? BCS.buyers : BCS.users) : '?'; confirmDo(BCF.to === 'channel' ? 'Xabar kanalga joylansinmi?' : `Xabar ${n} kishiga yuborilsinmi?`, () => send(false, e.target)); };
   bcPoll();
 }
 let lastTouch = 0;
