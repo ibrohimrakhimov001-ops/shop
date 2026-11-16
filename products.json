@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-16 11:48:10",
+ "updated": "2026-11-16 15:57:14",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1451,6 +1451,27 @@
     7672
    ],
    "created": "2026-11-15 15:16"
+  },
+  {
+   "name": "IPhone 17 Pro Max",
+   "desc": "📱IPhone 17 Pro Max\n📶 1Sim + esim✅\n💽Xotira 256 GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi bor\n🔋Batareka 100%\n💰Naqtga 1290$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "256 GB",
+   "battery": "100%",
+   "price": 1290,
+   "state": "Ideal",
+   "box": "Bor",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 4826632134,
+   "photos": [
+    "photos/4826632134_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7674
+   ],
+   "created": "2026-11-16 15:57"
   }
  ],
  "branches": [
