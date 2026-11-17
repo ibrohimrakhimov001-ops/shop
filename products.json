@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-17 14:18:19",
+ "updated": "2026-11-17 14:20:29",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1473,6 +1473,26 @@
     7675
    ],
    "created": "2026-11-17 14:18"
+  },
+  {
+   "name": "Samsung S24",
+   "desc": "📱Samsung S24\n💽Xotira 8/256GB\n☑️Holati yaxshi\n☑️Kafolat 1 oy\n📦Karopkasi yuq\n🔋Batareka 4000mAh\n💰Narxi 420$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "8/256 GB",
+   "price": 420,
+   "state": "Yaxshi",
+   "box": "Yo'q",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 4907228113,
+   "photos": [
+    "photos/4907228113_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7676
+   ],
+   "created": "2026-11-17 14:20"
   }
  ],
  "branches": [
