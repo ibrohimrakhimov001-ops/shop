@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19 15:28:20",
+ "updated": "2026-11-19 15:30:25",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1530,6 +1530,26 @@
     7680
    ],
    "created": "2026-11-17 18:09"
+  },
+  {
+   "name": "Redmi Note 17",
+   "desc": "📱Redmi Note 17\n💽Xotira 4/128 GB\n☑️Holati yangi 🆕\n☑️Kafolat 1 yil\n📦Karopkasi bor\n🔋Batareka 7700mAh\n💰Naqtga 215$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "4/128 GB",
+   "price": 215,
+   "state": "Yangi",
+   "box": "Bor",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 5084224281,
+   "photos": [
+    "photos/5084224281_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7684
+   ],
+   "created": "2026-11-19 15:30"
   }
  ],
  "branches": [
