@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19 15:40:02",
+ "updated": "2026-11-19 15:41:09",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1579,18 +1579,22 @@
    "price": 430,
    "state": "Ideal",
    "box": "Bor",
-   "branch": 1794379620332,
+   "branch": "1794379620332",
    "warranty": "1 oy",
    "id": 5084801066,
    "photos": [
-    "photos/5084801066_0.jpg"
+    "photos/5084801066_69149_0.jpg"
    ],
    "sold": false,
    "imported": true,
    "channel_msgs": [
     7686
    ],
-   "created": "2026-11-19 15:40"
+   "created": "2026-11-19 15:40",
+   "brand": "iPhone",
+   "old": null,
+   "sale": "",
+   "sale_until": ""
   }
  ],
  "branches": [
