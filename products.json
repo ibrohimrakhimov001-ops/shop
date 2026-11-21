@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21 11:24:25",
+ "updated": "2026-11-21 12:52:18",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1708,6 +1708,26 @@
     7699
    ],
    "created": "2026-11-21 11:24"
+  },
+  {
+   "name": "Samsung S23",
+   "desc": "📱Samsung S23\n📶Dubay 2 ta sim karta\n💽Xotira 8/128 GB\n☑️Holati ideal \n☑️Kafolat 1 oy \n📦Karopkasi yo’q\n🔋Batareka 3900mAh\n💰Naqtga 340$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "8/128 GB",
+   "price": 340,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 5247537307,
+   "photos": [
+    "photos/5247537307_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7700
+   ],
+   "created": "2026-11-21 12:52"
   }
  ],
  "branches": [
