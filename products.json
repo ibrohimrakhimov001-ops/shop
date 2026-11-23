@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21 17:04:08",
+ "updated": "2026-11-23 13:31:08",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1748,6 +1748,26 @@
     7701
    ],
    "created": "2026-11-21 15:58"
+  },
+  {
+   "name": "Redmi Note 15 Pro",
+   "desc": "📱Redmi Note 15 Pro\n💽Xotira 8/256 GB\n☑️Holati yangidek🔥\n☑️Kafolat 1 oy\n📦Karopkasi bor full\n🔋Batareka 6500mAh\n💰Naqtga 250$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "8/256 GB",
+   "price": 250,
+   "state": "Yangi",
+   "box": "Bor",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 5422666895,
+   "photos": [
+    "photos/5422666895_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7705
+   ],
+   "created": "2026-11-23 13:31"
   }
  ],
  "branches": [
