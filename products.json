@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23 17:47:05",
+ "updated": "2026-11-23 17:56:22",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1810,6 +1810,28 @@
     7707
    ],
    "created": "2026-11-23 17:47"
+  },
+  {
+   "name": "IPhone 18 Pro Max",
+   "desc": "📱IPhone 18 Pro Max\n💽Xotira 256GB \n☑️Holati yangi\n☑️Kafolat 1 oy\n📦Karopkasi bor\n🔋Batareka 100%\n💰Naqtga 510$\n📌Manzil: Qöqon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "256 GB",
+   "battery": "100%",
+   "price": 510,
+   "state": "Yangi",
+   "box": "Bor",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 5438548351,
+   "photos": [
+    "photos/5438548351_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7708,
+    7709
+   ],
+   "created": "2026-11-23 17:55"
   }
  ],
  "branches": [
