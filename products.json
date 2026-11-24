@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24 15:46:01",
+ "updated": "2026-11-24 16:52:22",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1914,6 +1914,27 @@
     7715
    ],
    "created": "2026-11-24 11:35"
+  },
+  {
+   "name": "Iphone 11 Pro Max",
+   "desc": "📱Iphone 11 Pro Max\n💽Xotira 64GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi yuq\n🔋Batareka 88%\n💰Narxi 260$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998912046465\n📞+998910010404",
+   "memory": "64 GB",
+   "battery": "88%",
+   "price": 260,
+   "state": "Ideal",
+   "box": "Yo'q",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 5521141210,
+   "photos": [
+    "photos/5521141210_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7717
+   ],
+   "created": "2026-11-24 16:52"
   }
  ],
  "branches": [
