@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24 18:59:00",
+ "updated": "2026-11-24 18:59:25",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1682,7 +1682,7 @@
    "photos": [
     "photos/5165144640_0.jpg"
    ],
-   "sold": true,
+   "sold": false,
    "imported": true,
    "channel_msgs": [
     7696
