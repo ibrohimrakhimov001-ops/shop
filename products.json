@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25 15:32:31",
+ "updated": "2026-11-25 15:34:14",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -2071,6 +2071,14 @@
    "img": "photos/banner_1794477975598_77975.jpg",
    "text": true,
    "title": "Ishonch bilan oson nasiyaga oling",
+   "tag": "",
+   "link": ""
+  },
+  {
+   "id": 1795602854791,
+   "img": "photos/banner_1795602854791_2854.jpg",
+   "text": true,
+   "title": "Android Kokand bilan oson xarid qiling",
    "tag": "",
    "link": ""
   }
