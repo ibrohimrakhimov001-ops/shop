@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25 15:23:46",
+ "updated": "2026-11-25 15:24:41",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -2080,6 +2080,14 @@
    "text": true,
    "title": "Ishonch bilan oson nasiyaga oling",
    "tag": "",
+   "link": ""
+  },
+  {
+   "id": 1795602281673,
+   "img": "photos/banner_1795602281673_2281.jpg",
+   "text": true,
+   "title": "18 Pro Max",
+   "tag": "256gb",
    "link": ""
   }
  ],
