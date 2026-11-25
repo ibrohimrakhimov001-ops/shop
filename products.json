@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25 15:22:18",
+ "updated": "2026-11-25 15:22:21",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -2015,6 +2015,26 @@
    "channel_msgs": [
     7730,
     7731
+   ],
+   "created": "2026-11-25 15:22"
+  },
+  {
+   "name": "Samsung S20+",
+   "desc": "📱Samsung S20+\n💽Xotira 12/256 GB\n☑️Holati yaxshi\n☑️Kafolat 1 oy\n📦Karopkasi yo’q\n🔋Batareka 4500 mAh\n💰Narxi 190$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdoga✅\n📞+998910010404\n📞+998912046465",
+   "memory": "12/256 GB",
+   "price": 190,
+   "state": "Yaxshi",
+   "box": "Yo'q",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 5602131549,
+   "photos": [
+    "photos/5602131549_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7729
    ],
    "created": "2026-11-25 15:22"
   }
