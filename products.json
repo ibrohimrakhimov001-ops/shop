@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25 15:37:40",
+ "updated": "2026-11-25 15:37:59",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -2081,6 +2081,14 @@
    "title": "IPhone 13 Pro 1 TB",
    "tag": "Arzon narxda",
    "link": "p:1794474790"
+  },
+  {
+   "id": 1795603079571,
+   "img": "photos/banner_1795603079571_3079.jpg",
+   "text": true,
+   "title": "Android Kokand bilan yanada oson",
+   "tag": "",
+   "link": ""
   }
  ],
  "rates": {
