@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27 15:31:51",
+ "updated": "2026-11-27 15:33:14",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -21,8 +21,13 @@
    "sold": false,
    "created": "2026-11-11 17:16",
    "channel_msgs": [
+    7739
+   ],
+   "old_msgs": [
     174
-   ]
+   ],
+   "posted_at": 1795775594,
+   "views_at_post": 8
   },
   {
    "name": "IPhone 13 Pro",
@@ -2129,5 +2134,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795775511
+ "last_auto": 1795775594
 }
