@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27 11:20:53",
+ "updated": "2026-11-27 11:41:10",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -306,10 +306,14 @@
    "sold": false,
    "imported": true,
    "channel_msgs": [
-    195,
-    196
+    7735
    ],
-   "created": "2026-11-11 17:32"
+   "created": "2026-11-11 17:32",
+   "old_msgs": [
+    195
+   ],
+   "posted_at": 1795761670,
+   "views_at_post": 3
   },
   {
    "name": "Poco X8 Pro",
@@ -2098,5 +2102,6 @@
   "n12": 50.0
  },
  "post": false,
- "repost_h": 2.0
+ "repost_h": 2.0,
+ "last_auto": 1795761670
 }
