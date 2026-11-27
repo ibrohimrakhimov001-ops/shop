@@ -1288,7 +1288,7 @@ function settings() {
     <span class="lbl">Telegram kanal</span>
     <label class="chk">Yangi mahsulotni kanalga joylash<input type="checkbox" id="s_post" ${D.post !== false ? 'checked' : ''}></label>
     <label class="fl">Eski postlarni qayta joylash, har necha soatda<input id="s_rep" inputmode="numeric" placeholder="0 — o‘chiq" value="${D.repost_h || ''}"></label>
-    <span style="font-size:12px;font-weight:600;color:var(--mut);margin-top:-6px">Sotilmagan telefon posti shu vaqtdan eski bo‘lsa, kanalga qaytadan chiqadi (eskisi o‘chadi). Do‘konda takrorlanmaydi.</span>
+    <span style="font-size:12px;font-weight:600;color:var(--mut);margin-top:-6px">Sotilmagan telefon posti shu vaqtdan eski bo‘lsa, kanalga qaytadan chiqadi (eskisi qoladi, sotilganda unda ham SOTILDI yoziladi). Do‘konda takrorlanmaydi.</span>
     <span class="lbl">Muddatli to‘lov</span>
     <label class="fl">Dollar kursi, so‘m<input id="s_kurs" inputmode="numeric" placeholder="12 800" value="${D.kurs || ''}"></label>
     <span style="font-size:12px;font-weight:700;color:var(--mut)">Ustama · rasmiy ish joyi</span>
