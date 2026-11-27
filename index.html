@@ -936,7 +936,7 @@ function arow(p) {
   { const e = eff(p); return `<div class="arow">
     <div class="th">${img(p) ? `<img src="${th(p)}" data-full="${img(p)}" alt="">` : `<span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center">${svg(P.dev, '#15803D', 26, 1.6)}</span>`}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
     <div class="inf"><b>${esc([p.name, p.memory].filter(Boolean).join(' '))}</b><span>${e.price || '?'}$</span>
-      <button class="soldb ${p.sold ? 'on' : ''}" data-sold="${p.id}" aria-pressed="${!!p.sold}">${p.sold ? '↩ Sotuvga qaytarish' : '✓ Sotildi'}</button>${p.sold ? '' : `<button class="soldb" data-rep="${p.id}">📢 Kanalga</button>`}</div>
+      <button class="soldb ${p.sold ? 'on' : ''}" data-sold="${p.id}" aria-pressed="${!!p.sold}">${p.sold ? '↩ Sotuvga qaytarish' : '✓ Sotildi'}</button></div>
     <button class="sq e" aria-label="Tahrirlash" data-go="edit=${p.id}">${svg(P.edit, '#15803D', 17)}</button>
     <button class="sq o" aria-label="Chegirma" data-go="edit=${p.id}&d">${svg(P.pct, '#B45309', 17)}</button>
     <button class="sq d" aria-label="O‘chirish" data-del="${p.id}">${svg(P.del, '#B91C1C', 17)}</button></div>`; }
@@ -945,12 +945,6 @@ function bindRows() {
   bindGo();
   $$('[data-del]').forEach(el => el.onclick = () => delProduct(+el.dataset.del));
   $$('[data-sold]').forEach(el => el.onclick = () => toggleSold(+el.dataset.sold, el));
-  $$('[data-rep]').forEach(el => el.onclick = () => confirmDo('Shu telefon kanalga qayta joylansinmi?', async () => {
-    el.disabled = true;
-    try { await call('/api/repost', {id: +el.dataset.rep}); haptic('success'); toast('📢 Kanalga joylandi'); }
-    catch (e) { toast('Xato: ' + e.message, 4000); }
-    el.disabled = false;
-  }));
   $$('[data-abr]').forEach(el => el.onclick = () => { abr = el.dataset.abr; $('#abrs').innerHTML = abrTabs(); $('#arows').innerHTML = adminRows(); bindRows(); });
 }
 async function toggleSold(id, el) {
@@ -1034,7 +1028,7 @@ function edit(id, focusDisc) {
     </section>
     <label class="chk">Sotuvda bor<input type="checkbox" id="stk" ${F.instock ? 'checked' : ''}></label>
   </div>
-  <div class="savebar"><button class="btn" id="sv">Saqlash</button>${F.id ? '<button class="delbtn" id="dl">Mahsulotni o‘chirish</button>' : ''}</div>`);
+  <div class="savebar"><button class="btn" id="sv">Saqlash</button>${F.id && F.instock ? '<button class="btn" id="rp" style="background:#0284C7">📢 Kanalga qayta joylash</button>' : ''}${F.id ? '<button class="delbtn" id="dl">Mahsulotni o‘chirish</button>' : ''}</div>`);
   $$('[data-f]').forEach(el => el.oninput = el.onchange = () => {
     F[el.dataset.f] = el.value;
     if (el.dataset.f === 'pct' && F.price && el.value) { F.newp = Math.round(F.price * (1 - el.value / 100)); const n = $('[data-f=newp]'); if (n) n.value = F.newp; }
@@ -1047,6 +1041,12 @@ function edit(id, focusDisc) {
   $('#stk').onchange = e => { F.instock = e.target.checked; };
   const fi = $('#file'); if (fi) fi.onchange = async () => { for (const f of [...fi.files].slice(0, 6 - nph)) F.neu.push(await shrink(f)); edit(id); };
   $('#sv').onclick = () => saveForm();
+  if ($('#rp')) $('#rp').onclick = () => confirmDo('Shu telefon kanalga qayta joylansinmi?', async () => {
+    const b = $('#rp'); b.disabled = true;
+    try { await call('/api/repost', {id: F.id}); haptic('success'); toast('📢 Kanalga joylandi'); }
+    catch (e) { toast('Xato: ' + e.message, 4000); }
+    b.disabled = false;
+  });
   if ($('#dl')) $('#dl').onclick = () => delProduct(F.id, () => { F = null; location.hash = 'admin'; });
   if (focusDisc) setTimeout(() => $('#disc').scrollIntoView({block: 'center'}), 50);
 }
