@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27 13:41:12",
+ "updated": "2026-11-27 15:31:51",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -165,8 +165,13 @@
    "sold": false,
    "created": "2026-11-11 17:21",
    "channel_msgs": [
+    7738
+   ],
+   "old_msgs": [
     182
-   ]
+   ],
+   "posted_at": 1795775511,
+   "views_at_post": 8
   },
   {
    "name": "IPhone 13",
@@ -2124,5 +2129,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795768872
+ "last_auto": 1795775511
 }
