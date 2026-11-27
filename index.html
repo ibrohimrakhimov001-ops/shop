@@ -1287,6 +1287,8 @@ function settings() {
       <span style="display:flex;flex-direction:column;flex:1"><span style="font-size:15px;font-weight:800">Filiallar</span><span style="font-size:12px;font-weight:600;color:var(--mut)">${BR().length} ta filial · manzil, telefon, Telegram</span></span>${svg(P.chev, '#5C676B', 18)}</button>
     <span class="lbl">Telegram kanal</span>
     <label class="chk">Yangi mahsulotni kanalga joylash<input type="checkbox" id="s_post" ${D.post !== false ? 'checked' : ''}></label>
+    <label class="fl">Eski postlarni qayta joylash, har necha soatda<input id="s_rep" inputmode="numeric" placeholder="0 — o‘chiq" value="${D.repost_h || ''}"></label>
+    <span style="font-size:12px;font-weight:600;color:var(--mut);margin-top:-6px">Sotilmagan telefon posti shu vaqtdan eski bo‘lsa, kanalga qaytadan chiqadi (eskisi o‘chadi). Do‘konda takrorlanmaydi.</span>
     <span class="lbl">Muddatli to‘lov</span>
     <label class="fl">Dollar kursi, so‘m<input id="s_kurs" inputmode="numeric" placeholder="12 800" value="${D.kurs || ''}"></label>
     <span style="font-size:12px;font-weight:700;color:var(--mut)">Ustama · rasmiy ish joyi</span>
@@ -1320,7 +1322,8 @@ function settings() {
     const rates = {}; $$('[data-rt]').forEach(el => rates[el.dataset.rt] = +el.value || 0);
     const kurs = +$('#s_kurs').value.replace(/\D/g, '');
     if (!kurs) return toast('Kursni yozing');
-    try { await call('/api/settings', {kurs, rates}); D.kurs = kurs; D.rates = rates; toast('✅ Saqlandi'); } catch (e) { toast('Xato: ' + e.message, 4000); }
+    const repost_h = +$('#s_rep').value.replace(/[^\d.]/g, '') || 0;
+    try { await call('/api/settings', {kurs, rates, repost_h}); D.kurs = kurs; D.rates = rates; D.repost_h = repost_h; toast('✅ Saqlandi'); } catch (e) { toast('Xato: ' + e.message, 4000); }
   };
 }
 
