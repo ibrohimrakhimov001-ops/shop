@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27 15:33:48",
+ "updated": "2026-11-27 15:33:58",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1835,9 +1835,14 @@
    "sold": false,
    "imported": true,
    "channel_msgs": [
+    7742
+   ],
+   "created": "2026-11-23 17:47",
+   "old_msgs": [
     7707
    ],
-   "created": "2026-11-23 17:47"
+   "posted_at": 1795775638,
+   "views_at_post": 3
   },
   {
    "name": "IPhone 18 Pro Max",
@@ -2144,5 +2149,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795775628
+ "last_auto": 1795775638
 }
