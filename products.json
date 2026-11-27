@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27 15:33:14",
+ "updated": "2026-11-27 15:33:30",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1153,9 +1153,14 @@
    "sold": false,
    "imported": true,
    "channel_msgs": [
+    7740
+   ],
+   "created": "2026-11-14 10:48",
+   "old_msgs": [
     7653
    ],
-   "created": "2026-11-14 10:48"
+   "posted_at": 1795775610,
+   "views_at_post": 18
   },
   {
    "name": "Samsung Z Flip 6",
@@ -2134,5 +2139,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795775594
+ "last_auto": 1795775610
 }
