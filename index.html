@@ -1287,8 +1287,8 @@ function settings() {
       <span style="display:flex;flex-direction:column;flex:1"><span style="font-size:15px;font-weight:800">Filiallar</span><span style="font-size:12px;font-weight:600;color:var(--mut)">${BR().length} ta filial · manzil, telefon, Telegram</span></span>${svg(P.chev, '#5C676B', 18)}</button>
     <span class="lbl">Telegram kanal</span>
     <label class="chk">Yangi mahsulotni kanalga joylash<input type="checkbox" id="s_post" ${D.post !== false ? 'checked' : ''}></label>
-    <label class="fl">Eski postlarni qayta joylash, har necha soatda<input id="s_rep" inputmode="numeric" placeholder="0 — o‘chiq" value="${D.repost_h || ''}"></label>
-    <span style="font-size:12px;font-weight:600;color:var(--mut);margin-top:-6px">Sotilmagan telefon posti shu vaqtdan eski bo‘lsa, kanalga qaytadan chiqadi (eskisi qoladi, sotilganda unda ham SOTILDI yoziladi). Do‘konda takrorlanmaydi.</span>
+    <label class="fl">Kanalga avto-post, har necha soatda<input id="s_rep" inputmode="numeric" placeholder="0 — o‘chiq" value="${D.repost_h || ''}"></label>
+    <span style="font-size:12px;font-weight:600;color:var(--mut);margin-top:-6px">9:00–22:00 orasida har N soatda bitta sotilmagan telefon kanalga qayta chiqadi: kam ko‘rilgan va uzoq turganlar birinchi. Bitta telefon 3 kunda bir martadan ko‘p emas. Eski post qoladi. Do‘konda takrorlanmaydi.</span>
     <span class="lbl">Muddatli to‘lov</span>
     <label class="fl">Dollar kursi, so‘m<input id="s_kurs" inputmode="numeric" placeholder="12 800" value="${D.kurs || ''}"></label>
     <span style="font-size:12px;font-weight:700;color:var(--mut)">Ustama · rasmiy ish joyi</span>
