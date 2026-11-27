@@ -936,7 +936,7 @@ function arow(p) {
   { const e = eff(p); return `<div class="arow">
     <div class="th">${img(p) ? `<img src="${th(p)}" data-full="${img(p)}" alt="">` : `<span style="display:flex;width:56px;height:56px;align-items:center;justify-content:center">${svg(P.dev, '#15803D', 26, 1.6)}</span>`}${e.sale && !p.sold ? `<span class="bd">${esc(e.sale)}</span>` : ''}</div>
     <div class="inf"><b>${esc([p.name, p.memory].filter(Boolean).join(' '))}</b><span>${e.price || '?'}$</span>
-      <button class="soldb ${p.sold ? 'on' : ''}" data-sold="${p.id}" aria-pressed="${!!p.sold}">${p.sold ? '↩ Sotuvga qaytarish' : '✓ Sotildi'}</button></div>
+      <button class="soldb ${p.sold ? 'on' : ''}" data-sold="${p.id}" aria-pressed="${!!p.sold}">${p.sold ? '↩ Sotuvga qaytarish' : '✓ Sotildi'}</button>${p.sold ? '' : `<button class="soldb" data-rep="${p.id}">📢 Kanalga</button>`}</div>
     <button class="sq e" aria-label="Tahrirlash" data-go="edit=${p.id}">${svg(P.edit, '#15803D', 17)}</button>
     <button class="sq o" aria-label="Chegirma" data-go="edit=${p.id}&d">${svg(P.pct, '#B45309', 17)}</button>
     <button class="sq d" aria-label="O‘chirish" data-del="${p.id}">${svg(P.del, '#B91C1C', 17)}</button></div>`; }
@@ -945,6 +945,12 @@ function bindRows() {
   bindGo();
   $$('[data-del]').forEach(el => el.onclick = () => delProduct(+el.dataset.del));
   $$('[data-sold]').forEach(el => el.onclick = () => toggleSold(+el.dataset.sold, el));
+  $$('[data-rep]').forEach(el => el.onclick = () => confirmDo('Shu telefon kanalga qayta joylansinmi?', async () => {
+    el.disabled = true;
+    try { await call('/api/repost', {id: +el.dataset.rep}); haptic('success'); toast('📢 Kanalga joylandi'); }
+    catch (e) { toast('Xato: ' + e.message, 4000); }
+    el.disabled = false;
+  }));
   $$('[data-abr]').forEach(el => el.onclick = () => { abr = el.dataset.abr; $('#abrs').innerHTML = abrTabs(); $('#arows').innerHTML = adminRows(); bindRows(); });
 }
 async function toggleSold(id, el) {
