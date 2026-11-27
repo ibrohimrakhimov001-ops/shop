@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27 15:44:39",
+ "updated": "2026-11-27 15:51:26",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -2114,6 +2114,27 @@
    ],
    "posted_at": 1795776279,
    "created": "2026-11-27 15:44"
+  },
+  {
+   "name": "Samsung S23 Ultra",
+   "desc": "📱Samsung S23 Ultra\n📶Dubay 2 sim\n💽Xotira 12/256 GB\n☑️Holati ideal\n☑️Kafolat 1 oy\n📦Karopkasi bor\n🔋Batareka 5000mAh\n💰Narxi 490$\n📌Manzil: Qo’qon shahar,\n     Furqat 100 (Kappon)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "12/256 GB",
+   "price": 490,
+   "state": "Ideal",
+   "box": "Bor",
+   "branch": 1794379620332,
+   "warranty": "1 oy",
+   "id": 5776683442,
+   "photos": [
+    "photos/5776683442_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7745
+   ],
+   "posted_at": 1795776686,
+   "created": "2026-11-27 15:51"
   }
  ],
  "branches": [
