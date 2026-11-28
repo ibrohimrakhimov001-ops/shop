@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28 11:42:33",
+ "updated": "2026-11-28 11:44:50",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -535,8 +535,13 @@
    "sold": false,
    "created": "2026-11-12 14:23",
    "channel_msgs": [
+    7752
+   ],
+   "old_msgs": [
     216
-   ]
+   ],
+   "posted_at": 1795848290,
+   "views_at_post": 21
   },
   {
    "name": "Samsung S22 (Dubay)",
@@ -2227,5 +2232,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795848153
+ "last_auto": 1795848290
 }
