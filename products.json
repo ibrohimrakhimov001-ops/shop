@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28 11:44:50",
+ "updated": "2026-11-28 12:03:39",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -2170,6 +2170,27 @@
    ],
    "posted_at": 1795776686,
    "created": "2026-11-27 15:51"
+  },
+  {
+   "name": "Redmi Note 14",
+   "desc": "📱Redmi Note 14\n💽Xotira 8/128 GB\n☑️Holati zo’r\n☑️Kafolat 1 oy\n📦Karopkasi yo’q\n🔋Batareka 5500mAh \n💰Naqtga 140$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "8/128 GB",
+   "price": 140,
+   "state": "Zo'r",
+   "box": "Yo'q",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 5849417591,
+   "photos": [
+    "photos/5849417591_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7754
+   ],
+   "posted_at": 1795849418,
+   "created": "2026-11-28 12:03"
   }
  ],
  "branches": [
