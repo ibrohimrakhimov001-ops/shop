@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28 12:03:39",
+ "updated": "2026-11-28 12:22:59",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -2191,6 +2191,28 @@
    ],
    "posted_at": 1795849418,
    "created": "2026-11-28 12:03"
+  },
+  {
+   "name": "IPhone 14 Pro Max",
+   "desc": "📱IPhone 14 Pro Max\n💽Xotira 128 GB\n☑️Holati ideal \n☑️Kafolat 1 oy\n📦Karopkasi bor\n🔋Batareka 79%\n💰Naqtga 580$\n📌Manzil: Qo’qon shahar,\n     Istiqlol 37 (Gorod)\n🛒Nasiya savdo✅\n📞+998910010404\n📞+998912046465",
+   "memory": "128 GB",
+   "battery": "79%",
+   "price": 580,
+   "state": "Ideal",
+   "box": "Bor",
+   "branch": 1794386923402,
+   "warranty": "1 oy",
+   "id": 5850578569,
+   "photos": [
+    "photos/5850578569_0.jpg"
+   ],
+   "sold": false,
+   "imported": true,
+   "channel_msgs": [
+    7756
+   ],
+   "posted_at": 1795850579,
+   "created": "2026-11-28 12:22"
   }
  ],
  "branches": [
