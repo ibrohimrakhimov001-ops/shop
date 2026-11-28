@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28 12:53:54",
+ "updated": "2026-11-28 13:52:33",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1258,9 +1258,14 @@
    "sold": false,
    "imported": true,
    "channel_msgs": [
+    7758
+   ],
+   "created": "2026-11-14 15:43",
+   "old_msgs": [
     7659
    ],
-   "created": "2026-11-14 15:43"
+   "posted_at": 1795855953,
+   "views_at_post": 6
   },
   {
    "name": "IPhone 13 mini",
@@ -2292,5 +2297,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795848290
+ "last_auto": 1795855953
 }
