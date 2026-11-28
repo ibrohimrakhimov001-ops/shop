@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28 11:02:30",
+ "updated": "2026-11-28 11:42:33",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1353,13 +1353,18 @@
    "sold": false,
    "imported": true,
    "channel_msgs": [
-    7666
+    7751
    ],
    "created": "2026-11-15 12:41",
    "brand": "iPhone",
    "old": null,
    "sale": "",
-   "sale_until": ""
+   "sale_until": "",
+   "old_msgs": [
+    7666
+   ],
+   "posted_at": 1795848153,
+   "views_at_post": 23
   },
   {
    "name": "IPhone 13 Pro Max",
@@ -2222,5 +2227,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795845750
+ "last_auto": 1795848153
 }
