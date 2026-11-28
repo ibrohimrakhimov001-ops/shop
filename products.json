@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28 17:52:10",
+ "updated": "2026-11-28 19:52:13",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -208,10 +208,14 @@
    "sold": false,
    "imported": true,
    "channel_msgs": [
-    186,
-    187
+    7763
    ],
-   "created": "2026-11-11 17:31"
+   "created": "2026-11-11 17:31",
+   "old_msgs": [
+    186
+   ],
+   "posted_at": 1795877533,
+   "views_at_post": 9
   },
   {
    "name": "Samsung A18",
@@ -2282,5 +2286,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795870330
+ "last_auto": 1795877533
 }
