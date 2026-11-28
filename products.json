@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28 15:56:47",
+ "updated": "2026-11-28 17:52:10",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -624,7 +624,12 @@
    "old": null,
    "sale": "",
    "sale_until": "",
-   "branch": "1794379620332"
+   "branch": "1794379620332",
+   "channel_msgs": [
+    7762
+   ],
+   "posted_at": 1795870330,
+   "views_at_post": 8
   },
   {
    "id": 1794476552,
@@ -2277,5 +2282,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795863128
+ "last_auto": 1795870330
 }
