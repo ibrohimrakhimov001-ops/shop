@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-28 19:52:13",
+ "updated": "2026-11-28 21:52:28",
  "kurs": 12100,
  "phone": "",
  "tg": "",
@@ -1429,9 +1429,14 @@
    "sold": false,
    "imported": true,
    "channel_msgs": [
+    7764
+   ],
+   "created": "2026-11-15 13:33",
+   "old_msgs": [
     7669
    ],
-   "created": "2026-11-15 13:33"
+   "posted_at": 1795884748,
+   "views_at_post": 7
   },
   {
    "name": "IPhone 14 Pro",
@@ -2286,5 +2291,5 @@
  },
  "post": false,
  "repost_h": 2.0,
- "last_auto": 1795877533
+ "last_auto": 1795884748
 }
